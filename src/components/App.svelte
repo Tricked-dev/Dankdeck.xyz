@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { getSession } from "auth-astro/server";
   import CodeSnippet from "./CodeSnippet.svelte";
+    import Card from "./Card.svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 </script>
@@ -40,4 +41,8 @@
   </div>
 </div>
 
-<CodeSnippet></CodeSnippet>
+<!-- <CodeSnippet></CodeSnippet> -->
+
+<div class="mx-auto py-7">
+  <Card code="console.log(`Helloo world`)" filename="HelloWorld.js"desc="Please help"  rating="87" comments="9"> </Card>
+</div>

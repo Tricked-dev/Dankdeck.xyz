@@ -12,7 +12,8 @@ const session = await getSession(Astro.request);
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
   </head>
-  <body class="w-screen h-screen bg-gray-800">
+  <body class="w-screen h-screen bg-gray-800 flex flex-col">
     <App session={session} client:load />
+
   </body>
 </html>

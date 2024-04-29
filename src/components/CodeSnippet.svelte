@@ -3,6 +3,8 @@
   import { onDestroy, onMount } from "svelte";
   import type * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
 
+  let {code} =$props();
+
   let editor: Monaco.editor.IStandaloneCodeEditor;
   let monaco: typeof Monaco;
   let editorContainer: HTMLElement;
@@ -37,7 +39,7 @@
     });
 
     const model = monaco.editor.createModel(
-      "console.log('Hello from Monaco! (the editor, not the city...)')",
+      code??"console.log('Hello from Monaco! (the editor, not the city...)')",
       undefined,
       // Give monaco a hint which syntax highlighting to use
       monaco.Uri.file("sample.js")
@@ -52,7 +54,7 @@
   });
 </script>
 
-<div class="h-96" bind:this={editorContainer}></div>
+<div class="h-full" bind:this={editorContainer}></div>
 
 <style>
   :global(.margin-view-overlays div) {
