@@ -1,5 +1,7 @@
 # Astro Starter Kit: Minimal
 
+https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&node-id=0%3A1&mode=design&t=R5uLFJ0TflRMAQdm-1
+
 ```sh
 npm create astro@latest -- --template minimal
 ```
