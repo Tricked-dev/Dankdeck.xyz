@@ -24,21 +24,23 @@
 
 <div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <span class="text-4xl font-bold">
-  {card.name}
-</span>
+    {card.name}
+  </span>
 </div>
 <!--
 TODO: make text better vosible on light backgrounds
 
 -->
 <div class="h-full flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
-  <div class="h-full ">
+  <div class="h-full">
     <div
       href="/card/dd"
       class="bg-primary-content w-96 h-[30rem] bg-center bg-cover rounded-lg relative"
       style:background-image={`url(${card.image})`}
     >
-      <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">#1</div>
+      <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">
+        #1
+      </div>
       <div class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white">
         {card.name}
       </div>
@@ -52,7 +54,8 @@ TODO: make text better vosible on light backgrounds
 
     <div>
       Obtained: {new Date(card.last_sold).toISOString()}<br />
-      Last Sold for: ${card.last_sold_for}
+      Last Sold for: ${card.last_sold_for}<br />
+      Owned by: Tricked
     </div>
 
     <div class="mt-auto">

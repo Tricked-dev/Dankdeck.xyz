@@ -1,0 +1,2 @@
+dbschema/migrations/** linguist-vendored=false
+dbschema/migrations/** linguist-documentation=false

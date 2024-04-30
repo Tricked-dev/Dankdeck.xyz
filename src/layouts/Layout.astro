@@ -2,6 +2,7 @@
 import { getSession } from "auth-astro/server";
 import App from "../components/MarketPlace.svelte";
 import Header from "../components/Header.svelte";
+import { ViewTransitions } from "astro:transitions";
 const { session } = Astro.props;
 ---
 
@@ -11,6 +12,7 @@ const { session } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <ViewTransitions />
     <title>Astro</title>
   </head>
   <body class="w-screen min-h-screen flex flex-col">
