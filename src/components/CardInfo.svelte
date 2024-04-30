@@ -22,9 +22,11 @@
   ];
 </script>
 
-<span class="text-4xl font-bold">
+<div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
+  <span class="text-4xl font-bold">
   {card.name}
 </span>
+</div>
 <!--
 TODO: make text better vosible on light backgrounds
 
