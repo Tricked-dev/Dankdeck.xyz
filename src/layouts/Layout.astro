@@ -1,6 +1,6 @@
 ---
 import { getSession } from "auth-astro/server";
-import App from "../components/App.svelte";
+import App from "../components/MarketPlace.svelte";
 import Header from "../components/Header.svelte";
 const { session } = Astro.props;
 ---
@@ -13,7 +13,7 @@ const { session } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
   </head>
-  <body class="w-screen h-screen flex flex-col">
+  <body class="w-screen min-h-screen flex flex-col">
     <Header session={session} />
     <slot />
   </body>

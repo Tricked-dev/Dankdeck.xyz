@@ -1,10 +1,10 @@
 ---
 import { getSession } from "auth-astro/server";
-import MarketPlace from "../components/MarketPlace.svelte";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../../layouts/Layout.astro";
+import CardInfo from "../../../components/CardInfo.svelte";
 const session = await getSession(Astro.request);
 ---
 
 <Layout session={session}>
-  <MarketPlace client:load />
+  <CardInfo client:load />
 </Layout>

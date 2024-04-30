@@ -6,7 +6,7 @@
 
 <div class="navbar bg-base-300">
   <div class="flex-1">
-    <a class="btn btn-ghost text-xl">Card Thingy</a>
+    <a href='/' class="btn btn-ghost text-xl">Card Thingy</a>
   </div>
   <div class="flex-none gap-2">
     <div class="p-2 bg-base-200 rounded-2xl w-20">
