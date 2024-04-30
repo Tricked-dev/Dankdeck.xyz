@@ -1,19 +1,11 @@
 ---
 import { getSession } from "auth-astro/server";
 import App from "../components/App.svelte";
+import Header from "../components/Header.svelte";
+import Layout from "../layouts/Layout.astro";
 const session = await getSession(Astro.request);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body class="w-screen h-screen bg-gray-800 flex flex-col">
-    <App session={session} client:load />
-
-  </body>
-</html>
+<Layout session={session}>
+  <App client:load />
+</Layout>
