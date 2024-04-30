@@ -1,23 +1,22 @@
 <script lang="ts">
   import type { getSession } from "auth-astro/server";
-  import CodeSnippet from "./CodeSnippet.svelte";
-    import Card from "./Card.svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 </script>
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a class="btn btn-ghost text-xl">CodeReview</a>
+    <a class="btn btn-ghost text-xl">Card Thingy</a>
   </div>
   <div class="flex-none gap-2">
-    <div class="form-control">
-      <input
-        type="text"
-        placeholder="Search"
-        class="input input-bordered w-24 md:w-auto"
-      />
+    <div class="p-2 bg-base-200 rounded-2xl w-20">
+      <span class="text-primary">$</span> 20
     </div>
+
+    <div class="form-control">
+      <button class="btn"> Roll new card </button>
+    </div>
+
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
         <div class="w-10 rounded-full">
@@ -43,6 +42,28 @@
 
 <!-- <CodeSnippet></CodeSnippet> -->
 
-<div class="mx-auto py-7">
-  <Card code="console.log(`Helloo world`)" filename="HelloWorld.js"desc="Please help"  rating="87" comments="9"> </Card>
+<!-- <div class="mx-auto py-7"></div> -->
+
+<div class="w-full">
+  <span class="text-7xl flex p-3 font-serif font-bold"
+    ><span class="mx-auto">Marketplace</span></span
+  >
+  <div class="flex flex-wrap w-full max-w-[70rem] gap-2 mx-auto p-2">
+    <input class="input input-bordered" placeholder="filter..." />
+  </div>
+  <div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">
+    {#each new Array(20) as _, index}
+      <div class="bg-base-200 w-64 h-96 rounded-lg relative">
+        <div class="absolute top-0 left-0 text-xl font-bold p-2">
+          ${(index % 8) + 12}
+        </div>
+        <div class="absolute top-0 right-0 text-4xl font-bold p-2">
+          #{(index % 5) + 1}
+        </div>
+        <div class="absolute bottom-0 left-0 text-2xl font-bold p-2">
+          Huge memes
+        </div>
+      </div>
+    {/each}
+  </div>
 </div>

@@ -16,7 +16,8 @@
         "tamasfe.even-better-toml",
         "wakatime.vscode-wakatime",
         "astro-build.astro-vscode",
-        "1yib.svelte-bundle"
+        "1yib.svelte-bundle",
+        "bradlc.vscode-tailwindcss"
       ],
       "settings": {
         "editor.formatOnPaste": false,
