@@ -1,8 +1,32 @@
 {
+  "name": "EdgeDb Hackathon Devcontainer",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "postStartCommand": "bun i",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/joshuanianji/devcontainer-features/edgedb-cli:1": {},
     "ghcr.io/prulloac/devcontainer-features/bun:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "usernamehw.errorlens",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "tamasfe.even-better-toml",
+        "wakatime.vscode-wakatime",
+        "astro-build.astro-vscode",
+        "1yib.svelte-bundle"
+      ],
+      "settings": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "[svelte]": {
+          "editor.defaultFormatter": "svelte.svelte-vscode"
+        },
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+    }
   }
 }
