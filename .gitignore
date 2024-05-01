@@ -24,3 +24,4 @@ pnpm-debug.log*
 .idea/
 
 dbschema/edgeql-js
+memes.db

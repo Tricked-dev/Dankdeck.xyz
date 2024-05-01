@@ -1,11 +1,7 @@
 import { EdgeDBAdapter } from "@auth/edgedb-adapter"
 import GitHub from "@auth/core/providers/github";
-import { createClient } from "edgedb"
+import { client } from "./client"
 import { defineConfig } from "auth-astro";
-
-const client = createClient()
-
-
 
 export default defineConfig({
   providers: [

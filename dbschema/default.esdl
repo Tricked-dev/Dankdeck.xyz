@@ -8,6 +8,9 @@ module default {
         property image -> str;
         multi link accounts := .<user[is Account];
         multi link sessions := .<user[is Session];
+        multi link cards    := .<user[is Card];
+
+
         property createdAt -> datetime {
             default := datetime_current();
         };
@@ -61,5 +64,28 @@ module default {
         };
  
         constraint exclusive on ((.identifier, .token));
+    }
+
+    type Meme {
+        required property slug -> str;
+        required property description -> str;
+        required property name -> str;
+        required property img -> str;
+        constraint exclusive on (.slug);
+    }
+
+    type Card {
+        required property number -> int64;
+
+        required property userId := .user.id;
+        required property memeId := .meme.id;
+
+        required link user -> User {
+                on target delete delete source;
+        };
+        required link meme -> Meme {
+                on target delete delete source;
+        };
+
     }
 }

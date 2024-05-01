@@ -1,5 +1,16 @@
 # Astro Starter Kit: Minimal
 
+.env:
+
+```
+# itll start without these for now.
+GITHUB_CLIENT_ID=XXXX
+GITHUB_CLIENT_SECRET=XXXX
+
+AUTH_SECRET=somerandomstring
+AUTH_TRUST_HOST=true
+```
+
 https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&node-id=0%3A1&mode=design&t=R5uLFJ0TflRMAQdm-1
 
 ```sh
