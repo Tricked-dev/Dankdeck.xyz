@@ -25,6 +25,12 @@ AUTH_SECRET=somerandomstring
 AUTH_TRUST_HOST=true
 ```
 
+if you are not on localhostlike github codespaces you will need to add this option:
+
+```ini
+AUTH_URL=https://SOME_GIBBERISH-4321.app.github.dev/ # Leading slash is important
+```
+
 and run
 
 ```sh
@@ -38,6 +44,7 @@ bun seed.ts
 ## Developing
 
 ```sh
+edgedb instance start -I codereview # or your instance name / only once per session, takes a while
 bun run --bun dev
 ```
 

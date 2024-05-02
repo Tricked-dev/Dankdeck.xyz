@@ -9,11 +9,13 @@ if (session) {
 
 <Layout>
   <div class="max-w-[60rem] mx-auto w-full py-16">
-    <button id="login" class="btn btn-primary w-full">Login</button>
+    <button id="login-gh" class="btn btn-primary w-full my-2"
+      >Login Github</button
+    >
   </div>
 
   <script>
     const { signIn, signOut } = await import("auth-astro/client");
-    document.querySelector("#login").onclick = () => signIn("github");
+    document.querySelector("#login-gh").onclick = () => signIn("github", {});
   </script>
 </Layout>
