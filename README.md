@@ -11,6 +11,13 @@ AUTH_SECRET=somerandomstring
 AUTH_TRUST_HOST=true
 ```
 
+and run
+
+```
+bunx @edgedb/generate interfaces --file dbschema/schema.ts
+bunx @edgedb/generate edgeql-js --target ts
+```
+
 https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&node-id=0%3A1&mode=design&t=R5uLFJ0TflRMAQdm-1
 
 ```sh

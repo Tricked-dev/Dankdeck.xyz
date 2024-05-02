@@ -1,0 +1,30 @@
+---
+import { getSession } from "auth-astro/server";
+import MarketPlace from "../components/MarketPlace.svelte";
+import Layout from "../layouts/Layout.astro";
+import MyCards from "../components/MyCards.svelte";
+import { client } from "../../client";
+const session = await getSession(Astro.request);
+
+if (!session || !session.user) {
+  return Astro.redirect("/");
+}
+
+const cards = await client.query(`
+    select Card {
+        id,
+        number,
+        meme: {
+            id,
+            img,
+            description
+        }
+    }
+    filter .userId = <uuid>"${session.user!.id}"
+    limit 200
+`);
+---
+
+<Layout session={session}>
+  <MyCards cards={cards} client:load />
+</Layout>

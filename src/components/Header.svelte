@@ -1,20 +1,31 @@
 <script lang="ts">
   import type { getSession } from "auth-astro/server";
+  import { signOut } from "auth-astro/client";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 </script>
 
 <div class="navbar bg-base-300">
-  <div class="flex-1">
-    <a href='/' class="btn btn-ghost text-xl">Card Thingy</a>
+  <div class="flex-1 flex gap-2">
+    <a href="/" class="btn btn-ghost text-xl">Card Thingy</a>
+    <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
   </div>
+
   <div class="flex-none gap-2">
     <div class="p-2 bg-base-200 rounded-2xl w-20">
       <span class="text-primary">$</span> 20
     </div>
 
     <div class="form-control">
-      <button class="btn"> Roll new card </button>
+      <button
+        class="btn"
+        onclick={async () => {
+          await fetch("/api/roll");
+          window.location.reload();
+        }}
+      >
+        Roll new card
+      </button>
     </div>
 
     <div class="dropdown dropdown-end">
@@ -34,7 +45,14 @@
           </a>
         </li>
         <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
+        <li
+          onclick={() => {
+            signOut();
+            window.location.href = "/login";
+          }}
+        >
+          <a>Logout</a>
+        </li>
       </ul>
     </div>
   </div>

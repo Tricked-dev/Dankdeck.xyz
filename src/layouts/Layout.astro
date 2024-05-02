@@ -16,7 +16,7 @@ const { session } = Astro.props;
     <title>Astro</title>
   </head>
   <body class="w-screen min-h-screen flex flex-col">
-    <Header session={session} />
+    <Header client:idle session={session} />
     <slot />
   </body>
 </html>

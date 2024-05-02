@@ -11,4 +11,10 @@ export default defineConfig({
     }),
   ],
   adapter: EdgeDBAdapter(client),
+  callbacks: {
+    session: async ({ session, user }) => {
+      session.user.id = user.id;
+      return session;
+    }
+  }
 });
