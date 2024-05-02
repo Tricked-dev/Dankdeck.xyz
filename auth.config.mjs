@@ -9,6 +9,7 @@ export default defineConfig({
       clientId: import.meta.env.GITHUB_CLIENT_ID,
       clientSecret: import.meta.env.GITHUB_CLIENT_SECRET,
     }),
+    
   ],
   adapter: EdgeDBAdapter(client),
   callbacks: {

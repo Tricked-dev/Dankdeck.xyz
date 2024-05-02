@@ -1,8 +1,22 @@
 # Astro Starter Kit: Minimal
 
-.env:
+## Pre-requisites
 
-```
+Create a quick github application:  
+   
+<https://github.com/settings/developers>
+
+set the callback url to:  
+
+`http://localhost:4321/api/auth/callback/github`
+
+Or the url of your forwarded codespace port  
+
+`https://SOME_GIBBERISH-4321.app.github.dev/api/auth/callback/github`
+
+.env:  
+
+```ini
 # itll start without these for now.
 GITHUB_CLIENT_ID=XXXX
 GITHUB_CLIENT_SECRET=XXXX
@@ -13,55 +27,23 @@ AUTH_TRUST_HOST=true
 
 and run
 
-```
+```sh
+wget "https://github.com/Tricked-dev/kymdb/raw/master/memes.db?raw" -O memes.db
+edgedb project init
 bunx @edgedb/generate interfaces --file dbschema/schema.ts
 bunx @edgedb/generate edgeql-js --target ts
+bun seed.ts
 ```
 
-https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&node-id=0%3A1&mode=design&t=R5uLFJ0TflRMAQdm-1
+## Developing
 
 ```sh
-npm create astro@latest -- --template minimal
+bun run --bun dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+Go to `/login` to login with github and done!
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Design file: 
 
-## 🚀 Project Structure
+[Figma file](https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&mode=design&t=StK8x9t6zxXJdtnS-1)
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

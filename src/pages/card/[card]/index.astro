@@ -6,8 +6,9 @@ import { client } from "../../../../client";
 const session = await getSession(Astro.request);
 
 const cardId = Astro.params.card;
+let cardData = [];
 try {
-  const cardData = await client.query(
+  cardData = await client.query(
     `
   select Card {
     id,
