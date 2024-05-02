@@ -2,9 +2,37 @@
 import { getSession } from "auth-astro/server";
 import Layout from "../../../layouts/Layout.astro";
 import CardInfo from "../../../components/CardInfo.svelte";
+import { client } from "../../../../client";
 const session = await getSession(Astro.request);
+
+const cardId = Astro.params.card;
+
+const cardData = await client.query(
+  `
+  select Card {
+    id,
+    number,
+    meme: {
+      id,
+      img,
+      name,
+      description
+    },
+    user: {
+      name
+    }
+  }
+  filter .id = <uuid>$cardId
+  limit 1
+`,
+  {
+    cardId: cardId,
+  }
+);
+
+console.log(cardData);
 ---
 
 <Layout session={session}>
-  <CardInfo client:load />
+  <CardInfo card={cardData[0]} client:load />
 </Layout>

@@ -1,14 +1,9 @@
-<script>
-  const card = {
-    id: "",
-    number: 1,
-    last_sold: Date.now(),
-    last_sold_for: 20,
-    group: "chad",
-    name: "GigaChad",
-    image:
-      "https://i.kym-cdn.com/entries/icons/mobile/000/026/152/gigachadd.jpg",
-  };
+<script lang="ts">
+  import type { Card } from "@db/schema";
+  interface Props {
+    card: Card;
+  }
+  let { card }: Props = $props();
   const tradeHistory = [
     {
       date: Date.now(),
@@ -24,7 +19,7 @@
 
 <div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <span class="text-4xl font-bold">
-    {card.name}
+    {card.meme.name}
   </span>
 </div>
 <!--
@@ -34,15 +29,15 @@ TODO: make text better vosible on light backgrounds
 <div class="h-full flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <div class="h-full">
     <div
-      href="/card/dd"
       class="bg-primary-content w-96 h-[30rem] bg-center bg-cover rounded-lg relative"
-      style:background-image={`url(${card.image})`}
+      style:background-image={`url(${card.meme.img})`}
+      style:view-transition-name={card.id}
     >
       <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">
         #1
       </div>
       <div class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white">
-        {card.name}
+        {card.meme.name}
       </div>
     </div>
   </div>
@@ -53,9 +48,9 @@ TODO: make text better vosible on light backgrounds
     </div>
 
     <div>
-      Obtained: {new Date(card.last_sold).toISOString()}<br />
-      Last Sold for: ${card.last_sold_for}<br />
-      Owned by: Tricked
+      <!-- Obtained: {new Date(card.last_sold).toISOString()}<br /> -->
+      <!-- Last Sold for: ${card.last_sold_for}<br /> -->
+      Owned by: {card.user.name}
     </div>
 
     <div class="mt-auto">
