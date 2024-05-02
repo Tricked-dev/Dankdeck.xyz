@@ -6,9 +6,9 @@ import { client } from "../../../../client";
 const session = await getSession(Astro.request);
 
 const cardId = Astro.params.card;
-
-const cardData = await client.query(
-  `
+try {
+  const cardData = await client.query(
+    `
   select Card {
     id,
     number,
@@ -25,10 +25,13 @@ const cardData = await client.query(
   filter .id = <uuid>$cardId
   limit 1
 `,
-  {
-    cardId: cardId,
-  }
-);
+    {
+      cardId: cardId,
+    }
+  );
+} catch (e) {
+  return Astro.redirect("/404");
+}
 
 console.log(cardData);
 ---
