@@ -1,4 +1,4 @@
-import createClient from "edgedb";
+import {createClient} from "edgedb";
 
 let c;
 
