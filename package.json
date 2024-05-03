@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "vercel": "bunx @edgedb/generate interfaces --file dbschema/schema.ts && bunx @edgedb/generate edgeql-js --target ts && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
