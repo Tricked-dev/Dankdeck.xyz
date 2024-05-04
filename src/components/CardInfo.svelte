@@ -1,9 +1,14 @@
 <script lang="ts">
-  import type { Card } from "@db/schema";
+  import type { Card as CardType } from "@db/schema";
+  import type { CreateAuction } from "../lib/interfaces";
+  import type { getSession } from "auth-astro/server";
+  import Card from "./Card.svelte";
+  import Money from "./Money.svelte";
   interface Props {
-    card: Card;
+    card: CardType;
+    session: Awaited<ReturnType<typeof getSession>>;
   }
-  let { card }: Props = $props();
+  let { card, session }: Props = $props();
   const tradeHistory = [
     {
       date: Date.now(),
@@ -15,6 +20,27 @@
       type: "obtained",
     },
   ];
+  let sellDialog: HTMLDialogElement | undefined = $state();
+  let sellPrice = $state(1);
+
+  $effect(() => {
+    if (sellPrice > 9999999) sellPrice = 9999999;
+    if (sellPrice < 1) sellPrice = 1;
+  });
+
+  async function sell() {
+    let body: CreateAuction = {
+      cardId: card.id,
+      price: sellPrice,
+    };
+    await fetch(`/api/sell`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  }
 </script>
 
 <div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
@@ -28,27 +54,22 @@ TODO: make text better vosible on light backgrounds
 -->
 <div class="h-full flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <div class="h-full">
-    <div
-      class="bg-primary-content w-96 h-[30rem] bg-center bg-cover rounded-lg relative"
-      style:background-image={`url(${card.meme.img})`}
-      style:view-transition-name={card.id}
-    >
-      <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">
-        #1
-      </div>
-      <div class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white">
-        {card.meme.name}
-      </div>
-    </div>
+    <Card {card} height={30} />
   </div>
   <div class="h-full w-[50%] flex flex-col gap-2">
     <div class="flex gap-2 w-full">
-      <button class="btn btn-lg">Sell</button>
-      <button class="btn btn-lg">Trade</button>
+      <button
+        class="btn btn-lg w-[50%] max-w-[10rem]"
+        onclick={() => {
+          sellDialog?.showModal();
+        }}
+        disabled={session?.user?.id != card.userId}>Sell</button
+      >
+      <button class="btn btn-lg w-[50%] max-w-[10rem]" disabled>Trade</button>
     </div>
 
     <div>
-      <!-- Obtained: {new Date(card.last_sold).toISOString()}<br /> -->
+      Obtained: {card.createdAt?.toISOString()}<br />
       <!-- Last Sold for: ${card.last_sold_for}<br /> -->
       Owned by: {card.user.name}
     </div>
@@ -67,3 +88,41 @@ TODO: make text better vosible on light backgrounds
     </div>
   </div>
 </div>
+
+<dialog class="modal" bind:this={sellDialog} id="sellModal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        >✕</button
+      >
+    </form>
+    <h3 class="font-bold text-lg">Sell {card.meme.name}</h3>
+
+    <div class="label">
+      <span class="label-text">Sell price:</span>
+    </div>
+    <label class="input input-bordered flex items-center gap-2">
+      <Money />
+      <input
+        type="number"
+        class="grow"
+        min="1"
+        max="9999999"
+        bind:value={sellPrice}
+      />
+    </label>
+    <div class="mt-4 flex gap-4">
+      <button class="ml-auto btn btn-primary min-w-24" onclick={sell}
+        >Sell</button
+      >
+      <button
+        class="btn btn-ghost min-w-24"
+        onclick={() => {
+          sellPrice = 1;
+          sellDialog?.close();
+        }}>Cancel</button
+      >
+    </div>
+  </div>
+  <button class="modal-backdrop" onclick={() => sellDialog?.close()}></button>
+</dialog>

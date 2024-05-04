@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { getSession } from "auth-astro/server";
   import { signOut } from "auth-astro/client";
+  import Money from "./Money.svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 </script>
@@ -13,7 +14,7 @@
 
   <div class="flex-none gap-2">
     <div class="p-2 bg-base-200 rounded-2xl w-20">
-      <span class="text-primary">$</span> 20
+      <span class="text-primary"><Money /></span> 20
     </div>
 
     <div class="form-control">

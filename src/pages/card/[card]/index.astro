@@ -13,12 +13,14 @@ try {
   select Card {
     id,
     number,
+    createdAt,
     meme: {
       id,
       img,
       name,
       description
     },
+    userId,
     user: {
       name
     }
@@ -38,5 +40,5 @@ console.log(cardData);
 ---
 
 <Layout session={session}>
-  <CardInfo card={cardData[0]} client:load />
+  <CardInfo session={session} card={cardData[0]} client:load />
 </Layout>

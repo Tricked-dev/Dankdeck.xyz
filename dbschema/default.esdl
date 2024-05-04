@@ -6,6 +6,10 @@ module default {
         };
         property emailVerified -> datetime;
         property image -> str;
+        required property balance -> bigint {
+            default := 100;
+        }
+
         multi link accounts := .<user[is Account];
         multi link sessions := .<user[is Session];
         multi link cards    := .<user[is Card];
@@ -17,26 +21,26 @@ module default {
     }
 
     type Account {
-       required property userId := .user.id;
-       required property type -> str;
-       required property provider -> str;
-       required property providerAccountId -> str {
-        constraint exclusive;
-       };
-       property refresh_token -> str;
-       property access_token -> str;
-       property expires_at -> int64;
-       property token_type -> str;
-       property scope -> str;
-       property id_token -> str;
-       property session_state -> str;
-       required link user -> User {
-            on target delete delete source;
-       };
-       property createdAt -> datetime {
-            default := datetime_current();
+        required property userId := .user.id;
+        required property type -> str;
+        required property provider -> str;
+        required property providerAccountId -> str {
+            constraint exclusive;
         };
-       constraint exclusive on ((.provider, .providerAccountId));
+        property refresh_token -> str;
+        property access_token -> str;
+        property expires_at -> int64;
+        property token_type -> str;
+        property scope -> str;
+        property id_token -> str;
+        property session_state -> str;
+        required link user -> User {
+                on target delete delete source;
+        };
+        property createdAt -> datetime {
+                default := datetime_current();
+            };
+        constraint exclusive on ((.provider, .providerAccountId));
     }
 
     type Session {
@@ -62,7 +66,7 @@ module default {
         property createdAt -> datetime {
             default := datetime_current();
         };
- 
+
         constraint exclusive on ((.identifier, .token));
     }
 
@@ -76,7 +80,9 @@ module default {
 
     type Card {
         required property number -> int64;
-
+        required property createdAt -> datetime {
+            default := datetime_current();
+        };
         required property userId := .user.id;
         required property memeId := .meme.id;
 
@@ -87,5 +93,44 @@ module default {
                 on target delete delete source;
         };
 
+        link auction -> BinAuction {
+            on target delete delete source;
+        }
+
+        multi link auctionEntries := .<card[is AuctionEntry];
+    };
+
+    type BinAuction {
+        required link card -> Card {
+            on target delete delete source;
+        };
+        required property price -> int64;
+        required property createdAt -> datetime {
+            default := datetime_current();
+        };
+    }
+
+    type AuctionEntry {
+
+        required property cardId := .card.id;
+        required property sellerId := .seller.id;
+        required property buyerId := .buyer.id;
+
+        required link card -> Card {
+            on target delete delete source;
+        }
+        required link seller -> User {
+            on target delete delete source;
+        }
+        required link buyer -> User {
+            on target delete delete source;
+        }
+        required property price -> int64;
+        required property createdAt -> datetime {
+            default := datetime_current();
+        };
+        required property soldAt -> datetime {
+            default := datetime_current();
+        }
     }
 }

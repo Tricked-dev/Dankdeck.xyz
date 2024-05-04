@@ -1,27 +1,14 @@
 <script lang="ts">
-  import type { Card } from "@db/schema.ts";
+  import type { Card as CardType } from "@db/schema.ts";
+  import Card from "./Card.svelte";
   interface Props {
-    cards: Card[];
+    cards: CardType[];
   }
   let { cards }: Props = $props();
 </script>
 
 <div class="flex w-full flex-wrap p-4 gap-8 max-w-[80rem] mx-auto">
   {#each cards as card}
-    <a
-      href="/card/{card.id}"
-      class="bg-primary-content w-96 h-[30rem] bg-center bg-cover rounded-lg relative"
-      style:background-image={`url(${card.meme.img})`}
-      style:view-transition-name={card.id}
-    >
-      <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">
-        #{card.number}
-      </div>
-      <div
-        class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white bg-slate-700 bg-opacity-45"
-      >
-        {card.meme.name}
-      </div>
-    </a>
+    <Card {card} height={25} />
   {/each}
 </div>

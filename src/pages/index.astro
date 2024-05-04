@@ -2,9 +2,27 @@
 import { getSession } from "auth-astro/server";
 import MarketPlace from "../components/MarketPlace.svelte";
 import Layout from "../layouts/Layout.astro";
+import { client } from "../../client";
 const session = await getSession(Astro.request);
+
+const auctions = await client.query(`
+  select BinAuction {
+    id,
+    price,
+    card: {
+      id,
+      number,
+      meme: {
+        id,
+        img,
+        name,
+        description
+      }
+    }
+  }
+`);
 ---
 
 <Layout session={session}>
-  <MarketPlace client:load />
+  <MarketPlace auctions={auctions} client:load />
 </Layout>
