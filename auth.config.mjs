@@ -32,7 +32,6 @@ export default defineConfig({
       return session;
     },
     redirect: async ({ url, baseUrl }) => {
-      console.log({ url, baseUrl })
       if (url.startsWith("/")) return `${baseUrl}${url}`
       if (new URL(url).origin === baseUrl) return url
       if (url.includes("app.github.dev")) return url;

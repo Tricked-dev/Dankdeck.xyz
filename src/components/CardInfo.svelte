@@ -1,6 +1,11 @@
 <script lang="ts">
   import type { Card as CardType } from "@db/schema";
-  import type { BuyAuction, CreateAuction, buyAuction } from "../lib/interfaces";
+  import type {
+    BuyAuction,
+    CancelAuction,
+    CreateAuction,
+    buyAuction,
+  } from "../lib/interfaces";
   import type { getSession } from "auth-astro/server";
   import Card from "./Card.svelte";
   import Money from "./Money.svelte";
@@ -60,32 +65,58 @@ TODO: make text better vosible on light backgrounds
   </div>
   <div class="h-full w-[50%] flex flex-col gap-2">
     <div class="flex gap-2 w-full">
-      <!-- TODO: Disable the button on:
-         not being logged &&
-         author having auction &&
-         auction and not author
-      -->
-      <button
-        class="btn btn-lg w-[50%] max-w-[15rem]"
-        onclick={() => {
-          if (session?.user?.id == card.userId) {
-            sellDialog?.showModal();
-          } else {
-            buyDialog?.showModal();
-          }
-        }}
-        disabled={false}
-      >
-        {#if session?.user?.id != card.userId}
-          {#if card.auction.length != 0}
-            Buy card for <Money /> {card.auction?.[0]?.price}
-          {:else}
-            Card not for sale
-          {/if}
+      {#if session?.user?.id == card.userId}
+        {#if card.auction?.[0]?.price}
+          <button
+            class="btn btn-lg w-[50%] max-w-[15rem]"
+            disabled={false}
+            onclick={async () => {
+              let body: CancelAuction = {
+                cardId: card.id,
+              }
+              await fetch("/api/cancel", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+              });
+            }}
+          >
+            Cancel auction
+          </button>
         {:else}
-          Sell
+          <button
+            class="btn btn-lg w-[50%] max-w-[15rem]"
+            onclick={() => {
+              sellDialog?.showModal();
+            }}
+            disabled={false}
+          >
+            Sell
+          </button>
         {/if}
-      </button>
+      {:else if !session?.user?.id}
+        <button class="btn btn-lg w-[50%] max-w-[15rem]" disabled={true}>
+          Not logged in
+        </button>
+      {:else if card.auction?.[0]?.price}
+        <button
+          class="btn btn-lg w-[50%] max-w-[15rem]"
+          onclick={() => {
+            buyDialog?.showModal();
+          }}
+          disabled={false}
+        >
+          Buy card for <Money />
+          {card.auction?.[0]?.price}
+        </button>
+      {:else}
+        <button class="btn btn-lg w-[50%] max-w-[15rem]" disabled={true}>
+          Card not for sale
+        </button>
+      {/if}
+
       <button class="btn btn-lg w-[50%] max-w-[10rem]" disabled>Trade</button>
     </div>
 
@@ -127,7 +158,8 @@ TODO: make text better vosible on light backgrounds
     />
   </label>
   <span class="my-1">
-    It will cost you <Money /> {Math.ceil(sellPrice*0.05)} to put this item up
+    It will cost you <Money />
+    {Math.ceil(sellPrice * 0.05)} to put this item up
   </span>
   <div class="mt-4 flex gap-4">
     <button class="ml-auto btn btn-primary min-w-24" onclick={sell}>Sell</button
@@ -148,21 +180,25 @@ TODO: make text better vosible on light backgrounds
   <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>
 
   <div class="mt-4 flex gap-4">
-    <button class="ml-auto btn btn-primary min-w-24" onclick={async()=>{
-       const body: BuyAuction = {
-          cardId: card.id,
-          price: card.auction[0]?.price,
-        };
+    <button
+      class="ml-auto btn btn-primary min-w-24"
+      onclick={async()=>{
+                            const body: BuyAuction = {
+                            cardId: card.id,
+                            price: card.auction[0]?.price,
+                            };
 
-        await fetch(`/api/buy`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
+                            await fetch(`/api/buy`, {
+                            method: "POST",
+                            headers: {
+                            "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(body),
+                            });
 
-    }}>Buy</button>
+                            }}
+      >Buy</button
+    >
     <button
       class="btn btn-ghost min-w-24"
       onclick={async () => {

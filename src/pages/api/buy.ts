@@ -4,26 +4,12 @@ import type { APIRoute } from "astro";
 import type { BinAuction } from "@db/schema";
 import { client } from "../../../client";
 import { getSession } from "auth-astro/server";
+import { requireSession } from "../../lib/apiUtils";
 
 export const POST: APIRoute = async ({ request }) => {
+  const { session, r } = await requireSession(request);
+  if (r) return r;
   try {
-    const session = await getSession(request);
-    console.log(session);
-    if (!session?.user) {
-      return new Response(
-        JSON.stringify({
-          error: "Unauthorized",
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    console.log("Parsed");
-
     const result = await buyAuction.safeParseAsync(await request.json());
 
     if (!result.success) {
@@ -46,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
   `,
       {
         user: session?.user?.id,
-      }
+      },
     );
 
     if (balance < data.price) {
@@ -73,7 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
   `,
       {
         cardId: data.cardId,
-      }
+      },
     )) as BinAuction[];
 
     if (bin.price !== data.price) {
@@ -100,7 +86,7 @@ export const POST: APIRoute = async ({ request }) => {
       {
         user: session?.user?.id,
         bal: balance - data.price,
-      }
+      },
     );
 
     await client.query(
@@ -110,7 +96,7 @@ export const POST: APIRoute = async ({ request }) => {
   `,
       {
         cardId: data.cardId,
-      }
+      },
     );
 
     await client.query(
@@ -128,12 +114,12 @@ export const POST: APIRoute = async ({ request }) => {
       {
         user: session?.user?.id,
         cardId: data.cardId,
-      }
+      },
     );
 
     console.log({
       user: bin.card.userId,
-      price: data.price ,
+      price: data.price,
     });
 
     await client.query(
@@ -146,8 +132,8 @@ export const POST: APIRoute = async ({ request }) => {
     `,
       {
         user: bin.card.userId,
-        price: data.price ,
-      }
+        price: data.price,
+      },
     );
 
     await client.query(
@@ -180,7 +166,7 @@ export const POST: APIRoute = async ({ request }) => {
         soldAt: new Date(),
         createdAt: bin.createdAt,
         price: data.price,
-      }
+      },
     );
   } catch (e) {
     console.log(e);

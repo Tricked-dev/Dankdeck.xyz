@@ -1,21 +1,12 @@
+import { createResponse, requireSession } from "../../lib/apiUtils";
+
 import type { APIRoute } from "astro";
 import { client } from "../../../client";
 import { getSession } from "auth-astro/server";
 
 export const GET: APIRoute = async ({ request }) => {
-  const session = await getSession(request);
-  if (!session) {
-    return new Response(
-      JSON.stringify({
-        error: "Unauthorized",
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  }
+  const { session, r } = await requireSession(request);
+  if (r) return r;
 
   const [{ balance }] = await client.query(
     `
@@ -27,7 +18,7 @@ export const GET: APIRoute = async ({ request }) => {
   `,
     {
       user: session?.user?.id,
-    }
+    },
   );
-  return new Response(JSON.stringify({ balance: parseInt(balance) }));
+  return createResponse(200, { balance });
 };

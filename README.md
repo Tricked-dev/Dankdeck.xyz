@@ -2,19 +2,19 @@
 
 ## Pre-requisites
 
-Create a quick github application:  
-   
+Create a quick github application:
+
 <https://github.com/settings/developers>
 
-set the callback url to:  
+set the callback url to:
 
 `http://localhost:4321/api/auth/callback/github`
 
-Or the url of your forwarded codespace port  
+Or the url of your forwarded codespace port
 
 `https://SOME_GIBBERISH-4321.app.github.dev/api/auth/callback/github`
 
-.env:  
+.env:
 
 ```ini
 # itll start without these for now.
@@ -50,7 +50,17 @@ bun run --bun dev
 
 Go to `/login` to login with github and done!
 
-## Design file: 
+## Design file:
 
 [Figma file](https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&mode=design&t=StK8x9t6zxXJdtnS-1)
 
+## Todo:
+
+- Make everything responsive
+- Add feedback to failed actions
+- Add daily money
+- Add more metadata to memes
+- Transform and save all images elseware
+- Add delay to meme
+- Make meme numbers make sense
+- Add account deletion process with memes being put on auction on delete

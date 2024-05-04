@@ -3,6 +3,7 @@ import { getSession } from "auth-astro/server";
 import App from "../components/MarketPlace.svelte";
 import Header from "../components/Header.svelte";
 import { ViewTransitions, fade } from "astro:transitions";
+const { host } = new URL(Astro.request.url);
 const { session } = Astro.props;
 ---
 
@@ -13,7 +14,17 @@ const { session } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
-    <title>Astro</title>
+    <title>DankDeck</title>
+
+    {
+      !host.includes("localhost") && (
+        <script
+          data-goatcounter="https://stats.dankdeck.xyz/count"
+          async
+          src="//stats.dankdeck.xyz/count.js"
+        />
+      )
+    }
   </head>
   <body
     class="w-screen min-h-screen flex flex-col"

@@ -30,8 +30,9 @@
     let res = await fetch("/api/balance");
     if (res.ok) {
       let t = await res.json();
-      balance = t.balance;
-      localStorage.setItem("balance", t.balance.toString());
+      console.log(t);
+      balance = t.data.balance;
+      localStorage.setItem("balance", balance.toString());
     }
   }
 
@@ -45,7 +46,7 @@
         if (!visible) return;
         await updateBalance();
       },
-      1000 * 60 * 5 /* 5 minutes */
+      1000 * 60 * 5 /* 5 minutes */,
     );
 
     return () => clearInterval(interval);

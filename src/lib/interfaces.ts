@@ -19,3 +19,9 @@ export const buyAuction = z.object({
 });
 // infer import doesnt work lol
 export type BuyAuction = inf<typeof buyAuction>;
+
+export const cancelAuction = z.object({
+  cardId: z.string().uuid("Invalid UUID"),
+});
+// infer import doesnt work lol
+export type CancelAuction = inf<typeof cancelAuction>;
