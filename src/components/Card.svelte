@@ -31,9 +31,11 @@
   style:width={`${width}rem`}
 >
   {#if price != undefined}
-    <div class="absolute top-0 left-0 text-xl font-bold p-2">
-      <Money />
-      {price}
+    <div class="absolute top-0 left-0 text-xl font-bold p-1">
+      <span class="text-cyan-800 bg-slate-50/20 p-1 rounded-xl">
+        <Money />
+        {price}
+      </span>
     </div>
   {/if}
   <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">

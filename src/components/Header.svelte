@@ -2,9 +2,66 @@
   import type { getSession } from "auth-astro/server";
   import { signOut } from "auth-astro/client";
   import Money from "./Money.svelte";
+  import { onMount } from "svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
+
+  let balance = $state(0);
+  let balanceElement = $state<HTMLElement | undefined>(undefined);
+  //https://stackoverflow.com/questions/123999/how-can-i-tell-if-a-dom-element-is-visible-in-the-current-viewport
+  function isElementInViewport(el: HTMLElement) {
+    var rect = el.getBoundingClientRect();
+
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <=
+        (window.innerHeight ||
+          document.documentElement.clientHeight) /* or $(window).height() */ &&
+      rect.right <=
+        (window.innerWidth ||
+          document.documentElement.clientWidth) /* or $(window).width() */
+    );
+  }
+
+  let visible = $state(true);
+
+  async function updateBalance() {
+    let res = await fetch("/api/balance");
+    if (res.ok) {
+      let t = await res.json();
+      balance = t.balance;
+      localStorage.setItem("balance", t.balance.toString());
+    }
+  }
+
+  onMount(() => {
+    balance = parseInt(localStorage.getItem("balance") ?? "0");
+    updateBalance();
+    let interval = setInterval(
+      async () => {
+        if (!balanceElement) return;
+        if (!isElementInViewport(balanceElement)) return;
+        if (!visible) return;
+        await updateBalance();
+      },
+      1000 * 60 * 5 /* 5 minutes */
+    );
+
+    return () => clearInterval(interval);
+  });
 </script>
+
+<svelte:document
+  onvisibilitychangecapture={() => {
+    if (document.visibilityState === "visible") {
+      visible = true;
+      updateBalance();
+    } else {
+      visible = false;
+    }
+  }}
+/>
 
 <div class="navbar bg-base-300">
   <div class="flex-1 flex gap-2">
@@ -14,7 +71,8 @@
 
   <div class="flex-none gap-2">
     <div class="p-2 bg-base-200 rounded-2xl w-20">
-      <span class="text-primary"><Money /></span> 20
+      <span class="text-primary" bind:this={balanceElement}><Money /></span>
+      {balance}
     </div>
 
     <div class="form-control">

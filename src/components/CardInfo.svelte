@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { Card as CardType } from "@db/schema";
-  import type { CreateAuction } from "../lib/interfaces";
+  import type { BuyAuction, CreateAuction, buyAuction } from "../lib/interfaces";
   import type { getSession } from "auth-astro/server";
   import Card from "./Card.svelte";
   import Money from "./Money.svelte";
+  import Modal from "./Modal.svelte";
   interface Props {
     card: CardType;
     session: Awaited<ReturnType<typeof getSession>>;
@@ -21,6 +22,7 @@
     },
   ];
   let sellDialog: HTMLDialogElement | undefined = $state();
+  let buyDialog: HTMLDialogElement | undefined = $state();
   let sellPrice = $state(1);
 
   $effect(() => {
@@ -58,13 +60,32 @@ TODO: make text better vosible on light backgrounds
   </div>
   <div class="h-full w-[50%] flex flex-col gap-2">
     <div class="flex gap-2 w-full">
+      <!-- TODO: Disable the button on:
+         not being logged &&
+         author having auction &&
+         auction and not author
+      -->
       <button
-        class="btn btn-lg w-[50%] max-w-[10rem]"
+        class="btn btn-lg w-[50%] max-w-[15rem]"
         onclick={() => {
-          sellDialog?.showModal();
+          if (session?.user?.id == card.userId) {
+            sellDialog?.showModal();
+          } else {
+            buyDialog?.showModal();
+          }
         }}
-        disabled={session?.user?.id != card.userId}>Sell</button
+        disabled={false}
       >
+        {#if session?.user?.id != card.userId}
+          {#if card.auction.length != 0}
+            Buy card for <Money /> {card.auction?.[0]?.price}
+          {:else}
+            Card not for sale
+          {/if}
+        {:else}
+          Sell
+        {/if}
+      </button>
       <button class="btn btn-lg w-[50%] max-w-[10rem]" disabled>Trade</button>
     </div>
 
@@ -89,40 +110,61 @@ TODO: make text better vosible on light backgrounds
   </div>
 </div>
 
-<dialog class="modal" bind:this={sellDialog} id="sellModal">
-  <div class="modal-box">
-    <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-        >✕</button
-      >
-    </form>
-    <h3 class="font-bold text-lg">Sell {card.meme.name}</h3>
+<Modal bind:modal={sellDialog}>
+  <h3 class="font-bold text-lg">Sell {card.meme.name}</h3>
 
-    <div class="label">
-      <span class="label-text">Sell price:</span>
-    </div>
-    <label class="input input-bordered flex items-center gap-2">
-      <Money />
-      <input
-        type="number"
-        class="grow"
-        min="1"
-        max="9999999"
-        bind:value={sellPrice}
-      />
-    </label>
-    <div class="mt-4 flex gap-4">
-      <button class="ml-auto btn btn-primary min-w-24" onclick={sell}
-        >Sell</button
-      >
-      <button
-        class="btn btn-ghost min-w-24"
-        onclick={() => {
-          sellPrice = 1;
-          sellDialog?.close();
-        }}>Cancel</button
-      >
-    </div>
+  <div class="label">
+    <span class="label-text">Sell price:</span>
   </div>
-  <button class="modal-backdrop" onclick={() => sellDialog?.close()}></button>
-</dialog>
+  <label class="input input-bordered flex items-center gap-2">
+    <Money />
+    <input
+      type="number"
+      class="grow"
+      min="1"
+      max="9999999"
+      bind:value={sellPrice}
+    />
+  </label>
+  <div class="mt-4 flex gap-4">
+    <button class="ml-auto btn btn-primary min-w-24" onclick={sell}>Sell</button
+    >
+    <button
+      class="btn btn-ghost min-w-24"
+      onclick={() => {
+        sellPrice = 1;
+        sellDialog?.close();
+      }}>Cancel</button
+    >
+  </div>
+</Modal>
+
+<Modal bind:modal={buyDialog}>
+  <h3 class="font-bold text-lg">Buy {card.meme.name}</h3>
+
+  <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>
+
+  <div class="mt-4 flex gap-4">
+    <button class="ml-auto btn btn-primary min-w-24" onclick={async()=>{
+       const body: BuyAuction = {
+          cardId: card.id,
+          price: card.auction[0]?.price,
+        };
+
+        await fetch(`/api/buy`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+    }}>Buy</button>
+    <button
+      class="btn btn-ghost min-w-24"
+      onclick={async () => {
+        buyDialog?.close();
+      }}>Cancel</button
+    >
+  </div>
+</Modal>

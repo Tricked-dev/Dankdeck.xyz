@@ -6,7 +6,7 @@ module default {
         };
         property emailVerified -> datetime;
         property image -> str;
-        required property balance -> bigint {
+        required property balance -> int64 {
             default := 100;
         }
 
@@ -93,10 +93,7 @@ module default {
                 on target delete delete source;
         };
 
-        link auction -> BinAuction {
-            on target delete delete source;
-        }
-
+        multi link auction := .<card[is BinAuction];
         multi link auctionEntries := .<card[is AuctionEntry];
     };
 
@@ -104,6 +101,7 @@ module default {
         required link card -> Card {
             on target delete delete source;
         };
+        required property cardId := .card.id;
         required property price -> int64;
         required property createdAt -> datetime {
             default := datetime_current();

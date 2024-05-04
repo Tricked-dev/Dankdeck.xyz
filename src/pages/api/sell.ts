@@ -63,7 +63,9 @@ export const POST: APIRoute = async ({ request }) => {
       `
       update BinAuction
       filter .card.id = <uuid>$cardId
-      set price := <int64>$price
+      set {
+        price := <int64>$price
+      }
     `,
       {
         cardId: data.cardId,

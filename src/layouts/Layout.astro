@@ -2,7 +2,7 @@
 import { getSession } from "auth-astro/server";
 import App from "../components/MarketPlace.svelte";
 import Header from "../components/Header.svelte";
-import { ViewTransitions } from "astro:transitions";
+import { ViewTransitions, fade } from "astro:transitions";
 const { session } = Astro.props;
 ---
 
@@ -15,7 +15,10 @@ const { session } = Astro.props;
     <ViewTransitions />
     <title>Astro</title>
   </head>
-  <body class="w-screen min-h-screen flex flex-col">
+  <body
+    class="w-screen min-h-screen flex flex-col"
+    transition:animate={fade({ duration: "0.1s" })}
+  >
     <Header client:idle session={session} />
     <slot />
   </body>
