@@ -23,11 +23,11 @@
   ];
   let sellDialog: HTMLDialogElement | undefined = $state();
   let buyDialog: HTMLDialogElement | undefined = $state();
-  let sellPrice = $state(1);
+  let sellPrice = $state(3);
 
   $effect(() => {
     if (sellPrice > 9999999) sellPrice = 9999999;
-    if (sellPrice < 1) sellPrice = 1;
+    if (sellPrice < 1) sellPrice = 3;
   });
 
   async function sell() {
@@ -121,11 +121,14 @@ TODO: make text better vosible on light backgrounds
     <input
       type="number"
       class="grow"
-      min="1"
+      min="3"
       max="9999999"
       bind:value={sellPrice}
     />
   </label>
+  <span class="my-1">
+    It will cost you <Money /> {Math.ceil(sellPrice*0.05)} to put this item up
+  </span>
   <div class="mt-4 flex gap-4">
     <button class="ml-auto btn btn-primary min-w-24" onclick={sell}>Sell</button
     >

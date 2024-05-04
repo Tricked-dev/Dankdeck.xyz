@@ -133,7 +133,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log({
       user: bin.card.userId,
-      price: Math.floor(data.price * 0.95),
+      price: data.price ,
     });
 
     await client.query(
@@ -146,7 +146,7 @@ export const POST: APIRoute = async ({ request }) => {
     `,
       {
         user: bin.card.userId,
-        price: Math.floor(data.price * 0.95),
+        price: data.price ,
       }
     );
 

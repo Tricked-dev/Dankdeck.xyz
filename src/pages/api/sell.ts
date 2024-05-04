@@ -59,21 +59,21 @@ export const POST: APIRoute = async ({ request }) => {
   );
 
   if (binExist.length > 0) {
-    await client.query(
-      `
-      update BinAuction
-      filter .card.id = <uuid>$cardId
-      set {
-        price := <int64>$price
-      }
-    `,
-      {
-        cardId: data.cardId,
-        price: data.price,
-      }
-    );
+    // await client.query(
+    //   `
+    //   update BinAuction
+    //   filter .card.id = <uuid>$cardId
+    //   set {
+    //     price := <int64>$price
+    //   }
+    // `,
+    //   {
+    //     cardId: data.cardId,
+    //     price: data.price,
+    //   }
+    // );
     return new Response(
-      JSON.stringify({ error: "Bin already exists, updating price" }),
+      JSON.stringify({ error: "Failed you already selling" }),
       {
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,19 @@ export const POST: APIRoute = async ({ request }) => {
       }
     );
   }
-
+  await client.query(
+    `
+  update User
+  filter .id = <uuid>$user
+  set {
+      balance := .balance - <int64>$tax
+  }
+  `,
+    {
+      user: session?.user?.id,
+      tax: Math.ceil(data.price * 0.05),
+    }
+  );
   const r = await client.query(
     `
 insert BinAuction {
