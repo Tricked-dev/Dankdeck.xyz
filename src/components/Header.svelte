@@ -4,7 +4,7 @@
   import Money from "@/components/icons/Money.svelte";
   import { onMount } from "svelte";
   import r, { setUserInfo } from "@/lib/state.svelte";
-  import { claimDelay, dailyMoney } from "@/lib/interfaces";
+  import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
   import Modal from "./Modal.svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
@@ -36,7 +36,7 @@
       // console.log(t);
       if (!r.user) {
         timeLeft = Math.max(
-          claimDelay - (+new Date() - +new Date(t.data.dailyClaimedAt)),
+          DAY - (+new Date() - +new Date(t.data.dailyClaimedAt)),
           0,
         );
         if (timeLeft == 0) {
