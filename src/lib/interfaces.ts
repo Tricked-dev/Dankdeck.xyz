@@ -1,6 +1,13 @@
 import { z, type infer as inf } from "zod";
 
+export const SECOND = 1000;
+export const MINUTE = 60 * SECOND;
+export const HOUR = 60 * MINUTE;
+export const DAY = 24 * HOUR;
+
 export const claimDelay = 1000 * 60 * 15;
+
+export const dailyMoney = 100;
 
 export const createAuction = z.object({
   cardId: z.string().uuid("Invalid UUID"),

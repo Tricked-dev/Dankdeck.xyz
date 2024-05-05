@@ -56,7 +56,7 @@ Go to `/login` to login with github and done!
 
 ## Todo:
 
-- Make everything responsive
+- Make everything responsive (update card list on card claim, etc)
 - Add feedback to failed actions
 - Add daily money
 - Add more metadata to memes
@@ -64,3 +64,6 @@ Go to `/login` to login with github and done!
 - Make meme numbers make sense
 - Add account deletion process with memes being put on auction on delete
 - Add confetti and make the game feel more gamey
+- a11y - would be cool if everyone could play this game
+- Automatically log back in when session expires
+- Hide elements when not logged in

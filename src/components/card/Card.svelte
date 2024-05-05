@@ -18,7 +18,7 @@
   let classes = $derived(
     hoverEffect
       ? "hover:scale-105 duration-200 shadow-sm hover:shadow-accent hover:z-40"
-      : ""
+      : "",
   );
 </script>
 
@@ -38,7 +38,10 @@
       </span>
     </div>
   {/if}
-  <div class="absolute top-0 right-0 text-4xl font-bold p-2 text-white">
+  <div
+    class="absolute top-0 right-0 text-4xl font-bold p-2 text-white"
+    style:text-shadow="1px 1px 4px rgba(0, 0, 0, 0.5)"
+  >
     #{card.number}
   </div>
   <div

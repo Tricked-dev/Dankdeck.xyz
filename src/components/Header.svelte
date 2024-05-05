@@ -4,7 +4,8 @@
   import Money from "@/components/icons/Money.svelte";
   import { onMount } from "svelte";
   import r, { setUserInfo } from "@/lib/state.svelte";
-  import { claimDelay } from "@/lib/interfaces";
+  import { claimDelay, dailyMoney } from "@/lib/interfaces";
+  import Modal from "./Modal.svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -32,7 +33,16 @@
     let res = await fetch("/api/user");
     if (res.ok) {
       let t = await res.json();
-      console.log(t);
+      // console.log(t);
+      if (!r.user) {
+        timeLeft = Math.max(
+          claimDelay - (+new Date() - +new Date(t.data.dailyClaimedAt)),
+          0,
+        );
+        if (timeLeft == 0) {
+          dailyPopup?.showModal();
+        }
+      }
       setUserInfo(t.data);
       balance = t.data.balance;
       localStorage.setItem("balance", balance.toString());
@@ -67,10 +77,7 @@
     );
 
     let interval2 = setInterval(() => {
-      console.log(r.user);
       runCountDown();
-      console.log(timeLeft);
-      console.log("interval");
     }, 1000);
 
     return () => {
@@ -78,6 +85,7 @@
       clearInterval(interval2);
     };
   });
+  let dailyPopup: HTMLDialogElement | undefined = $state();
 </script>
 
 <svelte:document
@@ -151,3 +159,36 @@
     </div>
   </div>
 </div>
+
+<Modal bind:modal={dailyPopup} title="Daily Cash">
+  <div class="py-2">
+    Claim your daily cash!
+    <br />
+    <Money />
+    {dailyMoney}
+  </div>
+  <div>
+    <button
+      class="btn btn-primary"
+      onclick={async () => {
+        //TODO: fancy money up animation
+        await fetch("/api/daily");
+        setUserInfo({
+          ...r.user,
+          balance: (r.user?.balance ?? 0) + dailyMoney,
+        });
+        await updateUser();
+        dailyPopup?.close();
+      }}
+    >
+      Claim <Money />
+      {dailyMoney}</button
+    >
+    <button
+      class="btn btn-outline"
+      on:click={() => {
+        dailyPopup?.close();
+      }}>Procrastinate</button
+    >
+  </div>
+</Modal>
