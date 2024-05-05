@@ -1,7 +1,7 @@
-import { errors, requireSession } from "../../lib/apiUtils";
+import { errors, requireSession } from "@/lib/apiUtils.ts";
 
 import type { APIRoute } from "astro";
-import { cancelAuction } from "../../lib/interfaces";
+import { cancelAuction } from "@/lib/interfaces.ts";
 import { client } from "../../../client";
 import { getSession } from "auth-astro/server";
 

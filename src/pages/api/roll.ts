@@ -1,4 +1,4 @@
-import { createResponse, requireSession } from "../../lib/apiUtils";
+import { createResponse, requireSession } from "@/lib/apiUtils.ts";
 
 import type { APIRoute } from "astro";
 import type { User } from "@db/schema";
