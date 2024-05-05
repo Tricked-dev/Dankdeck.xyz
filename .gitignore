@@ -27,3 +27,4 @@ pnpm-debug.log*
 dbschema/edgeql-js
 memes.db
 dbschema/schema.ts
+bun.lockb
