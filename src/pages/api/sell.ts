@@ -1,8 +1,8 @@
-import { createResponse, requireSession } from "../../lib/apiUtils";
+import { createResponse, requireSession } from "@/lib/apiUtils.ts";
 
 import type { APIRoute } from "astro";
 import { client } from "../../../client";
-import { createAuction } from "../../lib/interfaces";
+import { createAuction } from "@/lib/interfaces";
 import e from "../../../dbschema/edgeql-js";
 import { getSession } from "auth-astro/server";
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Card as CardType, BinAuction } from "@db/schema.ts";
-  import Card from "./Card.svelte";
+  import Card from "@/components/card/Card.svelte";
 
   interface Props {
     auctions: BinAuction[];

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Card } from "@db/schema.ts";
-  import Money from "./Money.svelte";
+  import Money from "@/components/icons/Money.svelte";
   interface Props {
     card: Card;
     height: number;

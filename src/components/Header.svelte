@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { getSession } from "auth-astro/server";
   import { signOut } from "auth-astro/client";
-  import Money from "./Money.svelte";
+  import Money from "@/components/icons/Money.svelte";
   import { onMount } from "svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
