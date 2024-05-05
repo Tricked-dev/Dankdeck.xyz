@@ -3,6 +3,7 @@ import { getSession } from "auth-astro/server";
 import Layout from "@/layouts/Layout.astro";
 import CardInfo from "@/components/card/CardInfo.svelte";
 import { client } from "../../../../client";
+import CardMeta from "@/components/card/CardMeta.svelte";
 const session = await getSession(Astro.request);
 
 const cardId = Astro.params.card;
@@ -43,5 +44,7 @@ console.log(cardData);
 ---
 
 <Layout session={session}>
+  <CardMeta slot="head" card={cardData[0]} />
+
   <CardInfo session={session} card={cardData[0]} client:load />
 </Layout>

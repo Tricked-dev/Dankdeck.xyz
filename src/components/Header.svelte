@@ -3,6 +3,8 @@
   import { signOut } from "auth-astro/client";
   import Money from "@/components/icons/Money.svelte";
   import { onMount } from "svelte";
+  import r, { setUserInfo } from "@/lib/state.svelte";
+  import { claimDelay } from "@/lib/interfaces";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -26,30 +28,55 @@
 
   let visible = $state(true);
 
-  async function updateBalance() {
-    let res = await fetch("/api/balance");
+  async function updateUser() {
+    let res = await fetch("/api/user");
     if (res.ok) {
       let t = await res.json();
       console.log(t);
+      setUserInfo(t.data);
       balance = t.data.balance;
       localStorage.setItem("balance", balance.toString());
+      localStorage.setItem("lastClaimedAt", new Date().toString());
+      runCountDown();
     }
+  }
+
+  let timeLeft = $state(0);
+
+  function runCountDown() {
+    let lastClaimedAt = +new Date(r.user?.cardClaimedAt ?? 0);
+    if (!r.user?.cardClaimedAt) {
+      lastClaimedAt = parseInt(localStorage.getItem("lastClaimedAt") ?? "0");
+    }
+
+    timeLeft = Math.max(claimDelay - (+new Date() - lastClaimedAt), 0);
   }
 
   onMount(() => {
     balance = parseInt(localStorage.getItem("balance") ?? "0");
-    updateBalance();
+    updateUser();
+    runCountDown();
     let interval = setInterval(
       async () => {
         if (!balanceElement) return;
         if (!isElementInViewport(balanceElement)) return;
         if (!visible) return;
-        await updateBalance();
+        await updateUser();
       },
       1000 * 60 * 5 /* 5 minutes */,
     );
 
-    return () => clearInterval(interval);
+    let interval2 = setInterval(() => {
+      console.log(r.user);
+      runCountDown();
+      console.log(timeLeft);
+      console.log("interval");
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(interval2);
+    };
   });
 </script>
 
@@ -57,7 +84,7 @@
   onvisibilitychangecapture={() => {
     if (document.visibilityState === "visible") {
       visible = true;
-      updateBalance();
+      updateUser();
     } else {
       visible = false;
     }
@@ -66,26 +93,33 @@
 
 <div class="navbar bg-base-300">
   <div class="flex-1 flex gap-2">
-    <a href="/" class="btn btn-ghost text-xl">Card Thingy</a>
+    <a href="/" class="btn btn-ghost text-xl">Dank Deck</a>
     <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
   </div>
 
   <div class="flex-none gap-2">
     <div class="p-2 bg-base-200 rounded-2xl w-20">
       <span class="text-primary" bind:this={balanceElement}><Money /></span>
-      {balance}
+      {r.user?.balance ?? balance}
     </div>
 
     <div class="form-control">
-      <button
-        class="btn"
-        onclick={async () => {
-          await fetch("/api/roll");
-          // window.location.reload();
-        }}
-      >
-        Roll new card
-      </button>
+      {#if timeLeft > 0}
+        <button class="btn" disabled={true}>
+          Roll new card {Math.ceil(timeLeft / 1000)}s left
+        </button>
+      {:else}
+        <button
+          class="btn"
+          onclick={async () => {
+            await fetch("/api/roll");
+            await updateUser();
+            // window.location.reload();
+          }}
+        >
+          Roll new card
+        </button>
+      {/if}
     </div>
 
     <div class="dropdown dropdown-end">

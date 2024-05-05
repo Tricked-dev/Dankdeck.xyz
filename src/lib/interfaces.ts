@@ -1,5 +1,7 @@
 import { z, type infer as inf } from "zod";
 
+export const claimDelay = 1000 * 60 * 15;
+
 export const createAuction = z.object({
   cardId: z.string().uuid("Invalid UUID"),
   price: z

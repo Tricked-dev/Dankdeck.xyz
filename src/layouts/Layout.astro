@@ -25,6 +25,7 @@ const { session } = Astro.props;
         />
       )
     }
+    <slot name="head" />
   </head>
   <body
     class="w-screen min-h-screen flex flex-col"
