@@ -2,7 +2,8 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "paths": {
-      "@db/*": ["./dbschema/*"]
+      "@db/*": ["./dbschema/*"],
+      "@/*": ["./src/*"],
     }
   }
 }
