@@ -12,9 +12,9 @@ export const GET: APIRoute = async ({ request }) => {
   const { session, r } = await requireSession(request);
   if (r) return r;
 
-  const [{ card_claimed_at }] = (await client.query(
+  const [{ cardClaimedAt }] = (await client.query(
     `select User {
-     card_claimed_at
+     cardClaimedAt
     }
   filter
     .id = <uuid>$user
@@ -26,10 +26,10 @@ export const GET: APIRoute = async ({ request }) => {
     },
   )) as User[];
 
-  if (card_claimed_at && Date.now() - +card_claimed_at < card_claim_delay) {
+  if (cardClaimedAt && Date.now() - +cardClaimedAt < card_claim_delay) {
     return createResponse(429, {
       error: "Card already claimed recently",
-      date: +card_claimed_at,
+      date: +cardClaimedAt,
     });
   }
 
@@ -39,7 +39,7 @@ export const GET: APIRoute = async ({ request }) => {
   filter
     .id = <uuid>$user
   set {
-    card_claimed_at := <datetime>$now
+    cardClaimedAt := <datetime>$now
   }
   `,
     {

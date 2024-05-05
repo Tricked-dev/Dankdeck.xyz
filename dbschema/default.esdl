@@ -13,13 +13,13 @@ module default {
         multi link accounts         := .<user[is Account];
         multi link sessions         := .<user[is Session];
         multi link cards            := .<user[is Card];
-        multi link cards_claimed    := .<claimedBy[is Card];
+        multi link cardsClaimed    := .<claimedBy[is Card];
 
-        property daily_claimed_at -> datetime {
+        property dailyClaimedAt -> datetime {
             default := datetime_current();
         };
 
-        property card_claimed_at -> datetime {
+        property cardClaimedAt -> datetime {
             default := datetime_current();
         };
 
