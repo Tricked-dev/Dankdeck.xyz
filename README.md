@@ -64,3 +64,4 @@ Go to `/login` to login with github and done!
 - Add delay to meme
 - Make meme numbers make sense
 - Add account deletion process with memes being put on auction on delete
+- Add confetti and make the game feel more gamey

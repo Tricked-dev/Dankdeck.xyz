@@ -81,7 +81,7 @@
         class="btn"
         onclick={async () => {
           await fetch("/api/roll");
-          window.location.reload();
+          // window.location.reload();
         }}
       >
         Roll new card

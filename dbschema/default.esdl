@@ -10,10 +10,18 @@ module default {
             default := 100;
         }
 
-        multi link accounts := .<user[is Account];
-        multi link sessions := .<user[is Session];
-        multi link cards    := .<user[is Card];
+        multi link accounts         := .<user[is Account];
+        multi link sessions         := .<user[is Session];
+        multi link cards            := .<user[is Card];
+        multi link cards_claimed    := .<claimedBy[is Card];
 
+        property daily_claimed_at -> datetime {
+            default := datetime_current();
+        };
+
+        property card_claimed_at -> datetime {
+            default := datetime_current();
+        };
 
         property createdAt -> datetime {
             default := datetime_current();
@@ -39,7 +47,7 @@ module default {
         };
         property createdAt -> datetime {
                 default := datetime_current();
-            };
+        };
         constraint exclusive on ((.provider, .providerAccountId));
     }
 
@@ -87,6 +95,9 @@ module default {
         required property memeId := .meme.id;
 
         required link user -> User {
+                on target delete delete source;
+        };
+        required link claimedBy -> User {
                 on target delete delete source;
         };
         required link meme -> Meme {

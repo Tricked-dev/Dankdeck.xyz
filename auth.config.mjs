@@ -37,7 +37,5 @@ export default defineConfig({
       if (url.includes("app.github.dev")) return url;
       return baseUrl
     },
-
-
   }
 });
