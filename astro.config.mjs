@@ -1,6 +1,6 @@
 import auth from "auth-astro";
 import { defineConfig } from 'astro/config';
-import { fileURLToPath } from "bun";
+import { fileURLToPath } from "url";
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
