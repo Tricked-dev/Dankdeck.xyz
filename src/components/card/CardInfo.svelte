@@ -10,6 +10,8 @@
   import Card from "./Card.svelte";
   import Money from "@/components/icons/Money.svelte";
   import Modal from "@/components/Modal.svelte";
+  import Toast from "@/components/Toast.svelte";
+  import toast, {Toaster} from "svelte-french-toast";
   interface Props {
     card: CardType;
     session: Awaited<ReturnType<typeof getSession>>;
@@ -40,16 +42,29 @@
       cardId: card.id,
       price: sellPrice,
     };
-    await fetch(`/api/sell`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    // await fetch(`/api/sell`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(body),
+    // });
+    // await toast.promise(fetch(`/api/sell`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(body),
+    // }), 	{
+    //   loading: 'Saving...',
+    //   success: 'Settings saved!',
+    //   error: 'Could not save.',
+    // })
+    toast.success('hi')
   }
 </script>
 
+<Toaster />
 <div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <span class="text-4xl font-bold">
     {card.meme.name}
@@ -141,30 +156,32 @@ TODO: make text better vosible on light backgrounds
   </div>
 </div>
 
-<Modal bind:modal={sellDialog}>
-  <h3 class="font-bold text-lg">Sell {card.meme.name}</h3>
 
-  <div class="label">
-    <span class="label-text">Sell price:</span>
-  </div>
-  <label class="input input-bordered flex items-center gap-2">
-    <Money />
-    <input
-      type="number"
-      class="grow"
-      min="3"
-      max="9999999"
-      bind:value={sellPrice}
-    />
+<Modal title="Sell {card.meme.name}" bind:modal={sellDialog}>
+
+  <label class="form-control w-full mt-2">
+    <div class="label">
+      <span class="label-text">Sell price:</span>
+    </div>
+    <label class="input input-bordered flex items-center gap-2">
+        <Money />
+        <input
+          type="number"
+          class="grow"
+          min="3"
+          max="9999999"
+          bind:value={sellPrice}
+        />
+      </label>
+    <div class="label">
+      <span class="label-text-alt">It will cost you <Money />
+        {Math.ceil(sellPrice * 0.05)} to put this item up</span>
+    </div>
   </label>
-  <span class="my-1">
-    It will cost you <Money />
-    {Math.ceil(sellPrice * 0.05)} to put this item up
-  </span>
   <div class="mt-4 flex gap-4">
-    <button class="ml-auto btn btn-primary min-w-24" onclick={sell}>Sell</button>
+    <button class="ml-auto btn btn-primary min-w-24 text-base" onclick={sell}>Sell</button>
     <button
-      class="btn btn-ghost min-w-24"
+      class="btn min-w-24 btn-outline text-base"
       onclick={() => {
         sellPrice = 1;
         sellDialog?.close();
@@ -174,9 +191,7 @@ TODO: make text better vosible on light backgrounds
   </div>
 </Modal>
 
-<Modal bind:modal={buyDialog}>
-  <h3 class="font-bold text-lg">Buy {card.meme.name}</h3>
-
+<Modal title="Buy {card.meme.name}" bind:modal={buyDialog}>
   <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>
 
   <div class="mt-4 flex gap-4">
