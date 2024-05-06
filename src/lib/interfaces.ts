@@ -1,3 +1,4 @@
+import type { User } from "@db/schema";
 import { z, type infer as inf } from "zod";
 
 export const SECOND = 1000;
@@ -34,3 +35,8 @@ export const cancelAuction = z.object({
 });
 // infer import doesnt work lol
 export type CancelAuction = inf<typeof cancelAuction>;
+
+export type ApiUser = User & {
+  cardCount: number;
+  cardsClaimedCount: number;
+};

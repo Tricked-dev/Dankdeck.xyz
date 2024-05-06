@@ -1,12 +1,8 @@
-import { createResponse, requireSession } from "@/lib/apiUtils.ts";
+import type { ApiUser } from "@/lib/interfaces";
+import { client } from "client";
+import { protectedProcedure } from "../trpc";
 
-import type { APIRoute } from "astro";
-import { client } from "../../../client";
-
-export const GET: APIRoute = async ({ request }) => {
-  const { session, r } = await requireSession(request);
-  if (r) return r;
-
+export const user = protectedProcedure.query(async ({ ctx }) => {
   const [body] = await client.query(
     `
     select User {
@@ -25,8 +21,9 @@ export const GET: APIRoute = async ({ request }) => {
     limit 1
   `,
     {
-      user: session?.user?.id,
+      user: ctx.session.user?.id,
     },
   );
-  return createResponse(200, body);
-};
+
+  return body as ApiUser;
+});

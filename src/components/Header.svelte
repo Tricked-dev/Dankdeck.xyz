@@ -6,6 +6,7 @@
   import r, { setUserInfo } from "@/lib/state.svelte";
   import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
   import Modal from "./Modal.svelte";
+  import { trpc } from "@/lib/api";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -30,25 +31,22 @@
   let visible = $state(true);
 
   async function updateUser() {
-    let res = await fetch("/api/user");
-    if (res.ok) {
-      let t = await res.json();
-      // console.log(t);
-      if (!r.user) {
-        timeLeft = Math.max(
-          DAY - (+new Date() - +new Date(t.data.dailyClaimedAt)),
-          0,
-        );
-        if (timeLeft == 0) {
-          dailyPopup?.showModal();
-        }
+    let user = await trpc.user.query();
+    // console.log(t);
+    if (!r.user) {
+      timeLeft = Math.max(
+        DAY - (+new Date() - +new Date(user.dailyClaimedAt!)),
+        0,
+      );
+      if (timeLeft == 0) {
+        dailyPopup?.showModal();
       }
-      setUserInfo(t.data);
-      balance = t.data.balance;
-      localStorage.setItem("balance", balance.toString());
-      localStorage.setItem("lastClaimedAt", new Date().toString());
-      runCountDown();
     }
+    setUserInfo(user);
+    balance = user.balance;
+    localStorage.setItem("balance", balance.toString());
+    localStorage.setItem("lastClaimedAt", new Date().toString());
+    runCountDown();
   }
 
   let timeLeft = $state(0);
@@ -148,7 +146,7 @@
         <button
           class="btn"
           onclick={async () => {
-            await fetch("/api/roll");
+            await trpc.roll.query();
             await updateUser();
             // window.location.reload();
           }}
@@ -200,7 +198,7 @@
       class="btn btn-primary"
       onclick={async () => {
         //TODO: fancy money up animation
-        await fetch("/api/daily");
+        await trpc.daily.query();
         setUserInfo({
           ...r.user,
           balance: (r.user?.balance ?? 0) + dailyMoney,

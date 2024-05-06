@@ -1,16 +1,11 @@
 import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
-import { createResponse, requireSession } from "@/lib/apiUtils.ts";
 
-import type { APIRoute } from "astro";
+import { TRPCError } from "@trpc/server";
 import type { User } from "@db/schema";
-import { client } from "../../../client";
-import e from "../../../dbschema/edgeql-js";
-import { getSession } from "auth-astro/server";
+import { client } from "client";
+import { protectedProcedure } from "../trpc";
 
-export const GET: APIRoute = async ({ request }) => {
-  const { session, r } = await requireSession(request);
-  if (r) return r;
-
+export const daily = protectedProcedure.query(async ({ ctx }) => {
   const [{ dailyClaimedAt }] = (await client.query(
     `select User {
      dailyClaimedAt
@@ -21,14 +16,14 @@ export const GET: APIRoute = async ({ request }) => {
     1
   `,
     {
-      user: session?.user?.id,
+      user: ctx.session?.user?.id,
     },
   )) as User[];
 
   if (dailyClaimedAt && Date.now() - +dailyClaimedAt < DAY) {
-    return createResponse(429, {
-      error: "Daily already claimed recently",
-      date: +dailyClaimedAt,
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Daily reward already claimed recently",
     });
   }
 
@@ -47,10 +42,11 @@ select(
 }
 `,
     {
-      user: session?.user?.id,
+      user: ctx.session?.user?.id,
       number: dailyMoney,
       now: new Date(),
     },
   );
-  return createResponse(200, { balance });
-};
+
+  return { balance };
+});

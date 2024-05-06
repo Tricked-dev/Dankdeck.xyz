@@ -1,16 +1,10 @@
-import { createResponse, requireSession } from "@/lib/apiUtils.ts";
-
-import type { APIRoute } from "astro";
+import { TRPCError } from "@trpc/server";
 import type { User } from "@db/schema";
 import { claimDelay } from "@/lib/interfaces";
-import { client } from "../../../client";
-import e from "../../../dbschema/edgeql-js";
-import { getSession } from "auth-astro/server";
+import { client } from "client";
+import { protectedProcedure } from "../trpc";
 
-export const GET: APIRoute = async ({ request }) => {
-  const { session, r } = await requireSession(request);
-  if (r) return r;
-
+export const roll = protectedProcedure.query(async ({ ctx }) => {
   const [{ cardClaimedAt }] = (await client.query(
     `select User {
      cardClaimedAt
@@ -21,14 +15,14 @@ export const GET: APIRoute = async ({ request }) => {
     1
   `,
     {
-      user: session?.user?.id,
+      user: ctx.session?.user?.id,
     },
   )) as User[];
 
   if (cardClaimedAt && Date.now() - +cardClaimedAt < claimDelay) {
-    return createResponse(429, {
-      error: "Card already claimed recently",
-      date: +cardClaimedAt,
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Card already claimed recently",
     });
   }
 
@@ -43,7 +37,7 @@ export const GET: APIRoute = async ({ request }) => {
   `,
     {
       now: new Date(),
-      user: session?.user?.id,
+      user: ctx.session?.user?.id,
     },
   );
 
@@ -77,9 +71,9 @@ select(insert Card {
 }
 `,
     {
-      user: session?.user?.id,
+      user: ctx.session?.user?.id,
       number: (Math.random() * 200) | 0,
     },
   );
-  return createResponse(200, card);
-};
+  return card;
+});

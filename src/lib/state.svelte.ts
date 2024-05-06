@@ -1,9 +1,5 @@
+import type { ApiUser } from "./interfaces";
 import type { User } from "@db/schema";
-
-type ApiUser = User & {
-  cardCount: number;
-  cardsClaimedCount: number;
-};
 
 let userInfo: ApiUser | undefined = $state(undefined);
 

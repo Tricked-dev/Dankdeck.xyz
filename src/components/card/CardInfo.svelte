@@ -1,22 +1,19 @@
 <script lang="ts">
-  import type { Card as CardType } from "@db/schema.ts";
-  import type {
-    BuyAuction,
-    CancelAuction,
-    CreateAuction,
-    buyAuction,
-  } from "@/lib/interfaces.ts";
+  import type { BinAuction, Card as CardType } from "@db/schema.ts";
   import type { getSession } from "auth-astro/server";
   import Card from "./Card.svelte";
   import Money from "@/components/icons/Money.svelte";
   import Modal from "@/components/Modal.svelte";
-  import Toast from "@/components/Toast.svelte";
   import toast, { Toaster } from "svelte-french-toast";
+  import { trpc } from "@/lib/api";
+  import { TRPCClientError } from "@trpc/client";
+
   interface Props {
     card: CardType;
     session: Awaited<ReturnType<typeof getSession>>;
   }
-  let { card, session }: Props = $props();
+  let { card: c, session }: Props = $props();
+  let card = $state(c);
   const tradeHistory = [
     {
       date: Date.now(),
@@ -38,29 +35,22 @@
   });
 
   async function sell() {
-    let body: CreateAuction = {
-      cardId: card.id,
-      price: sellPrice,
-    };
-    await fetch(`/api/sell`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    // await toast.promise(fetch(`/api/sell`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(body),
-    // }), 	{
-    //   loading: 'Saving...',
-    //   success: 'Settings saved!',
-    //   error: 'Could not save.',
-    // })
-    toast.success("hi");
+    try {
+      let bin = (await trpc.sell.mutate({
+        cardId: card.id,
+        price: sellPrice,
+      })) as unknown as BinAuction;
+
+      toast.success("Successfully selling card");
+      card.auction.push(bin);
+      sellDialog?.close();
+    } catch (e) {
+      if (e instanceof TRPCClientError) {
+        toast.error(e.message);
+      } else {
+        toast.error("Something went wrong, check logs for more info");
+      }
+    }
   }
 </script>
 
@@ -86,16 +76,19 @@ TODO: make text better vosible on light backgrounds
             class="btn btn-lg w-[50%] max-w-[15rem]"
             disabled={false}
             onclick={async () => {
-              let body: CancelAuction = {
-                cardId: card.id,
+              try {
+                await trpc.cancel.mutate({
+                  cardId: card.id,
+                });
+                toast.success("Successfully cancelled auction");
+                card.auction = [];
+              } catch (e) {
+                if (e instanceof TRPCClientError) {
+                  toast.error(e.message);
+                } else {
+                  toast.error("Something went wrong, check logs for more info");
+                }
               }
-              await fetch("/api/cancel", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-              });
             }}
           >
             Cancel auction
@@ -202,18 +195,10 @@ TODO: make text better vosible on light backgrounds
   <div class="mt-4 flex gap-4">
     <button
       class="ml-auto btn btn-primary min-w-24"
-      onclick={async()=>{
-        const body: BuyAuction = {
+      onclick={async () => {
+        await trpc.buy.mutate({
           cardId: card.id,
           price: card.auction[0]?.price,
-        };
-
-        await fetch(`/api/buy`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
         });
       }}
     >
