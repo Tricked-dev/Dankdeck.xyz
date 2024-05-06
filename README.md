@@ -67,3 +67,5 @@ Go to `/login` to login with github and done!
 - a11y - would be cool if everyone could play this game
 - Automatically log back in when session expires
 - Hide elements when not logged in
+- Card favoriting
+- Card showcase

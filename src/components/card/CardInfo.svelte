@@ -138,7 +138,9 @@ TODO: make text better vosible on light backgrounds
     <div>
       Obtained: {card.createdAt?.toISOString()}<br />
       <!-- Last Sold for: ${card.last_sold_for}<br /> -->
-      Owned by: {card.user.name}
+      Owned by:
+      <a class="link link-hover" href="/users/{card.userId}">{card.user.name}</a
+      >
     </div>
 
     <div class="mt-auto">
