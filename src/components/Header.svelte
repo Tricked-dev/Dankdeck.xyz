@@ -85,6 +85,34 @@
       clearInterval(interval2);
     };
   });
+
+  let loader: HTMLDivElement | undefined = $state();
+
+  onMount(() => {
+    const showLoaderAfter = 500;
+    let hasLoaded = false;
+    let before = () => {
+      console.log("Before!");
+      setTimeout(() => {
+        if (hasLoaded) return;
+        loader?.classList.remove("hidden");
+      }, showLoaderAfter);
+    };
+    let after = () => {
+      hasLoaded = true;
+      loader?.classList.add("hidden");
+      setTimeout(() => {
+        loader?.classList.add("hidden");
+      }, showLoaderAfter);
+    };
+    document.addEventListener("astro:before-preparation", before);
+    document.addEventListener("astro:after-preparation", after);
+
+    return () => {
+      document.removeEventListener("astro:before-preparation", before);
+      document.removeEventListener("astro:after-preparation", after);
+    };
+  });
   let dailyPopup: HTMLDialogElement | undefined = $state();
 </script>
 
@@ -192,3 +220,30 @@
     >
   </div>
 </Modal>
+
+<div
+  bind:this={loader}
+  class="loader-container w-full h-2 overflow-hidden relative hidden"
+>
+  <div class="stripe-l h-full absolute w-full bg-sky-600"></div>
+  <div class="stripe-f h-full absolute w-44 bg-cyan-700"></div>
+</div>
+
+<style>
+  .stripe-l {
+    animation: slide 5s linear infinite; /* Animation: slide for 2 seconds infinitely */
+  }
+
+  .stripe-f {
+    animation: slide 2s linear infinite; /* Animation: slide for 2 seconds infinitely */
+  }
+
+  @keyframes slide {
+    0% {
+      left: -100%;
+    } /* Start off-screen left */
+    100% {
+      left: 100%;
+    } /* End off-screen right */
+  }
+</style>
