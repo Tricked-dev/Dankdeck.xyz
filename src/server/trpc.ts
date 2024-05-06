@@ -21,8 +21,8 @@ export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(
   async function isAuthed(opts) {
     const { ctx } = opts;
-    console.log(opts);
-    if (!ctx.session) {
+
+    if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return opts.next({

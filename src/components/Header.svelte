@@ -3,7 +3,7 @@
   import { signOut } from "auth-astro/client";
   import Money from "@/components/icons/Money.svelte";
   import { onMount } from "svelte";
-  import r, { setUserInfo } from "@/lib/state.svelte";
+  import r, { setCards, setUserInfo } from "@/lib/state.svelte";
   import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
   import Modal from "./Modal.svelte";
   import { trpc } from "@/lib/api";
@@ -148,7 +148,18 @@
           onclick={async () => {
             await trpc.roll.query();
             await updateUser();
-            // window.location.reload();
+            let cards = await trpc.mycards.query();
+            setCards(cards);
+            // svelte is a little bit *slow*
+            setTimeout(() => {
+              const element = document.documentElement;
+
+              element.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "end",
+              });
+            }, 20);
           }}
         >
           Roll new card
