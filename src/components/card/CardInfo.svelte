@@ -7,6 +7,7 @@
   import toast, { Toaster } from "svelte-french-toast";
   import { trpc } from "@/lib/api";
   import { TRPCClientError } from "@trpc/client";
+  import { setUserInfo } from "@/lib/state.svelte";
 
   interface Props {
     card: CardType;
@@ -44,6 +45,9 @@
       toast.success("Successfully selling card");
       card.auction.push(bin);
       sellDialog?.close();
+
+      let user = await trpc.user.query();
+      setUserInfo(user);
     } catch (e) {
       if (e instanceof TRPCClientError) {
         toast.error(e.message);
@@ -54,7 +58,6 @@
   }
 </script>
 
-<Toaster />
 <div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <span class="text-4xl font-bold">
     {card.meme.name}
@@ -180,7 +183,7 @@ TODO: make text better vosible on light backgrounds
     <button
       class="btn min-w-24 btn-outline text-base"
       onclick={() => {
-        sellPrice = 1;
+        sellPrice = 3;
         sellDialog?.close();
       }}
     >
@@ -196,12 +199,23 @@ TODO: make text better vosible on light backgrounds
     <button
       class="ml-auto btn btn-primary min-w-24"
       onclick={async () => {
-        await trpc.buy.mutate({
-          cardId: card.id,
-          price: card.auction[0]?.price,
-        });
-        card =( await trpc.card.query({ cardId: card.id })) as unknown as CardType;
-        buyDialog?.close();
+        try {
+          await trpc.buy.mutate({
+              cardId: card.id,
+              price: card.auction[0]?.price,
+          });
+          card =( await trpc.card.query({ cardId: card.id })) as unknown as CardType;
+          buyDialog?.close();
+
+          let user = await trpc.user.query();
+          setUserInfo(user);
+        }catch(e) {
+          if (e instanceof TRPCClientError) {
+            toast.error(e.message);
+          } else {
+            toast.error("Something went wrong, check logs for more info");
+          }
+        }
       }}
     >
       Buy

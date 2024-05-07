@@ -7,6 +7,7 @@
   import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
   import Modal from "./Modal.svelte";
   import { trpc } from "@/lib/api";
+  import { Toaster } from "svelte-french-toast";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -196,6 +197,8 @@
     </div>
   </div>
 </div>
+
+<Toaster />
 
 <Modal bind:modal={dailyPopup} title="Daily Cash">
   <div class="py-2">

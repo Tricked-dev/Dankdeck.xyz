@@ -57,8 +57,6 @@ Go to `/login` to login with github and done!
 ## Todo:
 
 - Make everything responsive (update card list on card claim, etc)
-- Add feedback to failed actions
-- Add daily money
 - Add more metadata to memes
 - Transform and save all images elseware
 - Make meme numbers make sense
