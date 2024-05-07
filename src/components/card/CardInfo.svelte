@@ -129,7 +129,7 @@ TODO: make text better vosible on light backgrounds
     </div>
 
     <div>
-      Obtained: {card.createdAt?.toISOString()}<br />
+      Obtained: {new Date(card.createdAt)?.toISOString()}<br />
       <!-- Last Sold for: ${card.last_sold_for}<br /> -->
       Owned by:
       <a class="link link-hover" href="/users/{card.userId}">{card.user.name}</a
@@ -200,6 +200,8 @@ TODO: make text better vosible on light backgrounds
           cardId: card.id,
           price: card.auction[0]?.price,
         });
+        card =( await trpc.card.query({ cardId: card.id })) as unknown as CardType;
+        buyDialog?.close();
       }}
     >
       Buy

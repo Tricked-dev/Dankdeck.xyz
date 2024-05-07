@@ -22,11 +22,12 @@
   );
 </script>
 
+<!-- style:view-transition-name={card.id} -->
+
 <a
   href={noHref ? undefined : href ? href : `/card/${card.id}`}
   class="bg-primary-content bg-center bg-cover rounded-lg relative block {classes}"
   style:background-image={`url(${card.meme.img})`}
-  style:view-transition-name={card.id}
   style:height={`${height}rem`}
   style:width={`${width}rem`}
 >

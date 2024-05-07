@@ -4,45 +4,21 @@ import Layout from "@/layouts/Layout.astro";
 import CardInfo from "@/components/card/CardInfo.svelte";
 import { client } from "../../../../client";
 import CardMeta from "@/components/card/CardMeta.svelte";
+import { getCard } from "@/lib/queries";
+import type { Card } from "@db/schema";
 const session = await getSession(Astro.request);
 
 const cardId = Astro.params.card;
-let cardData = [];
+let cardData: Card;
 try {
-  cardData = await client.query(
-    `
-  select Card {
-    id,
-    number,
-    createdAt,
-    meme: {
-      id,
-      img,
-      name,
-      description
-    },
-    userId,
-    user: {
-      name
-    },
-    auction: {
-      price
-    }
-  }
-  filter .id = <uuid>$cardId
-  limit 1
-`,
-    {
-      cardId: cardId,
-    }
-  );
+  cardData = await getCard(cardId!);
 } catch (e) {
   return Astro.redirect("/404");
 }
 ---
 
 <Layout session={session}>
-  <CardMeta slot="head" card={cardData[0]} />
+  <CardMeta slot="head" card={cardData} />
 
-  <CardInfo session={session} card={cardData[0]} client:load />
+  <CardInfo session={session} card={cardData} client:load />
 </Layout>

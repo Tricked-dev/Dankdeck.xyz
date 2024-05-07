@@ -4,17 +4,6 @@ import GitHub from "@auth/core/providers/github";
 import { client } from "./client"
 import { defineConfig } from "auth-astro";
 
-const discordAuth = []
-
-if (import.meta.env.AUTH_DISCORD_ID) {
-  discordAuth.push(Discord({
-    clientId: import.meta.env.AUTH_DISCORD_ID,
-    clientSecret: import.meta.env.AUTH_DISCORD_SECRET,
-    // redirectProxyUrl: import.meta.env.AUTH_URL ? `${import.meta.env.AUTH_URL}api/auth/callback/discord` : undefined,
-  }))
-  // console.log(`${import.meta.env.AUTH_URL}api/auth/callback/discord`)
-}
-
 export default defineConfig({
   baseUrl: import.meta.env.AUTH_URL,
   providers: [
@@ -23,9 +12,11 @@ export default defineConfig({
       clientSecret: import.meta.env.GITHUB_CLIENT_SECRET,
       redirectProxyUrl: import.meta.env.AUTH_URL ? `${import.meta.env.AUTH_URL}api/auth/callback/github` : undefined,
     }),
-    ...discordAuth
   ],
   adapter: EdgeDBAdapter(client),
+  pages: {
+    signIn: "/login"
+  },
   callbacks: {
     session: async ({ session, user }) => {
       session.user.id = user.id;

@@ -3,6 +3,7 @@ import { protectedProcedure, publicProcedure, router } from "./trpc";
 import { buy } from "./routes/buy";
 import { cancel } from "./routes/cancel";
 import { daily } from "./routes/daily";
+import { getCard } from "./routes/getCard";
 import { mycards } from "./routes/mycards";
 import { roll } from "./routes/roll";
 import { sell } from "./routes/sell";
@@ -16,4 +17,5 @@ export const appRouter = router({
   cancel: cancel,
   buy: buy,
   mycards: mycards,
+  card: getCard,
 });
