@@ -13,7 +13,10 @@ module default {
         multi link accounts         := .<user[is Account];
         multi link sessions         := .<user[is Session];
         multi link cards            := .<user[is Card];
-        multi link cardsClaimed    := .<claimedBy[is Card];
+        multi link cardsClaimed     := .<claimedBy[is Card];
+
+        multi link tradeOffers      := .<offerer[is TradeOffer];
+        multi link tradeRequests    := .<receiver[is TradeOffer];
 
         property dailyClaimedAt -> datetime {
             default := datetime_current();
@@ -26,6 +29,8 @@ module default {
         property createdAt -> datetime {
             default := datetime_current();
         };
+
+
     }
 
     type Account {
@@ -120,7 +125,6 @@ module default {
     }
 
     type AuctionEntry {
-
         required property cardId := .card.id;
         required property sellerId := .seller.id;
         required property buyerId := .buyer.id;
@@ -141,5 +145,16 @@ module default {
         required property soldAt -> datetime {
             default := datetime_current();
         }
+    }
+
+    type TradeOffer {
+        required link offerer -> User {
+            on target delete delete source;
+        }
+        required link receiver -> User {
+            on target delete delete source;
+        }
+        multi offeredCards: Card;
+        multi receivedCards: Card;
     }
 }

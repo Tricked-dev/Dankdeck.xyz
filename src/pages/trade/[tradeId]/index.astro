@@ -1,0 +1,14 @@
+---
+import { getSession } from "auth-astro/server";
+import Layout from "@/layouts/Layout.astro";
+import CardMeta from "@/components/card/CardMeta.svelte";
+import Trade from "@/components/Trade.svelte";
+const session = await getSession(Astro.request);
+const room = Astro.params.tradeId;
+---
+
+<Layout session={session}>
+  <CardMeta slot="head" />
+
+  <Trade session={session} room={room} client:load />
+</Layout>
