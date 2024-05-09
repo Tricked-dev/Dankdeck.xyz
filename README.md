@@ -70,3 +70,4 @@ Go to `/login` to login with github and done!
 - Card favoriting
 - Card showcase
 - Trading ui improvements
+- Some first signin screen where you pick 5 cards to open you can detect first login with cards claimed variable
