@@ -84,7 +84,7 @@ select(insert Card {
 `,
     {
       user: ctx.session?.user?.id,
-      memeId: randomMeme,
+      memeId: randomMeme.id,
     },
   );
   return card;
