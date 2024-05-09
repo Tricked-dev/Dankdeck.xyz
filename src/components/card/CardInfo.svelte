@@ -137,6 +137,26 @@ TODO: make text better vosible on light backgrounds
       Owned by:
       <a class="link link-hover" href="/users/{card.userId}">{card.user.name}</a
       >
+      {#if card?.meme.year}
+        <br />
+        Year: {card?.meme.year}
+      {/if}
+      {#if card?.meme.origin}
+        <br />
+        Origin: {card?.meme.origin}
+      {/if}
+      {#if card?.meme.description}
+        <br />
+        Description: {card?.meme.description}
+      {/if}
+      {#if card?.meme.partOf}
+        <br />
+        Part of: {card?.meme.partOf}
+      {/if}
+      {#if card?.meme.type}
+        <br />
+        Type: {card?.meme.type}
+      {/if}
     </div>
 
     <div class="mt-auto">
@@ -154,7 +174,7 @@ TODO: make text better vosible on light backgrounds
   </div>
 </div>
 
-<Modal title="Sell {card.meme.name}" bind:modal={sellDialog}>
+<Modal title="Sell {card?.meme.name}" bind:modal={sellDialog}>
   <label class="form-control w-full mt-2">
     <div class="label">
       <span class="label-text">Sell price:</span>

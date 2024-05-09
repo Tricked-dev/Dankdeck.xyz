@@ -133,7 +133,7 @@
   </div>
 
   <div class="flex-none gap-2">
-    <div class="p-2 bg-base-200 rounded-2xl w-20">
+    <div class="p-2 bg-base-200 rounded-2xl w-32">
       <span class="text-primary" bind:this={balanceElement}><Money /></span>
       {r.user?.balance ?? balance}
     </div>

@@ -62,10 +62,6 @@ Go to `/login` to login with github and done!
 
 ## Todo:
 
-- Make everything responsive (update card list on card claim, etc)
-- Add more metadata to memes
-- Transform and save all images elseware
-- Make meme numbers make sense
 - Add account deletion process with memes being put on auction on delete
 - Add confetti and make the game feel more gamey
 - a11y - would be cool if everyone could play this game
@@ -73,3 +69,4 @@ Go to `/login` to login with github and done!
 - Hide elements when not logged in
 - Card favoriting
 - Card showcase
+- Trading ui improvements

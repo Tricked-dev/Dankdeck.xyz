@@ -35,7 +35,11 @@ export async function getCard(id: string) {
       id,
       shortId,
       name,
-      description
+      description,
+      origin,
+      year,
+      type,
+      partOf
     },
     userId,
     user: {
