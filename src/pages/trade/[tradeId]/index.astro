@@ -8,7 +8,5 @@ const room = Astro.params.tradeId;
 ---
 
 <Layout session={session}>
-  <CardMeta slot="head" />
-
   <Trade session={session} room={room} client:load />
 </Layout>

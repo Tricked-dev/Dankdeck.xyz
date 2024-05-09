@@ -26,6 +26,8 @@
     "edgedb": "^1.5.4",
     "partykit": "latest",
     "partysocket": "^1.0.1",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0-rc2",
     "svelte": "next",
     "svelte-french-toast": "^1.2.0",
     "tailwindcss": "^3.4.3",

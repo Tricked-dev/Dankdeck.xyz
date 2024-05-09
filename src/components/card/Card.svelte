@@ -8,8 +8,17 @@
     href?: string;
     noHref?: boolean;
     hoverEffect?: boolean;
+    extraClasses?: string;
   }
-  let { card, height = 30, price, href, noHref, hoverEffect }: Props = $props();
+  let {
+    card,
+    height = 30,
+    price,
+    href,
+    noHref,
+    hoverEffect,
+    extraClasses,
+  }: Props = $props();
 
   let ratio = 14 / 16;
 
@@ -26,7 +35,7 @@
 
 <a
   href={noHref ? undefined : href ? href : `/card/${card.id}`}
-  class="bg-primary-content bg-center bg-cover rounded-lg relative block {classes}"
+  class="bg-primary-content bg-center bg-cover rounded-lg relative block {classes} {extraClasses}"
   style:background-image={`url(${card.meme.img})`}
   style:height={`${height}rem`}
   style:width={`${width}rem`}
