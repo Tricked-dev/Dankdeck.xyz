@@ -26,7 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
     appId: import.meta.env.PUSHER_APP_ID,
     key: import.meta.env.PUBLIC_PUSHER_APP_KEY,
     secret: import.meta.env.PUSHER_APP_SECRET,
-    cluster: import.meta.env.PUSHER_APP_CLUSTER,
+    cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER,
     useTLS: true,
   });
   const authResponse = pusher.authorizeChannel(

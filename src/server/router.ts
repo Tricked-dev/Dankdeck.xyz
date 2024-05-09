@@ -1,3 +1,4 @@
+import { acceptOffer, createOffer, getOffer } from "./routes/offer";
 import { protectedProcedure, publicProcedure, router } from "./trpc";
 
 import { buy } from "./routes/buy";
@@ -18,4 +19,7 @@ export const appRouter = router({
   buy: buy,
   mycards: mycards,
   card: getCard,
+  getOffer: getOffer,
+  createOffer: createOffer,
+  acceptOffer: acceptOffer,
 });

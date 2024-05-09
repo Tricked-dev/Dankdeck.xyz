@@ -156,5 +156,9 @@ module default {
         }
         multi offeredCards: Card;
         multi receivedCards: Card;
+        required property createdAt -> datetime {
+            default := datetime_current();
+        }
+        property completedAt -> datetime;
     }
 }

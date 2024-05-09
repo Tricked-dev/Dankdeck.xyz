@@ -1,6 +1,7 @@
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 import { TRPCError } from "@trpc/server";
+import type { TradeOffer } from "@db/schema";
 import { client } from "client";
 import { z } from "zod";
 
@@ -17,16 +18,25 @@ export const createOffer = protectedProcedure
     const { user, offeredCards, receivedCards } = data;
     const [res] = await client.query(
       `
-    insert Offer {
-      user: <uuid>$user,
-      offeredCards: (
+    insert TradeOffer {
+      offerer := (
+        select User
+        filter .id = <uuid>$myId
+        limit 1
+      ),
+      offeredCards := (
         select Card
-        filter .id in {${offeredCards.map((id) => `<uuid>"${id}",`)}} and .userId = <uuid>$myId
+        filter .id in {${offeredCards.map((id) => `<uuid>"${id}"`).join(",")}} and .userId = <uuid>$myId
         limit 5
       ),
-      receivedCards: (
+      receiver := (
+        select User
+        filter .id = <uuid>$user
+        limit 1
+      ),
+      receivedCards := (
         select Card
-        filter .id in {${receivedCards.map((id) => `<uuid>"${id}",`)}} and .userId = <uuid>$user
+        filter .id in {${receivedCards.map((id) => `<uuid>"${id}"`).join(",")}} and .userId = <uuid>$user
         limit 5
       )
     }
@@ -50,9 +60,12 @@ export const getOffer = publicProcedure
   .query(async ({ input: data }) => {
     const [offer] = await client.query(
       `
-    select Offer {
+    select TradeOffer {
       id,
-      user: {
+      receiver: {
+        id
+      },
+      offerer: {
         id
       },
       offeredCards: {
@@ -69,7 +82,7 @@ export const getOffer = publicProcedure
         id: data.id,
       },
     );
-    return offer;
+    return offer as TradeOffer;
   });
 
 export const acceptOffer = protectedProcedure
@@ -79,11 +92,15 @@ export const acceptOffer = protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input: data }) => {
+    console.log("123");
     const [offer] = await client.query(
       `
-      select Offer {
+      select TradeOffer {
         id,
-        user: {
+        offerer: {
+          id
+        },
+        receiver: {
           id
         },
         offeredCards: {
@@ -100,26 +117,28 @@ export const acceptOffer = protectedProcedure
         id: data.offerId,
       },
     );
+    console.log("1233");
     if (!offer) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Offer not found",
       });
     }
-    if (offer.user.id !== ctx.session.user?.id) {
+    if (offer.receiver.id !== ctx.session.user?.id) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Unauthorized",
+        message: "Unauthorized that offer is not for you :)",
       });
     }
     const offeredCards = offer.offeredCards.map((c) => c.id);
     const receivedCards = offer.receivedCards.map((c) => c.id);
+    console.log("12337");
     await client.query(
       `
-      update Offer
+      update TradeOffer
       filter .id = <uuid>$id
       set {
-        acceptedAt := <datetime>$now
+        completedAt := <datetime>$now
       }
       `,
       {
@@ -127,28 +146,45 @@ export const acceptOffer = protectedProcedure
         id: data.offerId,
       },
     );
+    console.log("123351");
     await client.query(
       `
       update Card
-      filter .id in {${offeredCards.join(",")}}
+      filter .id in {${offeredCards.map((id) => `<uuid>"${id}"`).join(",")}}
       set {
-        userId := <uuid>$userId
+        user := (
+          select User
+          filter .id = <uuid>$userId
+          limit 1
+        )
       }
       `,
       {
         userId: ctx.session.user?.id,
       },
     );
+    console.log("12331234");
     await client.query(
       `
       update Card
-      filter .id in {${receivedCards.join(",")}}
+      filter .id in {${receivedCards.map((id) => `<uuid>"${id}"`).join(",")}}
       set {
-        userId := <uuid>$userId
+        user := (
+            select User
+            filter .id = <uuid>$userId
+            limit 1
+        )
       }
       `,
       {
-        userId: offer.user.id,
+        userId: offer.offerer.id,
       },
+    );
+    console.log("1234323");
+    await client.query(
+      `
+      delete BinAuction
+      filter .cardId in {${[...receivedCards, ...offeredCards].map((id) => `<uuid>"${id}"`).join(",")}}
+      `,
     );
   });

@@ -33,6 +33,7 @@
     undefined,
     undefined,
   ]);
+  let myCardOfferIds = $derived(myCardOffer.map((x) => x?.id));
   let hisCardOffer: (CardType | undefined)[] = $state([
     undefined,
     undefined,
@@ -44,11 +45,14 @@
   let idx = $state(0);
   let selectModal = $state<HTMLDialogElement | undefined>(undefined);
 
+  let meAgreed = $state(false);
+  let heAgreed = $state(false);
+
   onMount(() => {
     // console.log(import.meta.env.PUBLIC_PUSHER_APP_KEY)
     let appKey = import.meta.env.PUBLIC_PUSHER_APP_KEY ?? "";
     sock = new Pusher(appKey, {
-      cluster: "eu",
+      cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER,
     });
     channel = sock.subscribe(`private-${room}`);
 
@@ -91,12 +95,73 @@
       if (data.id !== session!.user!.id) {
         other = data;
       }
+      if (myCardOffer.filter((x) => x).length != 0)
+        channel.trigger("client-select", myCardOffer);
+    });
+    channel.bind("client-select", (data: (CardType | undefined)[]) => {
+      hisCardOffer = data;
+    });
+
+    channel.bind("client-agree", async (agreed: boolean) => {
+      console.log("HeAgreed!");
+      heAgreed = agreed.agreed;
+
+      if (meAgreed) {
+        const { id } = await trpc.createOffer.mutate({
+          offeredCards: myCardOfferIds.filter((c) => c) as string[],
+          receivedCards: hisCardOffer
+            .map((x) => x?.id)
+            .filter((c) => c) as string[],
+          user: other!.id,
+        });
+        channel.trigger("client-offer", id);
+      }
+    });
+
+    channel.bind("client-offer", async (offerId: string) => {
+      const offer = await trpc.getOffer.query({
+        id: offerId,
+      });
+
+      if (offer.offeredCards.length != hisCardOffer.filter((c) => c).length) {
+        console.log("Offer Received is not complete. Please try again", 1);
+        toast.error("Offer Received is not complete. Please try again");
+        return;
+      }
+      if (offer.receivedCards.length != myCardOffer.filter((c) => c).length) {
+        console.log("Offer Received is not complete. Please try again", 2);
+        toast.error("Offer Received is not complete. Please try again");
+        return;
+      }
+      if (offer.offerer.id !== other?.id) {
+        console.log("Offer Received is not complete. Please try again", 3);
+        toast.error("Offer Received is not complete. Please try again");
+        return;
+      }
+      if (offer.receiver.id !== session?.user?.id) {
+        console.log("Offer Received is not complete. Please try again", 4);
+        toast.error("Offer Received is not complete. Please try again");
+        return;
+      }
+
+      await trpc.acceptOffer.mutate({
+        offerId: offerId,
+      });
+      console.log("Received Offer", offer);
+
+      toast.success("Trade Complete!");
     });
 
     return () => {
       sock.disconnect();
     };
   });
+
+  // $effect(() => {
+  //   if(heAgreed && meAgreed) {
+  //     await trpc.
+  //   }
+  // })
 </script>
 
 {other?.name}
@@ -121,6 +186,7 @@
           onclick={(e) => {
             e.stopPropagation();
             myCardOffer[index] = undefined;
+            channel.trigger("client-select", myCardOffer);
           }}>X</button
         >
       {:else}
@@ -135,7 +201,7 @@
   {#each hisCardOffer as card}
     <div class="h-[20rem] w-[17.5rem] bg-slate-800 rounded-xl">
       {#if card}
-        <Card {card} height={25} />
+        <Card {card} height={20} />
       {:else}
         <span>No Card Selected</span>
       {/if}
@@ -143,9 +209,22 @@
   {/each}
 </div>
 
+<div>
+  <button
+    onclick={() => {
+      console.log("Trigger agree true");
+      channel.trigger("client-agree", {
+        agreed: true,
+      });
+      meAgreed = true;
+    }}>Accept</button
+  >
+  <span>Other Agreed {heAgreed}</span>
+</div>
+
 <Modal title="Select Card" bind:modal={selectModal} boxClasses="w-[100vw]">
   <div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">
-    {#each myCards ?? [] as card}
+    {#each myCards?.filter((c) => !myCardOfferIds.includes(c.id)) ?? [] as card}
       <div
         class=""
         onclick={() => {
@@ -153,6 +232,7 @@
           console.log(myCardOffer);
           selectModal?.close();
           toast.success("Card Selected");
+          channel.trigger("client-select", myCardOffer);
         }}
       >
         <Card

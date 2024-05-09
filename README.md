@@ -23,6 +23,12 @@ GITHUB_CLIENT_SECRET=XXXX
 
 AUTH_SECRET=somerandomstring
 AUTH_TRUST_HOST=true
+
+# Optional - For trading ui
+PUBLIC_PUSHER_APP_KEY=
+PUBLIC_PUSHER_APP_CLUSTER=
+PUSHER_APP_ID=
+PUSHER_APP_SECRET=
 ```
 
 if you are not on localhostlike github codespaces you will need to add this option:
