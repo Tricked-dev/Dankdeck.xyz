@@ -101,7 +101,8 @@ module default {
     }
 
     type Card {
-        required property number -> int64;
+        required property number -> int64 {
+        };
         required property createdAt -> datetime {
             default := datetime_current();
         };

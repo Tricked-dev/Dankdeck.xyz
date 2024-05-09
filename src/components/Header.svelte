@@ -155,11 +155,11 @@
             setTimeout(() => {
               const element = document.documentElement;
 
-              element.scrollIntoView({
-                behavior: "smooth",
-                block: "end",
-                inline: "end",
-              });
+              // element.scrollIntoView({
+              //   behavior: "smooth",
+              //   block: "end",
+              //   inline: "end",
+              // });
             }, 20);
           }}
         >

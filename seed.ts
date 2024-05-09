@@ -45,6 +45,9 @@ function splitArray(array: any[], chunkSize: number) {
 }
 
 for (const smallerArray of splitArray(res, 500) as any[]) {
+  smallerArray.forEach((element) => {
+    delete element["content"];
+  });
   const result = await query.run(client, {
     items: smallerArray
       .map((x: any) => ({

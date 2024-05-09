@@ -7,7 +7,7 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 
 export const claimDelay = 1000 * 60 * 15;
-// export const claimDelay = 1000;
+// export const claimDelay = 0;
 
 export const dailyMoney = 100;
 
