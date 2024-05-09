@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import type { Card as CardType } from "@db/schema";
   import Card from "./card/Card.svelte";
-  import Pusher from "pusher-js/worker";
+  import type Pusher from "pusher-js";
   import type { Channel } from "pusher-js";
   import Modal from "./Modal.svelte";
   import { trpc } from "@/lib/api";
@@ -48,7 +48,8 @@
   let meAgreed = $state(false);
   let heAgreed = $state(false);
 
-  onMount(() => {
+  onMount(async () => {
+    const { default: Pusher } = await import("pusher-js");
     // console.log(import.meta.env.PUBLIC_PUSHER_APP_KEY)
     let appKey = import.meta.env.PUBLIC_PUSHER_APP_KEY ?? "";
     sock = new Pusher(appKey, {
@@ -152,6 +153,12 @@
       toast.success("Trade Complete!");
     });
 
+    // return () => {
+    //   sock.disconnect();
+    // };
+  });
+
+  onMount(() => {
     return () => {
       sock.disconnect();
     };
