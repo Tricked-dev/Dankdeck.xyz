@@ -87,7 +87,16 @@ module default {
         required property slug -> str;
         required property description -> str;
         required property name -> str;
-        required property img -> str;
+        property shortId -> int64;
+        property partOf -> str;
+        property origin -> str;
+        property stars -> int64;
+        property views -> int64;
+        property nsfw -> bool;
+        property year -> int32;
+        property tags -> array<str>;
+        property type -> str;
+        property idx -> int32;
         constraint exclusive on (.slug);
     }
 
@@ -154,8 +163,12 @@ module default {
         required link receiver -> User {
             on target delete delete source;
         }
-        multi offeredCards: Card;
-        multi receivedCards: Card;
+        multi offeredCards: Card {
+            on target delete allow;
+        };
+        multi receivedCards: Card {
+            on target delete allow;
+        };
         required property createdAt -> datetime {
             default := datetime_current();
         }

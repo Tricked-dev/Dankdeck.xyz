@@ -29,16 +29,20 @@
       ? "hover:scale-105 duration-200 shadow-sm hover:shadow-accent hover:z-40"
       : "",
   );
+  let bg = $derived(
+    `image-set("https://r2.dankdeck.xyz/${card?.meme?.shortId}.avif" type("image/avif"),"https://r2.dankdeck.xyz/${card?.meme?.shortId}.png" type("image/png"));`,
+  );
 </script>
 
+<!-- style:background-image={bg}
+  style:height={`${height}rem`}
+  style:width={`${width}rem`}
+  style:--bg={bg} -->
 <!-- style:view-transition-name={card.id} -->
-
 <a
   href={noHref ? undefined : href ? href : `/card/${card.id}`}
   class="bg-primary-content bg-center bg-cover rounded-lg relative block {classes} {extraClasses}"
-  style:background-image={`url(${card.meme.img})`}
-  style:height={`${height}rem`}
-  style:width={`${width}rem`}
+  style="background-image: {bg}; height: {height}rem; width: {width}rem;"
 >
   {#if price != undefined}
     <div class="absolute top-0 left-0 text-xl font-bold p-1">

@@ -24,8 +24,6 @@
     "better-sqlite3": "^9.6.0",
     "daisyui": "^4.10.2",
     "edgedb": "^1.5.4",
-    "partykit": "latest",
-    "partysocket": "^1.0.1",
     "pusher": "^5.2.0",
     "pusher-js": "^8.4.0-rc2",
     "svelte": "next",

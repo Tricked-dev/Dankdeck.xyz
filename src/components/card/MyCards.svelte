@@ -11,6 +11,8 @@
   onMount(() => {
     setCards(cards);
     mounted = true;
+
+    console.log(r.cards);
   });
 </script>
 

@@ -9,13 +9,12 @@ export async function getCardsView(id: string) {
         number,
         meme: {
             id,
-            img,
+            shortId,
             name,
             description
         }
     }
     filter .userId = <uuid>$id
-    limit 200
 `,
     {
       id,
@@ -34,7 +33,7 @@ export async function getCard(id: string) {
     createdAt,
     meme: {
       id,
-      img,
+      shortId,
       name,
       description
     },

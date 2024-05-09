@@ -65,7 +65,7 @@ select(insert Card {
     name,
     description,
     slug,
-    img
+    shortId
   },
   number
 }
