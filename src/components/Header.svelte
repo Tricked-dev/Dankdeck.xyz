@@ -226,7 +226,7 @@
     >
     <button
       class="btn btn-outline"
-      on:click={() => {
+      onclick={() => {
         dailyPopup?.close();
       }}>Procrastinate</button
     >
