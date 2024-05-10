@@ -23,7 +23,10 @@ export const trpc = createTRPCClient<AppRouter>({
   ],
 });
 
-export const tr = async <T>(fn: () => Promise<T> | T): Promise<T> | null => {
+export const tr = async <T>(
+  fn: () => Promise<T> | T,
+  err?: (err: any) => Promise<unknown> | unknown,
+): Promise<Awaited<T> | null> => {
   try {
     return await fn();
   } catch (e) {
@@ -36,5 +39,7 @@ export const tr = async <T>(fn: () => Promise<T> | T): Promise<T> | null => {
       console.error(e);
       console.error("A error occurred check logs for more info");
     }
+    await err?.(e);
+    return null;
   }
 };

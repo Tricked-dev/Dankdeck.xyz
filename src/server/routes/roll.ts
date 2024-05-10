@@ -1,46 +1,11 @@
+import type { Card, User } from "@db/schema";
+
 import { TRPCError } from "@trpc/server";
-import type { User } from "@db/schema";
 import { claimDelay } from "@/lib/interfaces";
 import { client } from "client";
 import { protectedProcedure } from "../trpc";
 
-export const roll = protectedProcedure.query(async ({ ctx }) => {
-  const [{ cardClaimedAt }] = (await client.query(
-    `select User {
-     cardClaimedAt
-    }
-  filter
-    .id = <uuid>$user
-  limit
-    1
-  `,
-    {
-      user: ctx.session?.user?.id,
-    },
-  )) as User[];
-
-  if (cardClaimedAt && Date.now() - +cardClaimedAt < claimDelay) {
-    throw new TRPCError({
-      code: "TOO_MANY_REQUESTS",
-      message: "Card already claimed recently",
-    });
-  }
-
-  await client.query(
-    `
-  update User
-  filter
-    .id = <uuid>$user
-  set {
-    cardClaimedAt := <datetime>$now
-  }
-  `,
-    {
-      now: new Date(),
-      user: ctx.session?.user?.id,
-    },
-  );
-
+export async function rollOnce(userId: string | undefined) {
   const [randomMeme] = await client.query(
     `
   select Meme
@@ -82,9 +47,51 @@ export const roll = protectedProcedure.query(async ({ ctx }) => {
   }
   `,
     {
-      user: ctx.session?.user?.id,
+      user: userId,
       memeId: randomMeme.id,
     },
   );
+  return card as Card;
+}
+
+export const roll = protectedProcedure.query(async ({ ctx }) => {
+  const [{ cardClaimedAt }] = (await client.query(
+    `select User {
+     cardClaimedAt
+    }
+  filter
+    .id = <uuid>$user
+  limit
+    1
+  `,
+    {
+      user: ctx.session?.user?.id,
+    },
+  )) as User[];
+
+  if (cardClaimedAt && Date.now() - +cardClaimedAt < claimDelay) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Card already claimed recently",
+    });
+  }
+
+  await client.query(
+    `
+  update User
+  filter
+    .id = <uuid>$user
+  set {
+    cardClaimedAt := <datetime>$now
+  }
+  `,
+    {
+      now: new Date(),
+      user: ctx.session?.user?.id,
+    },
+  );
+
+  let card = await rollOnce(ctx.session?.user?.id);
+
   return card;
 });

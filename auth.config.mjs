@@ -16,7 +16,7 @@ export default defineConfig({
   adapter: EdgeDBAdapter(client),
   pages: {
     signIn: "/login",
-
+    newUser: "/cards?onboard=1"
   },
   callbacks: {
     session: async ({ session, user }) => {

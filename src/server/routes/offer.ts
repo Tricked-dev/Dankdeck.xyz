@@ -92,7 +92,7 @@ export const acceptOffer = protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input: data }) => {
-    const [offer] = await client.query(
+    const [offer] = (await client.query(
       `
       select TradeOffer {
         id,
@@ -115,7 +115,7 @@ export const acceptOffer = protectedProcedure
       {
         id: data.offerId,
       },
-    );
+    )) as TradeOffer[];
     if (!offer) {
       throw new TRPCError({
         code: "NOT_FOUND",

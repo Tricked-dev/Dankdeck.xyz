@@ -6,6 +6,7 @@ import { cancel } from "./routes/cancel";
 import { daily } from "./routes/daily";
 import { getCard } from "./routes/getCard";
 import { mycards } from "./routes/mycards";
+import { onBoard } from "./routes/onboard";
 import { roll } from "./routes/roll";
 import { sell } from "./routes/sell";
 import { user } from "./routes/user";
@@ -22,4 +23,5 @@ export const appRouter = router({
   getOffer: getOffer,
   createOffer: createOffer,
   acceptOffer: acceptOffer,
+  onBoard: onBoard,
 });

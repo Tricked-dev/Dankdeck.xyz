@@ -3,6 +3,8 @@
   import r, { setCards } from "@/lib/state.svelte";
   import Card from "@/components/card/Card.svelte";
   import { onMount } from "svelte";
+  import toast from "svelte-french-toast";
+  import { tr, trpc } from "@/lib/api";
   interface Props {
     cards: CardType[];
   }
@@ -12,7 +14,26 @@
     setCards(cards);
     mounted = true;
 
-    console.log(r.cards);
+    let onboardingUrl =
+      new URLSearchParams(window.location.search).get("onboard") == "1";
+
+    if (onboardingUrl || !r.cards?.length) {
+      if (onboardingUrl) {
+        toast.success("Hello first time user");
+      }
+      tr(
+        async () => {
+          const cards = (await trpc.onBoard.mutate()) as unknown as CardType[];
+
+          await setCards([...cards, ...(r.cards ?? [])]);
+
+          window.history.pushState({}, "", "/cards");
+        },
+        () => {
+          window.history.pushState({}, "", "/cards");
+        },
+      );
+    }
   });
 </script>
 
