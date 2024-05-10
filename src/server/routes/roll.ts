@@ -51,37 +51,36 @@ export const roll = protectedProcedure.query(async ({ ctx }) => {
 
   const card = await client.query(
     `
-with
-  data := (select Card.number filter Card.meme.id = <uuid>$memeId),
-  min_val := min(data),
-  all_nums := range_unpack(range(1, min({min_val+1+count(data), 999999}))),
-  number := min(all_nums FILTER NOT (all_nums in data)),
-select(insert Card {
-    meme :=  (
-      select Meme
-      filter .id = <uuid>$memeId
-    ),
-    user := (
-        select User
-        filter .id = <uuid>$user
-        limit 1
-    ),
-    claimedBy := (
-        select User
-        filter .id = <uuid>$user
-        limit 1
-    ),
-    number := number,
-}) {
-  meme: {
-    name,
-    description,
-    slug,
-    shortId
-  },
-  number
-}
-`,
+  with
+    data := (select Card.number filter Card.meme.id = <uuid>$memeId),
+    min_val := min(data),
+    all_nums := range_unpack(range(1, 5000 if count(data) > 400 else 500)),
+  select(insert Card {
+      meme :=  (
+        select Meme
+        filter .id = <uuid>$memeId
+      ),
+      user := (
+          select User
+          filter .id = <uuid>$user
+          limit 1
+      ),
+      claimedBy := (
+          select User
+          filter .id = <uuid>$user
+          limit 1
+      ),
+      number := (select all_nums FILTER NOT (all_nums in data) order by random() limit 1),
+  }) {
+    meme: {
+      name,
+      description,
+      slug,
+      shortId
+    },
+    number
+  }
+  `,
     {
       user: ctx.session?.user?.id,
       memeId: randomMeme.id,
