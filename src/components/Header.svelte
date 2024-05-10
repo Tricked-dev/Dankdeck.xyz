@@ -6,8 +6,9 @@
   import r, { setCards, setUserInfo } from "@/lib/state.svelte";
   import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
   import Modal from "./Modal.svelte";
-  import { trpc } from "@/lib/api";
+  import { tr, trpc } from "@/lib/api";
   import { Toaster } from "svelte-french-toast";
+  import { signIn } from "auth-astro/client";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -32,22 +33,24 @@
   let visible = $state(true);
 
   async function updateUser() {
-    let user = await trpc.user.query();
-    // console.log(t);
-    if (!r.user) {
-      timeLeft = Math.max(
-        DAY - (+new Date() - +new Date(user.dailyClaimedAt!)),
-        0,
-      );
-      if (timeLeft == 0) {
-        dailyPopup?.showModal();
+    await tr(async () => {
+      let user = await trpc.user.query();
+      // console.log(t);
+      if (!r.user) {
+        timeLeft = Math.max(
+          DAY - (+new Date() - +new Date(user.dailyClaimedAt!)),
+          0,
+        );
+        if (timeLeft == 0) {
+          dailyPopup?.showModal();
+        }
       }
-    }
-    setUserInfo(user);
-    balance = user.balance;
-    localStorage.setItem("balance", balance.toString());
-    localStorage.setItem("lastClaimedAt", new Date().toString());
-    runCountDown();
+      setUserInfo(user);
+      balance = user.balance;
+      localStorage.setItem("balance", balance.toString());
+      localStorage.setItem("lastClaimedAt", new Date().toString());
+      runCountDown();
+    });
   }
 
   let timeLeft = $state(0);
@@ -62,6 +65,7 @@
   }
 
   onMount(() => {
+    if (!session) return;
     balance = parseInt(localStorage.getItem("balance") ?? "0");
     updateUser();
     runCountDown();
@@ -129,72 +133,89 @@
 <div class="navbar bg-base-300">
   <div class="flex-1 flex gap-2">
     <a href="/" class="btn btn-ghost text-xl">Dank Deck</a>
-    <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
+    {#if session}
+      <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
+    {/if}
   </div>
 
   <div class="flex-none gap-2">
-    <div class="p-2 bg-base-200 rounded-2xl w-32">
-      <span class="text-primary" bind:this={balanceElement}><Money /></span>
-      {r.user?.balance ?? balance}
-    </div>
-
-    <div class="form-control">
-      {#if timeLeft > 0}
-        <button class="btn" disabled={true}>
-          Roll new card {Math.ceil(timeLeft / 1000)}s left
-        </button>
-      {:else}
-        <button
-          class="btn"
-          onclick={async () => {
-            await trpc.roll.query();
-            await updateUser();
-            let cards = await trpc.mycards.query();
-            setCards(cards);
-            // svelte is a little bit *slow*
-            setTimeout(() => {
-              const element = document.documentElement;
-
-              // element.scrollIntoView({
-              //   behavior: "smooth",
-              //   block: "end",
-              //   inline: "end",
-              // });
-            }, 20);
-          }}
-        >
-          Roll new card
-        </button>
-      {/if}
-    </div>
-
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-        <div class="w-10 rounded-full">
-          <img alt="Tailwind CSS Navbar component" src={session?.user?.image} />
-        </div>
+    {#if session}
+      <div class="p-2 bg-base-200 rounded-2xl w-32">
+        <span class="text-primary" bind:this={balanceElement}><Money /></span>
+        {r.user?.balance ?? balance}
       </div>
-      <ul
-        tabindex="0"
-        class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-      >
-        <li>
-          <a class="justify-between" href="/users/{session?.user?.id}">
-            Profile
-            <span class="badge">New</span>
-          </a>
-        </li>
-        <li><a>Settings</a></li>
-        <li
-          onclick={() => {
-            signOut();
-            window.location.href = "/login";
-          }}
+
+      <div class="form-control">
+        {#if timeLeft > 0}
+          <button class="btn" disabled={true}>
+            Roll new card {Math.ceil(timeLeft / 1000)}s left
+          </button>
+        {:else}
+          <button
+            class="btn"
+            onclick={async () => {
+              await tr(async () => {
+                await trpc.roll.query();
+                await updateUser();
+                let cards = await trpc.mycards.query();
+                setCards(cards);
+                // svelte is a little bit *slow*
+                setTimeout(() => {
+                  const element = document.documentElement;
+
+                  // element.scrollIntoView({
+                  //   behavior: "smooth",
+                  //   block: "end",
+                  //   inline: "end",
+                  // });
+                }, 20);
+              });
+            }}
+          >
+            Roll new card
+          </button>
+        {/if}
+      </div>
+
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full">
+            <img
+              alt="Tailwind CSS Navbar component"
+              src={session?.user?.image}
+            />
+          </div>
+        </div>
+        <ul
+          tabindex="0"
+          class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
         >
-          <a>Logout</a>
-        </li>
-      </ul>
-    </div>
+          <li>
+            <a class="justify-between" href="/users/{session?.user?.id}">
+              Profile
+              <span class="badge">New</span>
+            </a>
+          </li>
+          <li><a>Settings</a></li>
+          <li
+            onclick={() => {
+              signOut();
+              window.location.href = "/login";
+            }}
+          >
+            <a>Logout</a>
+          </li>
+        </ul>
+      </div>
+    {:else}
+      <button
+        class="btn btn-outline btn-primary w-52 animate-pulse tooltip tooltip-bottom"
+        data-tip="Or create a account :)"
+        onclick={() => signIn("github")}
+      >
+        Login into DankDeck</button
+      >
+    {/if}
   </div>
 </div>
 

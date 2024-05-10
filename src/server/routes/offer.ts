@@ -92,7 +92,6 @@ export const acceptOffer = protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input: data }) => {
-    console.log("123");
     const [offer] = await client.query(
       `
       select TradeOffer {
@@ -117,7 +116,6 @@ export const acceptOffer = protectedProcedure
         id: data.offerId,
       },
     );
-    console.log("1233");
     if (!offer) {
       throw new TRPCError({
         code: "NOT_FOUND",
@@ -132,7 +130,6 @@ export const acceptOffer = protectedProcedure
     }
     const offeredCards = offer.offeredCards.map((c) => c.id);
     const receivedCards = offer.receivedCards.map((c) => c.id);
-    console.log("12337");
     await client.query(
       `
       update TradeOffer
@@ -146,7 +143,6 @@ export const acceptOffer = protectedProcedure
         id: data.offerId,
       },
     );
-    console.log("123351");
     await client.query(
       `
       update Card
@@ -163,7 +159,6 @@ export const acceptOffer = protectedProcedure
         userId: ctx.session.user?.id,
       },
     );
-    console.log("12331234");
     await client.query(
       `
       update Card
@@ -180,7 +175,6 @@ export const acceptOffer = protectedProcedure
         userId: offer.offerer.id,
       },
     );
-    console.log("1234323");
     await client.query(
       `
       delete BinAuction

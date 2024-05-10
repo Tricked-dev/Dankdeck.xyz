@@ -1,6 +1,8 @@
-import { createTRPCClient, httpBatchLink } from "@trpc/client";
+import { TRPCClientError, createTRPCClient, httpBatchLink } from "@trpc/client";
 
 import type { AppRouter } from "../server";
+import { signIn } from "auth-astro/client";
+import toast from "svelte-french-toast";
 
 export const trpc = createTRPCClient<AppRouter>({
   links: [
@@ -20,3 +22,19 @@ export const trpc = createTRPCClient<AppRouter>({
     }),
   ],
 });
+
+export const tr = async <T>(fn: () => Promise<T> | T): Promise<T> | null => {
+  try {
+    return await fn();
+  } catch (e) {
+    if (e instanceof TRPCClientError) {
+      if (e.message == "NOT_AUTHENTICATED") {
+        await signIn("github");
+      }
+      toast.error(e.message);
+    } else {
+      console.error(e);
+      console.error("A error occurred check logs for more info");
+    }
+  }
+};

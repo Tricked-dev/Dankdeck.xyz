@@ -23,7 +23,10 @@ export const protectedProcedure = t.procedure.use(
     const { ctx } = opts;
 
     if (!ctx.session?.user) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "NOT_AUTHENTICATED",
+      });
     }
     return opts.next({
       ctx: {

@@ -5,7 +5,7 @@
   import Money from "@/components/icons/Money.svelte";
   import Modal from "@/components/Modal.svelte";
   import toast, { Toaster } from "svelte-french-toast";
-  import { trpc } from "@/lib/api";
+  import { tr, trpc } from "@/lib/api";
   import { TRPCClientError } from "@trpc/client";
   import { setUserInfo } from "@/lib/state.svelte";
 
@@ -36,7 +36,7 @@
   });
 
   async function sell() {
-    try {
+    await tr(async () => {
       let bin = (await trpc.sell.mutate({
         cardId: card.id,
         price: sellPrice,
@@ -48,13 +48,7 @@
 
       let user = await trpc.user.query();
       setUserInfo(user);
-    } catch (e) {
-      if (e instanceof TRPCClientError) {
-        toast.error(e.message);
-      } else {
-        toast.error("Something went wrong, check logs for more info");
-      }
-    }
+    });
   }
 </script>
 
@@ -79,19 +73,13 @@ TODO: make text better vosible on light backgrounds
             class="btn btn-lg w-[50%] max-w-[15rem]"
             disabled={false}
             onclick={async () => {
-              try {
+              await tr(async () => {
                 await trpc.cancel.mutate({
                   cardId: card.id,
                 });
                 toast.success("Successfully cancelled auction");
                 card.auction = [];
-              } catch (e) {
-                if (e instanceof TRPCClientError) {
-                  toast.error(e.message);
-                } else {
-                  toast.error("Something went wrong, check logs for more info");
-                }
-              }
+              });
             }}
           >
             Cancel auction
@@ -219,7 +207,7 @@ TODO: make text better vosible on light backgrounds
     <button
       class="ml-auto btn btn-primary min-w-24"
       onclick={async () => {
-        try {
+        await tr(async () => {
           await trpc.buy.mutate({
               cardId: card.id,
               price: card.auction[0]?.price,
@@ -229,13 +217,7 @@ TODO: make text better vosible on light backgrounds
 
           let user = await trpc.user.query();
           setUserInfo(user);
-        }catch(e) {
-          if (e instanceof TRPCClientError) {
-            toast.error(e.message);
-          } else {
-            toast.error("Something went wrong, check logs for more info");
-          }
-        }
+        })
       }}
     >
       Buy

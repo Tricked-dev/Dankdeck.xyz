@@ -66,7 +66,6 @@ Go to `/login` to login with github and done!
 - Add confetti and make the game feel more gamey
 - a11y - would be cool if everyone could play this game
 - Automatically log back in when session expires
-- Hide elements when not logged in
 - Card favoriting
 - Card showcase
 - Trading ui improvements

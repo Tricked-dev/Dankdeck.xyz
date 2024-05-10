@@ -6,7 +6,7 @@
   import type Pusher from "pusher-js";
   import type { Channel } from "pusher-js";
   import Modal from "./Modal.svelte";
-  import { trpc } from "@/lib/api";
+  import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
   interface Props {
     room: string;
@@ -108,21 +108,27 @@
       heAgreed = agreed.agreed;
 
       if (meAgreed) {
-        const { id } = await trpc.createOffer.mutate({
-          offeredCards: myCardOfferIds.filter((c) => c) as string[],
-          receivedCards: hisCardOffer
-            .map((x) => x?.id)
-            .filter((c) => c) as string[],
-          user: other!.id,
+        await tr(async () => {
+          const { id } = await trpc.createOffer.mutate({
+            offeredCards: myCardOfferIds.filter((c) => c) as string[],
+            receivedCards: hisCardOffer
+              .map((x) => x?.id)
+              .filter((c) => c) as string[],
+            user: other!.id,
+          });
+          channel.trigger("client-offer", id);
         });
-        channel.trigger("client-offer", id);
       }
     });
 
     channel.bind("client-offer", async (offerId: string) => {
-      const offer = await trpc.getOffer.query({
-        id: offerId,
+      const offer = await tr(async () => {
+        return await trpc.getOffer.query({
+          id: offerId,
+        });
       });
+
+      if (!offer) return;
 
       if (offer.offeredCards.length != hisCardOffer.filter((c) => c).length) {
         console.log("Offer Received is not complete. Please try again", 1);

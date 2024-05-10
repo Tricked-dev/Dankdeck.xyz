@@ -15,7 +15,8 @@ export default defineConfig({
   ],
   adapter: EdgeDBAdapter(client),
   pages: {
-    signIn: "/login"
+    signIn: "/login",
+
   },
   callbacks: {
     session: async ({ session, user }) => {
