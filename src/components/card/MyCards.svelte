@@ -5,11 +5,16 @@
   import { onMount } from "svelte";
   import toast from "svelte-french-toast";
   import { tr, trpc } from "@/lib/api";
+  import Modal from "../Modal.svelte";
   interface Props {
     cards: CardType[];
   }
   let { cards }: Props = $props();
   let mounted = $state(false);
+
+  let onBoardDialog: HTMLDialogElement | undefined = $state();
+
+  let obtainedCards: CardType[] = $state([]);
   onMount(() => {
     setCards(cards);
     mounted = true;
@@ -23,11 +28,15 @@
       }
       tr(
         async () => {
-          const cards = (await trpc.onBoard.mutate()) as unknown as CardType[];
+          const cards = (await trpc.onBoard.mutate())
+            .cards as unknown as CardType[];
+          setCards([...cards, ...(r.cards ?? [])]);
+          obtainedCards = cards;
 
-          await setCards([...cards, ...(r.cards ?? [])]);
+          onBoardDialog?.showModal();
 
           window.history.pushState({}, "", "/cards");
+          setCards((await trpc.mycards.query()) as unknown as CardType[]);
         },
         () => {
           window.history.pushState({}, "", "/cards");
@@ -48,3 +57,22 @@
     {/each}
   {/if}
 </div>
+
+<Modal
+  title="Hello claim your first 5 cards"
+  bind:modal={onBoardDialog}
+  boxClasses="w-[100vw]"
+>
+  <div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">
+    {#each obtainedCards as card}
+      <Card extraClasses="" {card} height={25} unbox />
+    {/each}
+  </div>
+
+  <button
+    class="btn btn-outline btn-primary"
+    onclick={() => {
+      onBoardDialog?.close();
+    }}>Done</button
+  >
+</Modal>

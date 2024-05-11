@@ -12,7 +12,8 @@ export function setUserInfo(user: any) {
 let cards: Card[] | undefined = $state(undefined);
 
 export function setCards(c: Card[]) {
-  cards = c;
+  let cardIds = new Set();
+  cards = c.filter((card) => !cardIds.has(card.id) && cardIds.add(card.id));
 }
 
 export default {

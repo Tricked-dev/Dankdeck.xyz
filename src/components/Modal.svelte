@@ -6,16 +6,18 @@
     children: Snippet;
     title: string;
     boxClasses?: string;
+    onClose?: () => unknown | Promise<unknown>;
   }
   let {
     modal = $bindable<HTMLDialogElement>(),
     children,
     title,
     boxClasses = "",
+    onClose,
   }: Props = $props();
 </script>
 
-<dialog class="modal" bind:this={modal}>
+<dialog class="modal" bind:this={modal} onclose={onClose}>
   <div class="modal-box max-w-[80rem] {boxClasses}">
     <form class="flex items-center justify-between" method="dialog">
       <h3 class="font-bold text-lg">{title}</h3>

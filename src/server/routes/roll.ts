@@ -51,7 +51,7 @@ export async function rollOnce(userId: string | undefined) {
       memeId: randomMeme.id,
     },
   );
-  return card as Card;
+  return card[0] as Card;
 }
 
 export const roll = protectedProcedure.query(async ({ ctx }) => {
