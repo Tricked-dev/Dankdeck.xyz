@@ -13,6 +13,7 @@
   let mounted = $state(false);
 
   let onBoardDialog: HTMLDialogElement | undefined = $state();
+  let confettiCanvas: HTMLCanvasElement | undefined = $state();
 
   let obtainedCards: CardType[] = $state([]);
   onMount(() => {
@@ -62,10 +63,11 @@
   title="Hello claim your first 5 cards"
   bind:modal={onBoardDialog}
   boxClasses="w-[100vw]"
+  backdrop={canvas}
 >
   <div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">
     {#each obtainedCards as card}
-      <Card extraClasses="" {card} height={25} unbox />
+      <Card extraClasses="" {card} height={25} unbox canvas={confettiCanvas} />
     {/each}
   </div>
 
@@ -76,3 +78,10 @@
     }}>Done</button
   >
 </Modal>
+
+{#snippet canvas()}
+  <canvas
+    bind:this={confettiCanvas}
+    class="top-0 left-0 absolute z-50 w-full h-full pointer-events-none"
+  ></canvas>
+{/snippet}

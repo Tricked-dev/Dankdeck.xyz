@@ -7,10 +7,16 @@
 </script>
 
 <meta property="og:description" content={card.meme.description} />
-<meta property="og:image" content={card.meme.img} />
+<meta
+  property="og:image"
+  content={`https://r2.tricked.dev/${card.meme.shortId}.png`}
+/>
 <meta property="og:title" content={card.meme.name} />
 <meta name="twitter:description" content={card.meme.description} />
-<meta name="twitter:image" content={card.meme.img} />
+<meta
+  name="twitter:image"
+  content={`https://r2.tricked.dev/${card.meme.shortId}.png`}
+/>
 <meta name="twitter:title" content={card.meme.name} />
 <meta
   name="description"

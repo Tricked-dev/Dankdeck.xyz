@@ -9,6 +9,7 @@
   import { tr, trpc } from "@/lib/api";
   import { Toaster } from "svelte-french-toast";
   import { signIn } from "auth-astro/client";
+  import { doConfetti } from "@/lib/utils";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -91,6 +92,8 @@
 
   let loader: HTMLDivElement | undefined = $state();
 
+  let rollBtn: HTMLButtonElement | undefined = $state();
+
   onMount(() => {
     const showLoaderAfter = 500;
     let hasLoaded = false;
@@ -147,12 +150,13 @@
 
       <div class="form-control">
         {#if timeLeft > 0}
-          <button class="btn" disabled={true}>
+          <button class="btn" bind:this={rollBtn} disabled={true}>
             Roll new card {Math.ceil(timeLeft / 1000)}s left
           </button>
         {:else}
           <button
             class="btn"
+            bind:this={rollBtn}
             onclick={async () => {
               await tr(async () => {
                 await trpc.roll.query();
@@ -170,6 +174,13 @@
                   // });
                 }, 20);
               });
+
+              doConfetti(rollBtn, [
+                { p: 150, s: 120, a: -130, v: 25 + Math.random() * 5 },
+                { p: 110, s: 100, a: -100, v: 40 + Math.random() * 10 },
+                { p: 150, s: 300, a: -140, v: 35 + Math.random() * 6 },
+                { p: 300, s: 50, a: -160, v: 30 + Math.random() * 20 },
+              ]);
             }}
           >
             Roll new card

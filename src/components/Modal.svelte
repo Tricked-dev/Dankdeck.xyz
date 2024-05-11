@@ -7,6 +7,7 @@
     title: string;
     boxClasses?: string;
     onClose?: () => unknown | Promise<unknown>;
+    backdrop?: Snippet;
   }
   let {
     modal = $bindable<HTMLDialogElement>(),
@@ -14,6 +15,7 @@
     title,
     boxClasses = "",
     onClose,
+    backdrop,
   }: Props = $props();
 </script>
 
@@ -28,4 +30,7 @@
   </div>
 
   <button class="modal-backdrop" onclick={() => modal?.close()}></button>
+  {#if backdrop}
+    {@render backdrop()}
+  {/if}
 </dialog>

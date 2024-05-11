@@ -1,4 +1,4 @@
-import type { User } from "@db/schema";
+import type { Card, User } from "@db/schema";
 import { z, type infer as inf } from "zod";
 
 export const SECOND = 1000;
@@ -6,8 +6,8 @@ export const MINUTE = 60 * SECOND;
 export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 
-export const claimDelay = 1000 * 60 * 15;
-// export const claimDelay = 0;
+// export const claimDelay = 1000 * 60 * 15;
+export const claimDelay = 0;
 
 export const dailyMoney = 100;
 
@@ -40,4 +40,8 @@ export type CancelAuction = inf<typeof cancelAuction>;
 export type ApiUser = User & {
   cardCount: number;
   cardsClaimedCount: number;
+};
+
+export type ApplicationCard = Card & {
+  unbox?: boolean;
 };

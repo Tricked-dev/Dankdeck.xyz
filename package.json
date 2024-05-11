@@ -21,6 +21,7 @@
     "@trpc/server": "next",
     "astro": "^4.8.2",
     "auth-astro": "^4.1.1",
+    "canvas-confetti": "^1.9.3",
     "daisyui": "^4.11.1",
     "edgedb": "^1.5.5",
     "pusher": "^5.2.0",
@@ -33,6 +34,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
     "@edgedb/generate": "^0.5.3",
     "bun-types": "^1.1.8",
     "prettier": "^3.2.5",

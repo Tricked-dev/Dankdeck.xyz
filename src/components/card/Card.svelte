@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { Card } from "@db/schema.ts";
   import Money from "@/components/icons/Money.svelte";
+  import type { ApplicationCard } from "@/lib/interfaces";
+  import { doConfetti } from "@/lib/utils";
   interface Props {
-    card: Card;
+    card: ApplicationCard;
     height: number;
     price?: number;
     href?: string;
@@ -10,6 +12,7 @@
     hoverEffect?: boolean;
     extraClasses?: string;
     unbox?: boolean;
+    canvas?: HTMLCanvasElement;
   }
   let {
     card,
@@ -20,6 +23,7 @@
     hoverEffect,
     extraClasses,
     unbox,
+    canvas,
   }: Props = $props();
 
   let ratio = 14 / 16;
@@ -43,6 +47,7 @@
   style:width={`${width}rem`}
   style:--bg={bg} -->
 <!-- style:view-transition-name={card.id} -->
+
 <a
   href={noHref ? undefined : href ? href : `/card/${card.id}`}
   class="card bg-center rounded-lg relative block {shouldOpen
@@ -50,7 +55,19 @@
     : 'cursor-pointer'} {classes} {extraClasses}"
   style="height: {height}rem; width: {width}rem;"
   onclick={(e) => {
-    if (unbox && !open) e.preventDefault();
+    if (unbox && !open) {
+      e.preventDefault();
+      doConfetti(
+        undefined,
+        [
+          { p: 150, s: 360, a: 0, v: 25 + Math.random() * 5 },
+          { p: 110, s: 360, a: 0, v: 40 + Math.random() * 10 },
+          { p: 150, s: 360, a: 0, v: 35 + Math.random() * 6 },
+          { p: 300, s: 360, a: 0, v: 30 + Math.random() * 20 },
+        ],
+        canvas,
+      );
+    }
     open = true;
   }}
 >
