@@ -65,7 +65,9 @@ Go to `/login` to login with github and done!
 - Add account deletion process with memes being put on auction on delete
 - Add confetti and make the game feel more gamey
 - a11y - would be cool if everyone could play this game
-- Automatically log back in when session expires
 - Card favoriting
 - Card showcase
-- Trading ui improvements
+- click on like a meme name or something and see existing rolled cards to view them and stuff
+- a no nsfw option maybe? or something cause nsfw memes do exist and are marked
+- a better user info ui /user/id
+- better filtering on the marketplace filter by tags origin time and stuff
