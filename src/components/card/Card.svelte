@@ -45,7 +45,7 @@
 <!-- style:view-transition-name={card.id} -->
 <a
   href={noHref ? undefined : href ? href : `/card/${card.id}`}
-  class="card bg-center bg-cover rounded-lg relative block {shouldOpen
+  class="card bg-center rounded-lg relative block {shouldOpen
     ? 'flipped'
     : 'cursor-pointer'} {classes} {extraClasses}"
   style="height: {height}rem; width: {width}rem;"
@@ -55,7 +55,11 @@
   }}
 >
   <div class="card-inner w-full h-full relative">
-    <div class="card-front rounded-lg">Hello world</div>
+    <div
+      class="card-front rounded-lg text-4xl text-center flex justify-center align-middle items-center"
+    >
+      <span> Open new card </span>
+    </div>
 
     <div
       class="card-back bg-primary-content rounded-lg"
