@@ -71,3 +71,4 @@ Go to `/login` to login with github and done!
 - a no nsfw option maybe? or something cause nsfw memes do exist and are marked
 - a better user info ui /user/id
 - better filtering on the marketplace filter by tags origin time and stuff
+- Trading socket changes - detect multiple people or something - dont allow 3 people etc
