@@ -198,8 +198,10 @@
           </li>
           <li><a>Settings</a></li>
           <li
-            onclick={() => {
+            onclick={async () => {
+              await fetch("/api/clearCookies");
               signOut();
+
               window.location.href = "/login";
             }}
           >
@@ -211,7 +213,10 @@
       <button
         class="btn btn-outline btn-primary w-52 animate-pulse tooltip tooltip-bottom"
         data-tip="Or create a account :)"
-        onclick={() => signIn("github")}
+        onclick={async () => {
+          await fetch("/api/clearCookies");
+          signIn("github");
+        }}
       >
         Login into DankDeck</button
       >
