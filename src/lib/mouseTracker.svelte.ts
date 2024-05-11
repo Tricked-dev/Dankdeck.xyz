@@ -3,6 +3,12 @@ export const mouse = $state({
   y: 0,
 });
 
+declare global {
+  interface Window {
+    mouseLoaded: boolean;
+  }
+}
+
 if (typeof window !== "undefined" && !window.mouseLoaded) {
   window.mouseLoaded = true;
   window.addEventListener("mousemove", (e) => {

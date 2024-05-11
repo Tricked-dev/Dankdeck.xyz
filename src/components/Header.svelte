@@ -158,29 +158,18 @@
             class="btn"
             bind:this={rollBtn}
             onclick={async () => {
-              await tr(async () => {
-                await trpc.roll.query();
-                await updateUser();
-                let cards = await trpc.mycards.query();
-                setCards(cards);
-                // svelte is a little bit *slow*
-                setTimeout(() => {
-                  const element = document.documentElement;
-
-                  // element.scrollIntoView({
-                  //   behavior: "smooth",
-                  //   block: "end",
-                  //   inline: "end",
-                  // });
-                }, 20);
-              });
-
               doConfetti(rollBtn, [
                 { p: 150, s: 120, a: -130, v: 25 + Math.random() * 5 },
                 { p: 110, s: 100, a: -100, v: 40 + Math.random() * 10 },
                 { p: 150, s: 300, a: -140, v: 35 + Math.random() * 6 },
                 { p: 300, s: 50, a: -160, v: 30 + Math.random() * 20 },
               ]);
+              await tr(async () => {
+                await trpc.roll.query();
+                await updateUser();
+                let cards = await trpc.mycards.query();
+                setCards(cards);
+              });
             }}
           >
             Roll new card

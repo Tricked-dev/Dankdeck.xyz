@@ -171,19 +171,21 @@ TODO: make text better vosible on light backgrounds
 
 <Modal title="Sell {card?.meme.name}" bind:modal={sellDialog}>
   <label class="form-control w-full mt-2">
-    <div class="label">
-      <span class="label-text">Sell price:</span>
-    </div>
-    <label class="input input-bordered flex items-center gap-2">
-      <Money />
-      <input
-        type="number"
-        class="grow"
-        min="3"
-        max="9999999"
-        bind:value={sellPrice}
-      />
-    </label>
+    <form onsubmit={sell}>
+      <div class="label">
+        <span class="label-text">Sell price:</span>
+      </div>
+      <label class="input input-bordered flex items-center gap-2">
+        <Money />
+        <input
+          type="number"
+          class="grow"
+          min="3"
+          max="9999999"
+          bind:value={sellPrice}
+        />
+      </label>
+    </form>
     <div class="label">
       <span class="label-text-alt"
         >It will cost you <Money />
