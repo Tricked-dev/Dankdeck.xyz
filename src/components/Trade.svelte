@@ -199,6 +199,13 @@
     };
   });
 
+  function setAgreed(agreed: boolean) {
+    meAgreed = agreed;
+    channel.trigger("client-agree", {
+      agreed,
+    });
+  }
+
   // $effect(() => {
   //   if(heAgreed && meAgreed) {
   //     await trpc.
@@ -258,8 +265,28 @@
         <img src={other?.image} alt={other?.name} class="rounded-full w-16" />
         <span class="my-auto">
           {other?.name}
+          {#if heAgreed}<span class="text-green-700 text-xl">(Accepted)</span>
+          {:else}<span class="text-red-700 text-xl">(Not Accepted)</span>{/if}
           <span class="text-sm"><br /> Is offering: </span>
         </span>
+        {#if meAgreed}
+          <button
+            class="ml-auto btn btn-error"
+            onclick={() => {
+              setAgreed(false);
+            }}>Cancel Accept</button
+          >
+        {:else if heAgreed}
+          <button
+            class="ml-auto btn btn-success"
+            onclick={() => setAgreed(true)}>Confirm Trade</button
+          >
+        {:else}
+          <button
+            class="ml-auto btn btn-success"
+            onclick={() => setAgreed(true)}>Confirm</button
+          >
+        {/if}
       </div>
     {:else}
       Waiting for other person..
@@ -278,19 +305,6 @@
       {@render CardView(card, undefined, undefined)}
     {/each}
   </div>
-</div>
-
-<div>
-  <button
-    onclick={() => {
-      console.log("Trigger agree true");
-      channel.trigger("client-agree", {
-        agreed: true,
-      });
-      meAgreed = true;
-    }}>Accept</button
-  >
-  <span>Other Agreed {heAgreed}</span>
 </div>
 
 <Modal title="Select Card" bind:modal={selectModal} boxClasses="w-[100vw]">
