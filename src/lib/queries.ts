@@ -1,5 +1,5 @@
 import type { Card } from "@db/schema";
-import { client } from "client";
+import { client } from "@/client";
 
 export async function getCardsView(id: string) {
   const cards = await client.query(

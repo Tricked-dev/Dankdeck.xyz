@@ -8,6 +8,7 @@
   import Modal from "./Modal.svelte";
   import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
+   import {page} from "$app/stores"
   interface Props {
     room: string;
     session: Awaited<ReturnType<typeof getSession>>;
@@ -117,7 +118,7 @@
 
       if (meAgreed) {
         await tr(async () => {
-          const { id } = await trpc.createOffer.mutate({
+          const { id } = await trpc($page).createOffer.mutate({
             offeredCards: myCardOfferIds.filter((c) => c) as string[],
             receivedCards: hisCardOffer
               .map((x) => x?.id)
@@ -131,7 +132,7 @@
 
     channel.bind("client-offer", async (offerId: string) => {
       const offer = await tr(async () => {
-        return await trpc.getOffer.query({
+        return await trpc($page).getOffer.query({
           id: offerId,
         });
       });
@@ -159,7 +160,7 @@
         return;
       }
 
-      await trpc.acceptOffer.mutate({
+      await trpc($page).acceptOffer.mutate({
         offerId: offerId,
       });
       console.log("Received Offer", offer);
@@ -208,7 +209,7 @@
 
   // $effect(() => {
   //   if(heAgreed && meAgreed) {
-  //     await trpc.
+  //     await trpc($page).
   //   }
   // })
 </script>
@@ -245,7 +246,7 @@
       {@render CardView(card,
         async () => {
           tr(async() => {
-            myCards = await trpc.mycards.query() as unknown as CardType[];
+            myCards = await trpc($page).mycards.query() as unknown as CardType[];
             idx = index
             selectModal?.showModal();
           })

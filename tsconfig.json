@@ -1,11 +1,21 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "types": ["bun-types"],
-    "paths": {
-      "@db/*": ["./dbschema/*"],
-      "@/*": ["./src/*"]
-    }
-  }
+	"extends": "./.svelte-kit/tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"moduleResolution": "bundler",
+		"baseUrl": ".",
+		"types": ["bun-types"],
+		"noUnusedParameters": false
+		// "paths": {
+		// 	"@db/*": ["./dbschema/*"],
+		// 	"@/*": ["./src/*"]
+		// }
+	}
 }

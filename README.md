@@ -1,74 +1,38 @@
-# Astro Starter Kit: Minimal
+# create-svelte
 
-## Pre-requisites
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-Create a quick github application:
+## Creating a project
 
-<https://github.com/settings/developers>
+If you're seeing this, you've probably already done this step. Congrats!
 
-set the callback url to:
+```bash
+# create a new project in the current directory
+npm create svelte@latest
 
-`http://localhost:4321/api/auth/callback/github`
-
-Or the url of your forwarded codespace port
-
-`https://SOME_GIBBERISH-4321.app.github.dev/api/auth/callback/github`
-
-.env:
-
-```ini
-# itll start without these for now.
-GITHUB_CLIENT_ID=XXXX
-GITHUB_CLIENT_SECRET=XXXX
-
-AUTH_SECRET=somerandomstring
-AUTH_TRUST_HOST=true
-
-# Optional - For trading ui
-PUBLIC_PUSHER_APP_KEY=
-PUBLIC_PUSHER_APP_CLUSTER=
-PUSHER_APP_ID=
-PUSHER_APP_SECRET=
-```
-
-if you are not on localhostlike github codespaces you will need to add this option:
-
-```ini
-AUTH_URL=https://SOME_GIBBERISH-4321.app.github.dev/ # Leading slash is important
-```
-
-and run
-
-```sh
-wget "https://github.com/Tricked-dev/kymdb/raw/master/memes.db?raw" -O memes.db
-edgedb project init
-bunx @edgedb/generate interfaces --file dbschema/schema.ts
-bunx @edgedb/generate edgeql-js --target ts
-bun seed.ts
+# create a new project in my-app
+npm create svelte@latest my-app
 ```
 
 ## Developing
 
-```sh
-edgedb instance start -I codereview # or your instance name / only once per session, takes a while
-bun run --bun dev
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-Go to `/login` to login with github and done!
+## Building
 
-## Design file:
+To create a production version of your app:
 
-[Figma file](https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&mode=design&t=StK8x9t6zxXJdtnS-1)
+```bash
+npm run build
+```
 
-## Todo:
+You can preview the production build with `npm run preview`.
 
-- Add account deletion process with memes being put on auction on delete
-- Add confetti and make the game feel more gamey
-- a11y - would be cool if everyone could play this game
-- Card favoriting
-- Card showcase
-- click on like a meme name or something and see existing rolled cards to view them and stuff
-- a no nsfw option maybe? or something cause nsfw memes do exist and are marked
-- a better user info ui /user/id
-- better filtering on the marketplace filter by tags origin time and stuff
-- Trading socket changes - detect multiple people or something - dont allow 3 people etc
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

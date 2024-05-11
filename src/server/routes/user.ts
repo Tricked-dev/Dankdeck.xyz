@@ -1,10 +1,10 @@
-import type { ApiUser } from "@/lib/interfaces";
-import { client } from "client";
-import { protectedProcedure } from "../trpc";
+import type { ApiUser } from '@/lib/interfaces';
+import { client } from '@/client';
+import { protectedProcedure } from '../trpc';
 
 export const user = protectedProcedure.query(async ({ ctx }) => {
-  const [body] = await client.query(
-    `
+	const [body] = await client.query(
+		`
     select User {
         id,
         balance,
@@ -20,10 +20,10 @@ export const user = protectedProcedure.query(async ({ ctx }) => {
     filter User.id = <uuid>$user
     limit 1
   `,
-    {
-      user: ctx.session.user?.id,
-    },
-  );
+		{
+			user: ctx.session.user?.id
+		}
+	);
 
-  return body as ApiUser;
+	return body as ApiUser;
 });

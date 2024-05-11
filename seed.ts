@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { client } from "./client";
+import { client } from "./rewrite2svelte/src/client";
 import e from "./dbschema/edgeql-js";
 
 const db = new Database("./memes.db");

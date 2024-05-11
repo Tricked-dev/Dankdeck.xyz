@@ -1,11 +1,6 @@
----
-import { getSession } from "auth-astro/server";
-import Layout from "@/layouts/Layout.astro";
-import MyCards from "@/components/card/MyCards.svelte";
-import { client } from "../../../../client";
-import User from "@/components/User.svelte";
-const session = await getSession(Astro.request);
-
+import {client} from "@/client"
+import {getCard} from "@/lib/queries"
+export const load: LayoutServerLoad = async (event) => {
 const [user] = await client.query(
   `
     select User {
@@ -32,11 +27,10 @@ const [user] = await client.query(
     limit 1
 `,
   {
-    id: Astro.params.user,
+    id: event.params.user,
   }
 );
----
-
-<Layout session={session}>
-  <User user={user} client:load />
-</Layout>
+	return {
+		user:user
+	};
+};

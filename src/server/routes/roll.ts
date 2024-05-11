@@ -1,21 +1,21 @@
-import type { Card, User } from "@db/schema";
+import type { Card, User } from '@db/schema';
 
-import { TRPCError } from "@trpc/server";
-import { claimDelay } from "@/lib/interfaces";
-import { client } from "client";
-import { protectedProcedure } from "../trpc";
+import { TRPCError } from '@trpc/server';
+import { claimDelay } from '@/lib/interfaces';
+import { client } from '@/client';
+import { protectedProcedure } from '../trpc';
 
 export async function rollOnce(userId: string | undefined) {
-  const [randomMeme] = await client.query(
-    `
+	const [randomMeme] = await client.query(
+		`
   select Meme
   order by random()
   limit 1
-  `,
-  );
+  `
+	);
 
-  const card = await client.query(
-    `
+	const card = await client.query(
+		`
   with
     data := (select Card.number filter Card.meme.id = <uuid>$memeId),
     min_val := min(data),
@@ -46,17 +46,17 @@ export async function rollOnce(userId: string | undefined) {
     number
   }
   `,
-    {
-      user: userId,
-      memeId: randomMeme.id,
-    },
-  );
-  return card[0] as Card;
+		{
+			user: userId,
+			memeId: randomMeme.id
+		}
+	);
+	return card[0] as Card;
 }
 
 export const roll = protectedProcedure.query(async ({ ctx }) => {
-  const [{ cardClaimedAt }] = (await client.query(
-    `select User {
+	const [{ cardClaimedAt }] = (await client.query(
+		`select User {
      cardClaimedAt
     }
   filter
@@ -64,20 +64,20 @@ export const roll = protectedProcedure.query(async ({ ctx }) => {
   limit
     1
   `,
-    {
-      user: ctx.session?.user?.id,
-    },
-  )) as User[];
+		{
+			user: ctx.session?.user?.id
+		}
+	)) as User[];
 
-  if (cardClaimedAt && Date.now() - +cardClaimedAt < claimDelay) {
-    throw new TRPCError({
-      code: "TOO_MANY_REQUESTS",
-      message: "Card already claimed recently",
-    });
-  }
+	if (cardClaimedAt && Date.now() - +cardClaimedAt < claimDelay) {
+		throw new TRPCError({
+			code: 'TOO_MANY_REQUESTS',
+			message: 'Card already claimed recently'
+		});
+	}
 
-  await client.query(
-    `
+	await client.query(
+		`
   update User
   filter
     .id = <uuid>$user
@@ -85,13 +85,13 @@ export const roll = protectedProcedure.query(async ({ ctx }) => {
     cardClaimedAt := <datetime>$now
   }
   `,
-    {
-      now: new Date(),
-      user: ctx.session?.user?.id,
-    },
-  );
+		{
+			now: new Date(),
+			user: ctx.session?.user?.id
+		}
+	);
 
-  let card = await rollOnce(ctx.session?.user?.id);
+	let card = await rollOnce(ctx.session?.user?.id);
 
-  return card;
+	return card;
 });

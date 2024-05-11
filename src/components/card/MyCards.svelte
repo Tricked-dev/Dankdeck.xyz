@@ -6,6 +6,7 @@
   import toast from "svelte-french-toast";
   import { tr, trpc } from "@/lib/api";
   import Modal from "../Modal.svelte";
+   import {page} from "$app/stores"
   interface Props {
     cards: CardType[];
   }
@@ -29,7 +30,7 @@
       }
       tr(
         async () => {
-          const cards = (await trpc.onBoard.mutate())
+          const cards = (await trpc($page).onBoard.mutate())
             .cards as unknown as CardType[];
           setCards([...cards, ...(r.cards ?? [])]);
           obtainedCards = cards;
@@ -37,7 +38,7 @@
           onBoardDialog?.showModal();
 
           window.history.pushState({}, "", "/cards");
-          setCards((await trpc.mycards.query()) as unknown as CardType[]);
+          setCards((await trpc($page).mycards.query()) as unknown as CardType[]);
         },
         () => {
           window.history.pushState({}, "", "/cards");

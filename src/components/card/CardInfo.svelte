@@ -8,6 +8,8 @@
   import { tr, trpc } from "@/lib/api";
   import { TRPCClientError } from "@trpc/client";
   import { setUserInfo } from "@/lib/state.svelte";
+   import {page} from "$app/stores"
+   import {page} from "$app/stores"
 
   interface Props {
     card: CardType;
@@ -37,7 +39,7 @@
 
   async function sell() {
     await tr(async () => {
-      let bin = (await trpc.sell.mutate({
+      let bin = (await trpc($page).sell.mutate({
         cardId: card.id,
         price: sellPrice,
       })) as unknown as BinAuction;
@@ -46,7 +48,7 @@
       card.auction.push(bin);
       sellDialog?.close();
 
-      let user = await trpc.user.query();
+      let user = await trpc($page).user.query();
       setUserInfo(user);
     });
   }
@@ -74,7 +76,7 @@ TODO: make text better vosible on light backgrounds
             disabled={false}
             onclick={async () => {
               await tr(async () => {
-                await trpc.cancel.mutate({
+                await trpc($page).cancel.mutate({
                   cardId: card.id,
                 });
                 toast.success("Successfully cancelled auction");
@@ -130,7 +132,7 @@ TODO: make text better vosible on light backgrounds
       Obtained: {new Date(card.createdAt)?.toISOString()}<br />
       <!-- Last Sold for: ${card.last_sold_for}<br /> -->
       Owned by:
-      <a class="link link-hover" href="/users/{card.userId}">{card.user.name}</a
+      <a class="link link-hover" href="/user/{card.userId}">{card.user.name}</a
       >
       {#if card?.meme.year}
         <br />
@@ -217,14 +219,14 @@ TODO: make text better vosible on light backgrounds
       class="ml-auto btn btn-primary min-w-24"
       onclick={async () => {
         await tr(async () => {
-          await trpc.buy.mutate({
+          await trpc($page).buy.mutate({
               cardId: card.id,
               price: card.auction[0]?.price,
           });
-          card =( await trpc.card.query({ cardId: card.id })) as unknown as CardType;
+          card =( await trpc($page).card.query({ cardId: card.id })) as unknown as CardType;
           buyDialog?.close();
 
-          let user = await trpc.user.query();
+          let user = await trpc($page).user.query();
           setUserInfo(user);
         })
       }}
