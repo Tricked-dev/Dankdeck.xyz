@@ -48,27 +48,25 @@
   let meAgreed = $state(false);
   let heAgreed = $state(false);
 
+  let me = {
+    id: session!.user!.id,
+    name: session!.user!.name,
+    image: session!.user!.image,
+  };
+
   onMount(async () => {
     const { default: Pusher } = await import("pusher-js");
     // console.log(import.meta.env.PUBLIC_PUSHER_APP_KEY)
     let appKey = import.meta.env.PUBLIC_PUSHER_APP_KEY ?? "";
     sock = new Pusher(appKey, {
-      cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER,
+      cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER!,
     });
     channel = sock.subscribe(`private-${room}`);
 
-    channel.trigger("client-join", {
-      id: session!.user!.id,
-      name: session!.user!.name,
-      image: session!.user!.image,
-    });
+    channel.trigger("client-join", me);
 
     setTimeout(() => {
-      channel.trigger("client-join", {
-        id: session!.user!.id,
-        name: session!.user!.name,
-        image: session!.user!.image,
-      });
+      channel.trigger("client-join", me);
     }, 500);
 
     const onInfo = (data: UserInfo) => {
@@ -97,19 +95,23 @@
         other = data;
       }
       if (myCardOffer.filter((x) => x).length != 0)
-        channel.trigger("client-select", myCardOffer);
+        channel.trigger("client-select", { cards: myCardOffer, me });
     });
-    channel.bind("client-select", (data: (CardType | undefined)[]) => {
-      hisCardOffer = data;
-      if (meAgreed) {
-        channel.trigger("client-agree", {
-          agreed: true,
-        });
-        meAgreed = false;
-      }
-    });
+    channel.bind(
+      "client-select",
+      (data: { cards: (CardType | undefined)[]; me: UserInfo }) => {
+        hisCardOffer = data.cards;
+        other = data.me;
+        if (meAgreed) {
+          channel.trigger("client-agree", {
+            agreed: false,
+          });
+          meAgreed = false;
+        }
+      },
+    );
 
-    channel.bind("client-agree", async (agreed: boolean) => {
+    channel.bind("client-agree", async (agreed: { agreed: boolean }) => {
       console.log("HeAgreed!");
       heAgreed = agreed.agreed;
 
@@ -163,12 +165,33 @@
       console.log("Received Offer", offer);
 
       toast.success("Trade Complete!");
+
+      channel.trigger("client-trade-completed", {
+        id: offerId,
+      });
+      reset();
+    });
+
+    channel.bind("client-trade-completed", (data) => {
+      toast.success("Trade Complete!");
+      reset();
     });
 
     // return () => {
     //   sock.disconnect();
     // };
   });
+
+  function reset() {
+    for (let i = 0; i < myCardOffer.length; i++) {
+      myCardOffer[i] = undefined;
+    }
+    for (let i = 0; i < hisCardOffer.length; i++) {
+      hisCardOffer[i] = undefined;
+    }
+    heAgreed = false;
+    meAgreed = false;
+  }
 
   onMount(() => {
     return () => {
@@ -182,9 +205,6 @@
   //   }
   // })
 </script>
-
-{other?.name}
-{other?.image}
 
 {#snippet CardView(card, click, click2)}
   <div
@@ -210,49 +230,54 @@
     {/if}
   </div>
 {/snippet}
+<div class="mx-auto flex flex-col gap-2">
+  <span class="text-2xl font-semibold my-2">Dank Deck Trading</span>
 
-<div class="flex gap-3 my-2 mx-auto flex-wrap justify-center">
-  {#each myCardOffer as card, index}
-    {@render CardView(card,
+  <div class="flex gap-3 my-2 flex-wrap justify-center">
+    {#each myCardOffer as card, index}
+      {@render CardView(card,
         async () => {
-          myCards = await trpc.mycards.query() as unknown as CardType[];
-          idx = index
-          selectModal?.showModal();
+          tr(async() => {
+            myCards = await trpc.mycards.query() as unknown as CardType[];
+            idx = index
+            selectModal?.showModal();
+          })
         },
         (e:MouseEvent) => {
             e.stopPropagation();
             myCardOffer[index] = undefined;
-            channel.trigger("client-select", myCardOffer);
+            channel.trigger("client-select", {cards:myCardOffer,me});
           }
         )}
-  {/each}
-</div>
+    {/each}
+  </div>
 
-<div class="max-w-[90rem] w-full mx-auto my-2 font-bold">
-  {#if other}
-    <div class="text-2xl flex gap-3">
-      <img src={other?.image} alt={other?.name} class="rounded-full w-16" />
-      <span class="my-auto">
-        {other?.name}
-        <span class="text-sm"><br /> Is offering: </span>
-      </span>
-    </div>
-  {:else}
-    Waiting for other person..
+  <div class="max-w-full w-full my-2 font-bold">
+    {#if other}
+      <div class="text-2xl flex gap-3">
+        <img src={other?.image} alt={other?.name} class="rounded-full w-16" />
+        <span class="my-auto">
+          {other?.name}
+          <span class="text-sm"><br /> Is offering: </span>
+        </span>
+      </div>
+    {:else}
+      Waiting for other person..
 
-    <button
-      class="btn-xs btn-primary btn"
-      onclick={() => {
-        navigator.clipboard.writeText(window.location.href);
-      }}>Copy Link</button
-    >
-  {/if}
-</div>
+      <button
+        class="btn-xs btn-primary btn"
+        onclick={() => {
+          navigator.clipboard.writeText(window.location.href);
+        }}>Copy Link</button
+      >
+    {/if}
+  </div>
 
-<div class="flex gap-3 my-2 mx-auto flex-wrap justify-center">
-  {#each hisCardOffer as card}
-    {@render CardView(card, undefined, undefined)}
-  {/each}
+  <div class="flex gap-3 my-2 mx-auto flex-wrap justify-center">
+    {#each hisCardOffer as card}
+      {@render CardView(card, undefined, undefined)}
+    {/each}
+  </div>
 </div>
 
 <div>
@@ -278,7 +303,7 @@
           console.log(myCardOffer);
           selectModal?.close();
           toast.success("Card Selected");
-          channel.trigger("client-select", myCardOffer);
+          channel.trigger("client-select", { cards: myCardOffer, me });
         }}
       >
         <Card

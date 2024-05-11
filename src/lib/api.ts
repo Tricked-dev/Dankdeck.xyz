@@ -24,7 +24,7 @@ export const trpc = createTRPCClient<AppRouter>({
 });
 
 export const tr = async <T>(
-  fn: () => Promise<T> | T,
+  fn: () => Promise<T>,
   err?: (err: any) => Promise<unknown> | unknown,
 ): Promise<Awaited<T> | null> => {
   try {
