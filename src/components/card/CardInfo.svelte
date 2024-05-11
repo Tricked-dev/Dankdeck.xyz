@@ -116,7 +116,14 @@ TODO: make text better vosible on light backgrounds
         </button>
       {/if}
 
-      <button class="btn btn-lg w-[50%] max-w-[10rem]" disabled>Trade</button>
+      <button
+        class="btn btn-lg w-[50%] max-w-[10rem]"
+        onclick={() => {
+          window.open(
+            `/trade/${crypto?.randomUUID?.() ?? (Math.random() * 9999) | 0}`,
+          );
+        }}>Trade</button
+      >
     </div>
 
     <div>

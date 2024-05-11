@@ -8,11 +8,16 @@ import { z } from "zod";
 
 export const onBoard = protectedProcedure.mutation(async ({ ctx }) => {
   const userId = ctx.session.user!.id;
-  const [selectedCount] = await client.query(`
+  const [selectedCount] = await client.query(
+    `
     select User {
         cardsClaimedCount := count(.cardsClaimed)
-    }
-    `);
+    }  filter .id = <uuid>$userId
+    `,
+    {
+      userId,
+    },
+  );
 
   if (selectedCount.cardsClaimedCount != 0) {
     throw new TRPCError({

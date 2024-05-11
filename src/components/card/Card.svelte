@@ -62,7 +62,7 @@
     </div>
 
     <div
-      class="card-back bg-primary-content rounded-lg"
+      class="card-back bg-primary-content rounded-lg bg-cover bg-center"
       style="background-image: {bg};"
     >
       {#if price != undefined}

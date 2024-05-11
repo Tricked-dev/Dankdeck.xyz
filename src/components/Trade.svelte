@@ -101,6 +101,12 @@
     });
     channel.bind("client-select", (data: (CardType | undefined)[]) => {
       hisCardOffer = data;
+      if (meAgreed) {
+        channel.trigger("client-agree", {
+          agreed: true,
+        });
+        meAgreed = false;
+      }
     });
 
     channel.bind("client-agree", async (agreed: boolean) => {
@@ -180,45 +186,72 @@
 {other?.name}
 {other?.image}
 
-<div class="flex gap-3 w-full">
+{#snippet CardView(card, click, click2)}
+  <div
+    class="h-[20rem] w-[17.5rem] bg-slate-800 rounded-xl relative"
+    onclick={click}
+  >
+    {#if card}
+      <div class="pointer-events-none">
+        <Card {card} height={20} />
+      </div>
+      {#if click2}
+        <button
+          class="absolute top-0 left-0 text-4xl font-bold p-2 text-white"
+          onclick={click2}>X</button
+        >
+      {/if}
+    {:else}
+      <span
+        class="flex justify-center text-center h-full text-3xl font-semibold {click2
+          ? `hover:text-primary cursor-pointer duration-200`
+          : ``}"><span class="my-auto">No Card Selected</span></span
+      >
+    {/if}
+  </div>
+{/snippet}
+
+<div class="flex gap-3 my-2 mx-auto flex-wrap justify-center">
   {#each myCardOffer as card, index}
-    <div
-      class="h-[20rem] w-[17.5rem] bg-slate-800 rounded-xl relative"
-      onclick={async (each) => {
+    {@render CardView(card,
+        async () => {
           myCards = await trpc.mycards.query() as unknown as CardType[];
           idx = index
           selectModal?.showModal();
-        }}
-    >
-      {#if card}
-        <div class="pointer-events-none">
-          <Card {card} height={20} />
-        </div>
-        <button
-          class="absolute top-0 left-0 text-4xl font-bold p-2 text-white"
-          onclick={(e) => {
+        },
+        (e:MouseEvent) => {
             e.stopPropagation();
             myCardOffer[index] = undefined;
             channel.trigger("client-select", myCardOffer);
-          }}>X</button
-        >
-      {:else}
-        <span>No Card Selected</span>
-      {/if}
-    </div>
+          }
+        )}
   {/each}
 </div>
 
-<hr />
-<div class="flex gap-3 w-full">
-  {#each hisCardOffer as card}
-    <div class="h-[20rem] w-[17.5rem] bg-slate-800 rounded-xl">
-      {#if card}
-        <Card {card} height={20} />
-      {:else}
-        <span>No Card Selected</span>
-      {/if}
+<div class="max-w-[90rem] w-full mx-auto my-2 font-bold">
+  {#if other}
+    <div class="text-2xl flex gap-3">
+      <img src={other?.image} alt={other?.name} class="rounded-full w-16" />
+      <span class="my-auto">
+        {other?.name}
+        <span class="text-sm"><br /> Is offering: </span>
+      </span>
     </div>
+  {:else}
+    Waiting for other person..
+
+    <button
+      class="btn-xs btn-primary btn"
+      onclick={() => {
+        navigator.clipboard.writeText(window.location.href);
+      }}>Copy Link</button
+    >
+  {/if}
+</div>
+
+<div class="flex gap-3 my-2 mx-auto flex-wrap justify-center">
+  {#each hisCardOffer as card}
+    {@render CardView(card, undefined, undefined)}
   {/each}
 </div>
 
