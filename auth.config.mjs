@@ -1,7 +1,6 @@
 import Discord from "@auth/core/providers/discord";
 import { EdgeDBAdapter } from "@auth/edgedb-adapter"
 import GitHub from "@auth/core/providers/github";
-import Discord from "@auth/core/providers/discord";
 import { client } from "./client"
 import { defineConfig } from "auth-astro";
 
