@@ -11,6 +11,7 @@
   import { signIn } from "auth-astro/client";
   import { doConfetti } from "@/lib/utils";
   import type { Card as CardType } from "@db/schema";
+  import Avatar from "./Avatar.svelte";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -181,10 +182,7 @@
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src={session?.user?.image}
-            />
+            <Avatar user={session?.user} size={2.5} />
           </div>
         </div>
         <ul
@@ -192,7 +190,7 @@
           class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
         >
           <li>
-            <a class="justify-between" href="/users/{session?.user?.id}">
+            <a class="justify-between" href="/user/{session?.user?.id}">
               Profile
               <span class="badge">New</span>
             </a>

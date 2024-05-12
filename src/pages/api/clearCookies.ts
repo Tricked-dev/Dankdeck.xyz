@@ -34,4 +34,3 @@ authjs.csrf-token=;
 
   return response;
 };
-2;

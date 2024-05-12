@@ -47,6 +47,17 @@
 <div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">
   <span class="text-4xl font-bold">
     {card.meme.name}
+    {#if session?.user?.id === card.userId}
+      <button
+        class="btn btn-outline btn-success btn-sm"
+        onclick={() =>
+          tr(async () => {
+            trpc.picture.mutate({
+              memeId: card.meme.id,
+            });
+          })}>Set As Profile Picture</button
+      >
+    {/if}
   </span>
 </div>
 <!--

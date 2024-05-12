@@ -2,6 +2,7 @@
   import type { User, Card as CardType } from "@db/schema.ts";
   import Card from "./card/Card.svelte";
   import Money from "./icons/Money.svelte";
+  import Avatar from "./Avatar.svelte";
   interface Props {
     user: User;
   }
@@ -9,7 +10,7 @@
 </script>
 
 <div class="max-w-[70rem] mx-auto my-8 flex flex-row gap-4">
-  <img src={user.image} class="avatar rounded-full h-36 ml-0" alt="avatar" />
+  <Avatar {user} size={9} />
   <div class="mr-auto my-auto flex flex-col">
     <span class="text-3xl font-bold my-auto">{user.name}</span>
     <span>Joined at: {user.createdAt?.toLocaleDateString("en-UK")}</span>

@@ -52,7 +52,7 @@
   let me = {
     id: session!.user!.id,
     name: session!.user!.name,
-    image: session!.user!.image,
+    image: session!.user!.picture,
   };
 
   onMount(async () => {
@@ -90,7 +90,7 @@
       channel.trigger("client-info", {
         id: session!.user!.id,
         name: session!.user!.name,
-        image: session!.user!.image,
+        image: session!.user!.picture,
       });
       if (data.id !== session!.user!.id) {
         other = data;

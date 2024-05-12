@@ -10,6 +10,16 @@ module default {
             default := 100;
         }
 
+        link memePicture -> Meme {
+            on target delete delete source;
+        }
+
+        picture := (
+            'https://r2.dankdeck.xyz/' ++
+            (SELECT <str>.memePicture.shortId) ++
+            '.png'
+        ) IF EXISTS .memePicture ELSE .image;
+
         multi link accounts         := .<user[is Account];
         multi link sessions         := .<user[is Session];
         multi link cards            := .<user[is Card];

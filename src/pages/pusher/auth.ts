@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
     user_id: session.user.id,
     user_info: {
       name: session.user.name,
-      image: session.user.image,
+      image: session.user.picture,
       id: session.user.id,
     },
   };
