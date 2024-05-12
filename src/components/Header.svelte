@@ -136,31 +136,22 @@
   }}
 />
 
-<div class="navbar bg-base-300">
-  <div class="flex-1 flex gap-2">
-    <a href="/" class="btn btn-ghost text-xl">Dank Deck</a>
-    {#if session}
-      <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
-    {/if}
+{#snippet gameInfo(clazz)}
+  <div class="p-2 bg-base-200 rounded-2xl w-32 {clazz}">
+    <span class="text-primary" bind:this={balanceElement}><Money /></span>
+    {r.user?.balance ?? balance}
   </div>
 
-  <div class="flex-none gap-2">
-    {#if session}
-      <div class="p-2 bg-base-200 rounded-2xl w-32">
-        <span class="text-primary" bind:this={balanceElement}><Money /></span>
-        {r.user?.balance ?? balance}
-      </div>
-
-      <div class="form-control">
-        {#if timeLeft > 0}
-          <button class="btn" bind:this={rollBtn} disabled={true}>
-            Roll new card {Math.ceil(timeLeft / 1000)}s left
-          </button>
-        {:else}
-          <button
-            class="btn"
-            bind:this={rollBtn}
-            onclick={async () => {
+  <div class="form-control {clazz}">
+    {#if timeLeft > 0}
+      <button class="btn" bind:this={rollBtn} disabled={true}>
+        Roll new card {Math.ceil(timeLeft / 1000)}s left
+      </button>
+    {:else}
+      <button
+        class="btn"
+        bind:this={rollBtn}
+        onclick={async () => {
               doConfetti(rollBtn, [
                 { p: 150, s: 120, a: -130, v: 25 + Math.random() * 5 },
                 { p: 110, s: 100, a: -100, v: 40 + Math.random() * 10 },
@@ -174,11 +165,24 @@
                 setCards(cards);
               });
             }}
-          >
-            Roll new card
-          </button>
-        {/if}
-      </div>
+      >
+        Roll new card
+      </button>
+    {/if}
+  </div>
+{/snippet}
+
+<div class="navbar bg-base-300 gap-4 md:gap-0">
+  <div class="flex-1 flex gap-2">
+    <a href="/" class="btn btn-ghost text-xl">Dank Deck</a>
+    {#if session}
+      <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
+    {/if}
+  </div>
+
+  <div class="flex-none gap-2">
+    {#if session}
+      {@render gameInfo("hidden md:block")}
 
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
@@ -190,6 +194,7 @@
           tabindex="0"
           class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
         >
+          {@render gameInfo("block md:hidden py-2 w-full")}
           <li>
             <a class="justify-between" href="/user/{session?.user?.id}">
               Profile
