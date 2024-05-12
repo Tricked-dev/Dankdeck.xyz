@@ -49,7 +49,7 @@
     {card.meme.name}
     {#if session?.user?.id === card.userId}
       <button
-        class="btn btn-outline btn-success btn-sm"
+        class="btn btn-outline btn-success btn-sm align-bottom"
         onclick={() =>
           tr(async () => {
             trpc.picture.mutate({
