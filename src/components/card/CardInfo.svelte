@@ -4,28 +4,19 @@
   import Card from "./Card.svelte";
   import Money from "@/components/icons/Money.svelte";
   import Modal from "@/components/Modal.svelte";
-  import toast, { Toaster } from "svelte-french-toast";
+  import toast from "svelte-french-toast";
   import { tr, trpc } from "@/lib/api";
-  import { TRPCClientError } from "@trpc/client";
   import { setUserInfo } from "@/lib/state.svelte";
+  import UserLink from "../UserLink.svelte";
+  import DateView from "../DateView.svelte";
 
   interface Props {
     card: CardType;
     session: Awaited<ReturnType<typeof getSession>>;
   }
   let { card: c, session }: Props = $props();
-  let card = $state(c);
-  const tradeHistory = [
-    {
-      date: Date.now(),
-      type: "sold",
-      price: 20,
-    },
-    {
-      date: Date.now(),
-      type: "obtained",
-    },
-  ];
+  let card: CardType = $state(c);
+
   let sellDialog: HTMLDialogElement | undefined = $state();
   let buyDialog: HTMLDialogElement | undefined = $state();
   let sellPrice = $state(3);
@@ -128,11 +119,10 @@ TODO: make text better vosible on light backgrounds
     </div>
 
     <div>
-      Obtained: {new Date(card.createdAt)?.toISOString()}<br />
+      Obtained: <DateView date={card.createdAt} long={true} /><br />
       <!-- Last Sold for: ${card.last_sold_for}<br /> -->
       Owned by:
-      <a class="link link-hover" href="/users/{card.userId}">{card.user.name}</a
-      >
+      <UserLink id={card.userId} user={card.user} />
       {#if card?.meme.year}
         <br />
         Year: {card?.meme.year}
@@ -156,13 +146,16 @@ TODO: make text better vosible on light backgrounds
     </div>
 
     <div class="mt-auto">
-      <span class="text-2xl font-semibold">Trade History</span>
+      <span class="text-2xl font-semibold">Auction History</span>
       <div class="bg-base-300 h-72 rounded-sm p-1">
-        {#each tradeHistory as item}
+        {#each card?.auctionEntries ?? [] as auction}
           <div>
-            {item.type}
-            {new Date(item.date).toISOString()}
-            {item.price}
+            <span class="text-base-content/80">
+              <DateView date={auction.soldAt} long={true} />
+            </span>
+            <Money />{auction.price} from
+            <UserLink user={auction.seller} />
+            to <UserLink user={auction.buyer} />
           </div>
         {/each}
       </div>

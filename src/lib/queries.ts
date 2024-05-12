@@ -47,6 +47,19 @@ export async function getCard(id: string) {
     },
     auction: {
       price
+    },
+    auctionEntries: {
+      seller: {
+        id,
+        name
+      },
+      buyer: {
+        id,
+        name
+      },
+      createdAt,
+      soldAt,
+      price
     }
   }
   filter .id = <uuid>$cardId
