@@ -116,7 +116,6 @@
     document.addEventListener("astro:before-preparation", before);
     document.addEventListener("astro:after-preparation", after);
 
-    dailyPopup?.showModal();
     return () => {
       document.removeEventListener("astro:before-preparation", before);
       document.removeEventListener("astro:after-preparation", after);
