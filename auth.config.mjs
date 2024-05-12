@@ -1,8 +1,18 @@
 import Discord from "@auth/core/providers/discord";
 import { EdgeDBAdapter } from "@auth/edgedb-adapter"
 import GitHub from "@auth/core/providers/github";
+import Discord from "@auth/core/providers/discord";
 import { client } from "./client"
 import { defineConfig } from "auth-astro";
+
+let extraProviders = []
+
+if (import.meta.env.AUTH_DISCORD_ID) {
+  extraProviders.push(Discord({
+    clientId: import.meta.env.AUTH_DISCORD_ID,
+    clientSecret: import.meta.env.AUTH_DISCORD_SECRET,
+  }))
+}
 
 export default defineConfig({
   baseUrl: import.meta.env.AUTH_URL,
@@ -12,6 +22,7 @@ export default defineConfig({
       clientSecret: import.meta.env.GITHUB_CLIENT_SECRET,
       redirectProxyUrl: import.meta.env.AUTH_URL ? `${import.meta.env.AUTH_URL}api/auth/callback/github` : undefined,
     }),
+    ...extraProviders
   ],
   adapter: {
     ...EdgeDBAdapter(client),

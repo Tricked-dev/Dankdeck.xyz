@@ -219,7 +219,8 @@
         data-tip="Or create a account :)"
         onclick={async () => {
           await fetch("/api/clearCookies");
-          signIn("github");
+
+          window.location.href = "/login";
         }}
       >
         Login into DankDeck</button

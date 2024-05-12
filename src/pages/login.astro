@@ -12,10 +12,14 @@ if (session) {
     <button id="login-gh" class="btn btn-primary w-full my-2"
       >Login Github</button
     >
+     <button id="login-dc" class="btn btn-primary w-full my-2"
+      >Login Discord</button
+    >
   </div>
 
   <script>
     const { signIn, signOut } = await import("auth-astro/client");
     document.querySelector("#login-gh").onclick = () => signIn("github", {});
+    document.querySelector("#login-dc").onclick = () => signIn("discord", {});
   </script>
 </Layout>

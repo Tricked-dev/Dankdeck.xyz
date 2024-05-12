@@ -1,6 +1,10 @@
-import {createClient} from "edgedb";
+import { type Client, createClient } from "edgedb";
 
-let c;
+let c: Client;
+
+declare global {
+  var client: Client;
+}
 
 if (import.meta.env.DEV) {
   if (globalThis.client) {

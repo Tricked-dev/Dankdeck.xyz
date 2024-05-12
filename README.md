@@ -8,11 +8,11 @@ Create a quick github application:
 
 set the callback url to:
 
-`http://localhost:4321/api/auth/callback/github`
+`http://localhost:4321/auth/callback/github`
 
 Or the url of your forwarded codespace port
 
-`https://SOME_GIBBERISH-4321.app.github.dev/api/auth/callback/github`
+`https://SOME_GIBBERISH-4321.app.github.dev/auth/callback/github`
 
 .env:
 
