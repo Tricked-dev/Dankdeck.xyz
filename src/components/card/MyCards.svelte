@@ -6,6 +6,7 @@
   import toast from "svelte-french-toast";
   import { tr, trpc } from "@/lib/api";
   import Modal from "../Modal.svelte";
+  import Cards from "./Cards.svelte";
   interface Props {
     cards: CardType[];
   }
@@ -47,7 +48,7 @@
   });
 </script>
 
-<div class="flex w-full flex-wrap p-4 gap-8 max-w-[80rem] mx-auto">
+<Cards class="max-w-[80rem]">
   {#if !mounted || !r.cards}
     {#each cards as card}
       <Card {card} height={25} />
@@ -57,7 +58,7 @@
       <Card {card} height={25} />
     {/each}
   {/if}
-</div>
+</Cards>
 
 <Modal
   title="Hello claim your first 5 cards"
@@ -65,11 +66,11 @@
   boxClasses="w-[100vw]"
   backdrop={canvas}
 >
-  <div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">
+  <Cards class="max-w-[70rem]">
     {#each obtainedCards as card}
       <Card extraClasses="" {card} height={25} unbox canvas={confettiCanvas} />
     {/each}
-  </div>
+  </Cards>
 
   <button
     class="btn btn-outline btn-primary"

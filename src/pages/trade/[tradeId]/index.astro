@@ -5,6 +5,10 @@ import CardMeta from "@/components/card/CardMeta.svelte";
 import Trade from "@/components/Trade.svelte";
 const session = await getSession(Astro.request);
 const room = Astro.params.tradeId;
+
+if (!session?.user?.id) {
+  return Astro.redirect("/");
+}
 ---
 
 <Layout session={session}>

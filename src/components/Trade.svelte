@@ -8,6 +8,7 @@
   import Modal from "./Modal.svelte";
   import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
+  import Cards from "./card/Cards.svelte";
   interface Props {
     room: string;
     session: Awaited<ReturnType<typeof getSession>>;
@@ -240,7 +241,7 @@
 <div class="mx-auto flex flex-col gap-2">
   <span class="text-2xl font-semibold my-2">Dank Deck Trading</span>
 
-  <div class="flex gap-3 my-2 flex-wrap justify-center">
+  <Cards class="">
     {#each myCardOffer as card, index}
       {@render CardView(card,
         async () => {
@@ -257,7 +258,7 @@
           }
         )}
     {/each}
-  </div>
+  </Cards>
 
   <div class="max-w-full w-full my-2 font-bold">
     {#if other}
@@ -299,16 +300,15 @@
       >
     {/if}
   </div>
-
-  <div class="flex gap-3 my-2 mx-auto flex-wrap justify-center">
+  <Cards class="">
     {#each hisCardOffer as card}
       {@render CardView(card, undefined, undefined)}
     {/each}
-  </div>
+  </Cards>
 </div>
 
 <Modal title="Select Card" bind:modal={selectModal} boxClasses="w-[100vw]">
-  <div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">
+  <Cards class="max-w-[70rem]">
     {#each myCards?.filter((c) => !myCardOfferIds.includes(c.id)) ?? [] as card}
       <div
         class=""
@@ -328,5 +328,5 @@
         />
       </div>
     {/each}
-  </div>
+  </Cards>
 </Modal>

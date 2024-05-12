@@ -10,6 +10,7 @@
   import { Toaster } from "svelte-french-toast";
   import { signIn } from "auth-astro/client";
   import { doConfetti } from "@/lib/utils";
+  import type { Card as CardType } from "@db/schema";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -167,7 +168,7 @@
               await tr(async () => {
                 await trpc.roll.query();
                 await updateUser();
-                let cards = await trpc.mycards.query();
+                let cards = await trpc.mycards.query() as unknown[] as CardType[];
                 setCards(cards);
               });
             }}

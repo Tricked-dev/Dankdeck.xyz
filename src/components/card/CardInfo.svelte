@@ -35,7 +35,8 @@
     if (sellPrice < 1) sellPrice = 3;
   });
 
-  async function sell() {
+  async function sell(e?: SubmitEvent | any) {
+    e?.preventDefault?.();
     await tr(async () => {
       let bin = (await trpc.sell.mutate({
         cardId: card.id,
