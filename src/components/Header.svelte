@@ -116,6 +116,7 @@
     document.addEventListener("astro:before-preparation", before);
     document.addEventListener("astro:after-preparation", after);
 
+    dailyPopup?.showModal();
     return () => {
       document.removeEventListener("astro:before-preparation", before);
       document.removeEventListener("astro:after-preparation", after);
@@ -225,16 +226,25 @@
 
 <Toaster />
 
-<Modal bind:modal={dailyPopup} title="Daily Cash">
-  <div class="py-2">
-    Claim your daily cash!
-    <br />
-    <Money />
-    {dailyMoney}
+<Modal bind:modal={dailyPopup} title="Daily Cash" width="max-w-[32rem]">
+  <div class="mt-8 mb-10 flex flex-col items-center">
+    <Money width="w-24" height="h-24" />
+    <p class="text-2xl font-bold my-2">Congratulation!</p>
+
+    <p class="flex items-center gap-1">
+      You have been awarded with <Money />
+      {dailyMoney} for being a loyal user.
+    </p>
   </div>
-  <div>
+  <div class="flex gap-3">
     <button
-      class="btn btn-primary"
+      class="btn btn-outline ml-auto"
+      onclick={() => {
+        dailyPopup?.close();
+      }}>Procrastinate</button
+    >
+    <button
+      class="btn btn-primary items-center gap-1"
       onclick={async () => {
         //TODO: fancy money up animation
         await trpc.daily.query();
@@ -246,15 +256,8 @@
         dailyPopup?.close();
       }}
     >
-      Claim <Money />
-      {dailyMoney}</button
-    >
-    <button
-      class="btn btn-outline"
-      onclick={() => {
-        dailyPopup?.close();
-      }}>Procrastinate</button
-    >
+      Claim<Money />{dailyMoney}
+    </button>
   </div>
 </Modal>
 
