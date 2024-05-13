@@ -32,9 +32,11 @@ export const tr = async <T>(
   } catch (e) {
     if (e instanceof TRPCClientError) {
       if (e.message == "NOT_AUTHENTICATED") {
-        await signIn("github");
+        // await signIn("github");
+        toast.error("Login required");
+      } else {
+        toast.error(e.message);
       }
-      toast.error(e.message);
     } else {
       console.error(e);
       console.error("A error occurred check logs for more info");
