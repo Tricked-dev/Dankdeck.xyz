@@ -15,11 +15,16 @@ if (session) {
      <button id="login-dc" class="btn btn-primary w-full my-2"
       >Login Discord</button
     >
+
+
+    <form class="my-4" id="login-rs">
+      <input type="email" required class="input input-primary w-full" placeholder="Email">
+          <button  class="btn btn-primary w-full my-2" type="submit"
+      >Login Email</button
+    >
+    </form>
+
   </div>
 
-  <script>
-    const { signIn, signOut } = await import("auth-astro/client");
-    document.querySelector("#login-gh").onclick = () => signIn("github", {});
-    document.querySelector("#login-dc").onclick = () => signIn("discord", {});
-  </script>
+  <script src="@/lib/login.ts"></script>
 </Layout>

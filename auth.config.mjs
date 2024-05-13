@@ -1,8 +1,10 @@
 import Discord from "@auth/core/providers/discord";
 import { EdgeDBAdapter } from "@auth/edgedb-adapter"
 import GitHub from "@auth/core/providers/github";
+import Resend from "@auth/core/providers/resend";
 import { client } from "./client"
 import { defineConfig } from "auth-astro";
+import { sendVerificationRequest } from "./src/lib/emailLogin"
 
 let extraProviders = []
 
@@ -10,6 +12,13 @@ if (import.meta.env.AUTH_DISCORD_ID) {
   extraProviders.push(Discord({
     clientId: import.meta.env.AUTH_DISCORD_ID,
     clientSecret: import.meta.env.AUTH_DISCORD_SECRET,
+  }))
+}
+if (import.meta.env.AUTH_RESEND_KEY) {
+  extraProviders.push(Resend({
+    apiKey: import.meta.env.AUTH_RESEND_KEY,
+    from: "hello@l.dankdeck.xyz",
+    sendVerificationRequest: sendVerificationRequest
   }))
 }
 
