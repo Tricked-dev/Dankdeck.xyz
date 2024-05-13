@@ -55,6 +55,8 @@ export default defineConfig({
             emailVerified,
             name,
             picture,
+            theme,
+            nsfw,
             image
           }
         `,
@@ -75,6 +77,8 @@ export default defineConfig({
           emailVerified,
           name,
           picture,
+          theme,
+          nsfw,
           image
         } filter .id = <uuid>$id;
         `,
@@ -90,6 +94,8 @@ export default defineConfig({
           emailVerified,
           name,
           picture,
+          theme,
+          nsfw,
           image
         } filter .email = <str>$email;
         `,
@@ -109,6 +115,8 @@ export default defineConfig({
           email,
           image,
           name,
+          theme,
+          nsfw,
           picture,
           emailVerified
         }
@@ -140,6 +148,8 @@ export default defineConfig({
           emailVerified,
           image,
           picture,
+          theme,
+          nsfw,
           name
         }
         `,
@@ -166,6 +176,8 @@ export default defineConfig({
             emailVerified,
             picture,
             image,
+            theme,
+            nsfw,
             name
           }
         } filter .sessionToken = <str>$sessionToken;

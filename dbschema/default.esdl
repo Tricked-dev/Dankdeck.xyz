@@ -9,6 +9,12 @@ module default {
         required property balance -> int64 {
             default := 100;
         }
+        required property nsfw -> bool {
+            default := true;
+        }
+        required property theme -> str {
+            default := 'dark';
+        }
 
         link memePicture -> Meme {
             on target delete delete source;

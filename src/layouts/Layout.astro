@@ -7,7 +7,7 @@ const { host } = new URL(Astro.request.url);
 const { session } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" data-theme={session?.user?.theme || "dark"}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

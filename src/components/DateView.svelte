@@ -1,6 +1,6 @@
 <script lang="ts">
   interface Props {
-    date: Date | string | null;
+    date?: Date | string | null;
     long?: boolean;
   }
 

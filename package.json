@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
-    "vercel": "bunx @edgedb/generate interfaces --file dbschema/schema.ts && bunx @edgedb/generate edgeql-js --target ts && astro build",
+    "build": "bun --bun astro build",
+    "vercel": "bunx @edgedb/generate interfaces --file dbschema/schema.ts && bunx @edgedb/generate edgeql-js --target ts && bun --bun astro build",
     "preview": "astro preview",
     "astro": "astro"
   },

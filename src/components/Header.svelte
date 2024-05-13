@@ -8,7 +8,6 @@
   import Modal from "./Modal.svelte";
   import { tr, trpc } from "@/lib/api";
   import { Toaster } from "svelte-french-toast";
-  import { signIn } from "auth-astro/client";
   import { doConfetti } from "@/lib/utils";
   import type { Card as CardType } from "@db/schema";
   import Avatar from "./Avatar.svelte";
@@ -200,7 +199,7 @@
               <span class="badge">New</span>
             </a>
           </li>
-          <li><a>Settings</a></li>
+          <li><a href="/settings">Settings</a></li>
           <li
             onclick={async () => {
               await fetch("/api/clearCookies");

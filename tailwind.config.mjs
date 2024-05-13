@@ -8,6 +8,7 @@ export default {
 	},
 	plugins: [require("daisyui")],
 	daisyui: {
-		logs: false
+		logs: false,
+		themes: require('./themes').default
 	}
 }

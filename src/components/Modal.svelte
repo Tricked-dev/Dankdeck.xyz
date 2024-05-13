@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import { Toaster } from "svelte-french-toast";
+  import {} from "svelte-french-toast";
   interface Props {
     modal?: HTMLDialogElement;
     children: Snippet;
@@ -17,7 +17,7 @@
     boxClasses = "",
     onClose,
     backdrop,
-    width = "max-w-[80rem]" // cant do [80rem] i think
+    width = "max-w-[80rem]", // cant do [80rem] i think
   }: Props = $props();
 </script>
 
@@ -25,7 +25,11 @@
   <div class="modal-box {width} {boxClasses}">
     <form class="flex items-center justify-between" method="dialog">
       <h3 class="font-bold text-lg">{title}</h3>
-      <button class="btn btn-sm btn-circle btn-ghost border-dashed border-5 border-gray-500 border"> ✕ </button>
+      <button
+        class="btn btn-sm btn-circle btn-ghost border-dashed border-5 border-gray-500 border"
+      >
+        ✕
+      </button>
     </form>
 
     {@render children()}

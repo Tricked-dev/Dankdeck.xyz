@@ -1,0 +1,27 @@
+---
+import { getSession } from "auth-astro/server";
+import Layout from "@/layouts/Layout.astro";
+import Profile from "@/components/Profile.svelte";
+const session = await getSession(Astro.request);
+if (!session) {
+  return Astro.redirect("/login");
+}
+const user = await client.querySingle(`
+select User {
+  id,
+  name,
+  image,
+  picture,
+  email,
+  nsfw,
+  theme,
+  createdAt
+} filter .id = <uuid>$userId
+`, {
+  userId: session.user.id
+})
+---
+
+<Layout session={session}>
+  <Profile user={user} client:load />
+</Layout>

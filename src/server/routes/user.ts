@@ -15,6 +15,8 @@ export const user = protectedProcedure.query(async ({ ctx }) => {
         image,
         cardCount := count(.cards),
         cardsClaimedCount := count(.cardsClaimed),
+        nsfw,
+        theme,
         createdAt
     }
     filter User.id = <uuid>$user
