@@ -5,7 +5,7 @@ import CardInfo from "@/components/card/CardInfo.svelte";
 import { client } from "../../../../client";
 import CardMeta from "@/components/card/CardMeta.svelte";
 import { getCard } from "@/lib/queries";
-import type { Card } from "@db/schema";
+import {type BinAuction, type Card } from "@db/schema";
 const session = await getSession(Astro.request);
 
 const cardId = Astro.params.card;
@@ -13,12 +13,55 @@ let cardData: Card;
 try {
   cardData = await getCard(cardId!);
 } catch (e) {
+  console.log(e)
   return Astro.redirect("/404");
 }
+
+let q = `
+  select BinAuction {
+    id,
+    price,
+    card: {
+      id,
+      number,
+      meme: {
+        id,
+        shortId,
+        name,
+        description,
+        year,
+        nsfw
+      }
+    }
+  }
+`
+
+let randomSuggestions = false;
+
+let suggestions = await client.query<BinAuction>(`
+    ${q}
+    filter .card.meme.year = <int32>$year
+    order by random()
+    limit 5
+`, {
+  year: cardData.meme.year
+})
+
+if(!suggestions.length) {
+  randomSuggestions = true
+  suggestions = await client.query<BinAuction>(`
+    ${q}
+    order by random()
+    limit 5
+  `)
+}
+
+console.log(suggestions, randomSuggestions)
+
 ---
 
 <Layout session={session} title={cardData.meme.name + " #" +cardData.number}>
   <CardMeta slot="head" card={cardData} />
 
-  <CardInfo session={session} card={cardData} client:load />
+  <CardInfo session={session} card={cardData} randomSuggestions={randomSuggestions} suggestions={suggestions} client:load />
 </Layout>

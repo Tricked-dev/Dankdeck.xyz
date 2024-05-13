@@ -63,7 +63,6 @@ Go to `/login` to login with github and done!
 ## Todo:
 
 - Add account deletion process with memes being put on auction on delete
-- Add confetti and make the game feel more gamey
 - a11y - would be cool if everyone could play this game
 - Card favoriting
 - Card showcase
@@ -72,3 +71,4 @@ Go to `/login` to login with github and done!
 - a better user info ui /user/id
 - better filtering on the marketplace filter by tags origin time and stuff
 - Trading socket changes - detect multiple people or something - dont allow 3 people etc
+- A user rating / weight (total cards + average card level + money + cards sold maybe)
