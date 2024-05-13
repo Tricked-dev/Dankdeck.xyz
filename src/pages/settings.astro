@@ -2,6 +2,7 @@
 import { getSession } from "auth-astro/server";
 import Layout from "@/layouts/Layout.astro";
 import Profile from "@/components/Profile.svelte";
+import { client } from "client";
 const session = await getSession(Astro.request);
 if (!session) {
   return Astro.redirect("/login");
@@ -18,7 +19,7 @@ select User {
   createdAt
 } filter .id = <uuid>$userId
 `, {
-  userId: session.user.id
+  userId: session.user?.id
 })
 ---
 

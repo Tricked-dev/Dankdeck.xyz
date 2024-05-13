@@ -3,15 +3,15 @@ import { type Client, createClient } from "edgedb";
 let c: Client;
 
 declare global {
-  var client: Client;
+  var cc: Client;
 }
 
 if (import.meta.env.DEV) {
-  if (globalThis.client) {
-    c = globalThis.client;
+  if (globalThis.cc) {
+    c = globalThis.cc;
   } else {
     c = createClient();
-    globalThis.client = c;
+    globalThis.cc = c;
   }
 } else {
   c = createClient();
