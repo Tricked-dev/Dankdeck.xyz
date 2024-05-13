@@ -11,6 +11,7 @@
   import { doConfetti } from "@/lib/utils";
   import type { Card as CardType } from "@db/schema";
   import Avatar from "./Avatar.svelte";
+  import { navigate } from "astro/virtual-modules/transitions-router.js";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -183,7 +184,14 @@
       {@render gameInfo("hidden md:block")}
 
       <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div
+          tabindex="0"
+          role="button"
+          class="btn btn-ghost btn-circle avatar"
+          ondblclick={() => {
+            navigate("/user/" + session?.user?.id);
+          }}
+        >
           <div class="w-10 rounded-full">
             <Avatar user={session?.user} size={2.5} />
           </div>

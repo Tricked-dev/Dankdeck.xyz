@@ -27,7 +27,8 @@ const [user] = await client.query(
             auction: {
                 price
             }
-        }
+        },
+        cardNumber := math::mean(.cards.number)
     }
     filter .id = <uuid>$id
     limit 1
