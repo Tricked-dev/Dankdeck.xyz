@@ -1,7 +1,7 @@
 import { DAY, claimDelay, dailyMoney } from "@/lib/interfaces";
 
 import { TRPCError } from "@trpc/server";
-import type { User } from "@db/schema";
+import { type Card, type User } from "@db/schema";
 import { client } from "client";
 import { protectedProcedure } from "../trpc";
 import { z } from "zod";
@@ -15,7 +15,7 @@ export const cancel = protectedProcedure
   .mutation(async ({ ctx, input: data }) => {
     const id = data.cardId;
 
-    const [card] = await client.query(
+    const [card] = await client.query<Card>(
       `
     select Card {
       userId

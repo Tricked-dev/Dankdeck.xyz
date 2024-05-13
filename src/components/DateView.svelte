@@ -6,7 +6,7 @@
 
   let { date, long }: Props = $props();
 
-  const formatDate = (date: Date | string | null): string => {
+  const formatDate = (date?: Date | string | null): string => {
     if (!date) return ""; // If date is null, return an empty string
 
     const d = new Date(date); // Convert date string to Date object

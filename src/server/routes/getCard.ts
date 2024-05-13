@@ -1,9 +1,5 @@
-import { getCard as getCardView, getCardsView } from "@/lib/queries";
-import { protectedProcedure, publicProcedure } from "../trpc";
-
-import { TRPCError } from "@trpc/server";
-import type { User } from "@db/schema";
-import { client } from "client";
+import { getCard as getCardView } from "@/lib/queries";
+import { publicProcedure } from "../trpc";
 import { z } from "zod";
 
 export const getCard = publicProcedure

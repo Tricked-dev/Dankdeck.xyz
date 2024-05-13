@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { getSession } from "auth-astro/server";
   import { onMount } from "svelte";
-  import type { Card as CardType } from "@db/schema";
+  import type { Card as CardType, User as DbUser } from "@db/schema";
   import Card from "./card/Card.svelte";
   import type Pusher from "pusher-js";
   import type { Channel } from "pusher-js";
@@ -11,7 +11,7 @@
   import Cards from "./card/Cards.svelte";
   interface Props {
     room: string;
-    session: Awaited<ReturnType<typeof getSession>>;
+    session: { user: DbUser };
   }
   let { room, session }: Props = $props();
   let myCards: CardType[] | undefined = $state(undefined);
@@ -78,10 +78,6 @@
       }
     };
     // channel.emit
-
-    channel.bind_global((...props) => {
-      console.log(...props);
-    });
 
     channel.bind("client-info", onInfo);
     channel.bind("client-join", (data: UserInfo) => {
@@ -173,7 +169,7 @@
       reset();
     });
 
-    channel.bind("client-trade-completed", (data) => {
+    channel.bind("client-trade-completed", (_data: unknown) => {
       toast.success("Trade Complete!");
       reset();
     });

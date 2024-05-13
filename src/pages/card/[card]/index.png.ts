@@ -1,9 +1,9 @@
+import type { APIRoute } from "astro";
 import type { Card } from "@db/schema";
-import { ImageResponse } from "@vercel/og";
 import { cardImage } from "@/components/og/card";
 import { getCard } from "@/lib/queries";
 
-export const ALL = async ({ params }) => {
+export const ALL: APIRoute = async ({ params }) => {
   const cardId = params.card;
   let cardData: Card;
   try {

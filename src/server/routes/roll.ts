@@ -1,4 +1,4 @@
-import type { Card, User } from "@db/schema";
+import { type Meme, type Card, type User } from "@db/schema";
 
 import { TRPCError } from "@trpc/server";
 import { claimDelay } from "@/lib/interfaces";
@@ -6,7 +6,7 @@ import { client } from "client";
 import { protectedProcedure } from "../trpc";
 
 export async function rollOnce(userId: string | undefined) {
-  const [randomMeme] = await client.query(
+  const [randomMeme] = await client.query<Meme>(
     `
   select Meme
   order by random()

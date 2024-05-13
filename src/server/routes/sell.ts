@@ -1,4 +1,5 @@
-import type { BinAuction } from "@db/schema";
+import type { BinAuction, User } from "@db/schema";
+
 import { TRPCError } from "@trpc/server";
 import { client } from "client";
 import { protectedProcedure } from "../trpc";
@@ -17,7 +18,7 @@ export const sell = protectedProcedure
   .mutation(async ({ ctx, input: data }) => {
     const tax = Math.ceil(data.price * 0.05);
 
-    const [{ balance }] = await client.query(
+    const [{ balance }] = await client.query<User>(
       `
     select User {
       balance

@@ -8,7 +8,7 @@ import { z } from "zod";
 
 export const onBoard = protectedProcedure.mutation(async ({ ctx }) => {
   const userId = ctx.session.user!.id;
-  const [selectedCount] = await client.query(
+  const [selectedCount] = await client.query<{ cardsClaimedCount: number }>(
     `
     select User {
         cardsClaimedCount := count(.cardsClaimed)

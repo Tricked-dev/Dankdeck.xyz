@@ -17,7 +17,7 @@ export const buy = protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input: data }) => {
-    const [{ balance }] = await client.query(
+    const [{ balance }] = await client.query<User>(
       `
     select User {
       balance

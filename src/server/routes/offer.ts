@@ -16,7 +16,7 @@ export const createOffer = protectedProcedure
   .mutation(async ({ ctx, input: data }) => {
     const myId = ctx.session.user!.id;
     const { user, offeredCards, receivedCards } = data;
-    const [res] = await client.query(
+    const [res] = await client.query<TradeOffer>(
       `
     insert TradeOffer {
       offerer := (

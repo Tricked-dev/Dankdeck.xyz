@@ -27,7 +27,7 @@ export const daily = protectedProcedure.query(async ({ ctx }) => {
     });
   }
 
-  const [{ balance }] = await client.query(
+  const [{ balance }] = await client.query<User>(
     `
 select(
     update User
