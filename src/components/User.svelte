@@ -27,7 +27,7 @@
         class="p-2 bg-base-200 rounded-2xl w-32 tooltip tooltip-bottom text-left"
         data-tip="Average card number"
       >
-        #{user.cardNumber}
+        #{user.cardNumber.toFixed(1)}
       </span>
     </div>
   </div>

@@ -11,6 +11,6 @@ if (!session?.user?.id) {
 }
 ---
 
-<Layout session={session}>
+<Layout session={session} title="Trade">
   <Trade session={session} room={room} client:load />
 </Layout>

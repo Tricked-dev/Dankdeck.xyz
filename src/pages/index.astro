@@ -23,6 +23,6 @@ const auctions = await client.query(`
 `);
 ---
 
-<Layout session={session}>
+<Layout session={session} title="Marketplace">
   <MarketPlace auctions={auctions} client:load />
 </Layout>

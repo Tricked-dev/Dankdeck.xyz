@@ -4,7 +4,10 @@ import App from "../components/MarketPlace.svelte";
 import Header from "@/components/Header.svelte";
 import { ViewTransitions, fade } from "astro:transitions";
 const { host } = new URL(Astro.request.url);
-const { session } = Astro.props;
+const { session, title } = Astro.props;
+
+const desc = "A card collecting game, with memes as cards collectables we have over 6k memes to play with"
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <html lang="en" data-theme={session?.user?.theme || "dark"}>
@@ -14,7 +17,7 @@ const { session } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
-    <title>DankDeck</title>
+    <title>DankDeck | {title}</title>
 
     {
       !host.includes("localhost") && (
@@ -25,7 +28,24 @@ const { session } = Astro.props;
         />
       )
     }
-    <slot name="head" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DankDeck" />
+    <link rel="canonical" href={canonicalURL} />
+    <slot name="head">
+      <meta property="og:description" content={desc} />
+      <meta property="og:title" content={`DankDeck | ${title}`} />
+      <meta name="twitter:description" content={desc} />
+      <meta name="twitter:title" content={`DankDeck | ${title}`} />
+      <meta
+        name="description"
+        content={desc}
+      />
+      <meta
+        name="keywords"
+        content="trading cards, auctions, collectibles"
+      />
+    </slot>
   </head>
   <body
     class="w-screen min-h-screen flex flex-col"

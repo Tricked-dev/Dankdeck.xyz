@@ -13,6 +13,6 @@ if (!session || !session.user) {
 const cards = await getCardsView(session.user.id);
 ---
 
-<Layout session={session}>
+<Layout session={session} title="My Cards">
   <MyCards cards={cards} client:load />
 </Layout>

@@ -14,9 +14,9 @@
 <meta name="twitter:title" content={card.meme.name} />
 <meta
   name="description"
-  content="Card #{card.number} featuring {card.meme.name}. {card.auction[0]
+  content="Card #{card.number} featuring {card.meme.name}. {card.auction?.[0]
     ?.price
-    ? `Selling for for ${card.auction[0]?.price}`
+    ? `Selling for for ${card.auction?.[0]?.price}`
     : ''}"
 />
 <meta

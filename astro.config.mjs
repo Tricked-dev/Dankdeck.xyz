@@ -11,6 +11,7 @@ export default defineConfig({
     output: "server",
     adapter: vercel({}),
     integrations: [svelte(), tailwind(), auth(), react()],
+    site: "https://dankdeck.xyz",
     vite: {
         resolve: {
             alias: {

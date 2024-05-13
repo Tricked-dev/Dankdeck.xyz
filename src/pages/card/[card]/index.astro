@@ -17,7 +17,7 @@ try {
 }
 ---
 
-<Layout session={session}>
+<Layout session={session} title={cardData.meme.name + " #" +cardData.number}>
   <CardMeta slot="head" card={cardData} />
 
   <CardInfo session={session} card={cardData} client:load />
