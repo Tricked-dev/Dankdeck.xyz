@@ -1,6 +1,7 @@
+import type { Card } from "@db/schema";
 import { ImageResponse } from "@vercel/og";
 
-export function cardImage() {
+export function cardImage(card: Card) {
     return new ImageResponse(
         (
             <div
@@ -9,43 +10,35 @@ export function cardImage() {
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: 'white',
                 }}
             >
-                <div tw="bg-gray-50 flex">
-                    <div tw="flex flex-col md:flex-row w-full py-12 px-4 md:items-center justify-between p-8">
-                        <h2 tw="flex flex-col text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 text-left">
-                            <span>Ready to dive in?</span>
-                            <span tw="text-indigo-600">Start your free trial today.</span>
-                        </h2>
-                        <div tw="mt-8 flex md:mt-0">
-                            <div tw="flex rounded-md shadow">
-                                <a
-                                    href="#"
-                                    tw="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white"
-                                >
-                                    Get started
-                                </a>
-                            </div>
-                            <div tw="ml-3 flex rounded-md shadow">
-                                <a
-                                    href="#"
-                                    tw="flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-indigo-600"
-                                >
-                                    Learn more
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                <img
+                    style={{
+                        borderRadius: "10px",
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover",
+                        position: "absolute",
+                        boxShadow: "inset 0px 0px 5px 5px rgba(0, 0, 0, 0.2)",
+                    }}
+                    height={800}
+                    width={700}
+                    src={`https://r2.dankdeck.xyz/${card.meme.shortId}.png`}
+                />
+                <div tw="bg-black text-white w-full mb-auto text-2xl">
+                    DankDeck.xyz
+                </div>
+                <div tw="bg-gray-800/70 text-2xl mt-auto text-right w-full text-white flex p-2 py-0.5">
+                    <div tw="text-lime-500 flex text-xl font-semibold my-auto pr-2">
+                        #{card.number}
+                    </div>   {card.meme.name}
                 </div>
             </div>
         ),
         {
 
-            width: 1200,
-            height: 630,
+            width: 700,
+            height: 800,
         },
     );
 }
