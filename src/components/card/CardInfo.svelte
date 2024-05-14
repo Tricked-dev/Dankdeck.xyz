@@ -55,67 +55,69 @@
   }
 
   const dateFormatter = new Intl.DateTimeFormat(undefined, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
   });
 
   const chartOptions = {
-    series: [{
-      name: 'Price',
-      data: [
-        [new Date('2022-01-01T00:00:00'), 20],
-        [new Date('2022-02-01T00:00:00'), 30],
-        [new Date('2022-03-01T00:00:00'), 40],
-        [new Date('2022-04-01T00:00:00'), 10],
-        [new Date('2022-05-01T00:00:00'), 30]
-      ]
-    }],
+    series: [
+      {
+        name: "Price",
+        data: [
+          [new Date("2022-01-01T00:00:00"), 20],
+          [new Date("2022-02-01T00:00:00"), 30],
+          [new Date("2022-03-01T00:00:00"), 40],
+          [new Date("2022-04-01T00:00:00"), 10],
+          [new Date("2022-05-01T00:00:00"), 30],
+        ],
+      },
+    ],
     chart: {
-      type: 'area',
+      type: "area",
       height: 250,
       zoom: {
-        autoScaleYaxis: true
+        autoScaleYaxis: true,
       },
       toolbar: {
-        show: false
-      }
+        show: false,
+      },
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     markers: {
       size: 0,
-      style: 'hollow',
+      style: "hollow",
     },
     xaxis: {
-      type: 'datetime',
+      type: "datetime",
       tickAmount: 6,
     },
     yaxis: {
       title: {
-        text: 'Price'
+        text: "Price",
       },
     },
     tooltip: {
       x: {
-        format: 'dd MMM yyyy'
-      }
+        format: "dd MMM yyyy",
+      },
     },
     fill: {
-      type: 'gradient',
+      type: "gradient",
       gradient: {
         shadeIntensity: 1,
         inverseColors: false,
         opacityFrom: 0.5,
         opacityTo: 0,
-        stops: [0, 90, 100]
+        stops: [0, 90, 100],
       },
     },
-  }
+  };
 </script>
 
 <!--<div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">-->
@@ -138,13 +140,19 @@
 TODO: make text better vosible on light backgrounds
 
 -->
-<div class="h-full flex w-full p-4 gap-8 max-w-[80rem] mx-auto mt-2 justify-center">
+<div
+  class="h-full flex w-full p-4 gap-8 max-w-[80rem] mx-auto mt-2 justify-center"
+>
   <div class="h-full">
     <Card {card} height={30} />
 
-    <div class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem]">
+    <div
+      class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem]"
+    >
       {#if card?.meme.description}
-        <div class="collapse collapse-arrow join-item border rounded-lg border border-neutral">
+        <div
+          class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+        >
           <input type="checkbox" checked="checked" />
           <div class="collapse-title font-bold flex gap-3">
             <i class="flex w-7 h-7 stroke-white">
@@ -157,7 +165,9 @@ TODO: make text better vosible on light backgrounds
           </div>
         </div>
       {/if}
-      <div class="collapse collapse-arrow join-item border rounded-lg border border-neutral">
+      <div
+        class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+      >
         <input type="checkbox" />
         <div class="collapse-title font-bold flex gap-3 flex items-center">
           <i class="flex w-6 h-6 fill-white scale-95">
@@ -194,7 +204,9 @@ TODO: make text better vosible on light backgrounds
   </div>
 
   <div class="h-full w-[50%] flex flex-col gap-2">
-    <div class="font-bold text-sky-600 uppercase hover:text-sky-300 hover:underline transition-all">
+    <div
+      class="font-bold text-sky-600 uppercase hover:text-sky-300 hover:underline transition-all"
+    >
       {#if card.meme.year}
         Part of the {card.meme.year} collection
       {:else}
@@ -206,7 +218,9 @@ TODO: make text better vosible on light backgrounds
     </div>
     <div>
       Owned by
-      <span class="text-sky-400 hover:text-sky-300 hover:underline transition-all">
+      <span
+        class="text-sky-400 hover:text-sky-300 hover:underline transition-all"
+      >
         <UserLink id={card.userId} user={card.user} />
       </span>
     </div>
@@ -233,13 +247,19 @@ TODO: make text better vosible on light backgrounds
       {/if}
     </div>
 
-    <div class="card card-compact shadow-xl bg-base-200 rounded-lg border border-neutral">
+    <div
+      class="card card-compact shadow-xl bg-base-200 rounded-lg border border-neutral"
+    >
       {#if card.auction?.[0]?.price}
-        <div class="card-body border-b border-neutral flex flex-row items-center">
+        <div
+          class="card-body border-b border-neutral flex flex-row items-center"
+        >
           <i class="flex fill-white h-7 w-7">
             <Clock />
           </i>
-          <div class="text-base font-semibold">Sale ends {dateFormatter.format(new Date())}</div>
+          <div class="text-base font-semibold">
+            Sale ends {dateFormatter.format(new Date())}
+          </div>
         </div>
       {/if}
       <div class="card-body">
@@ -300,7 +320,9 @@ TODO: make text better vosible on light backgrounds
               </button>
             {/if}
           {:else if !session?.user?.id}
-            <button class="flex-1 btn btn-active btn-primary">Not logged in</button>
+            <button class="flex-1 btn btn-active btn-primary"
+              >Not logged in</button
+            >
           {:else if card.auction?.[0]?.price}
             <button
               class="flex-1 btn btn-active btn-primary"
@@ -312,7 +334,9 @@ TODO: make text better vosible on light backgrounds
               Buy now
             </button>
           {:else}
-            <button class="flex-1 btn btn-active btn-primary">Card not for sale</button>
+            <button class="flex-1 btn btn-active btn-primary"
+              >Card not for sale</button
+            >
           {/if}
           <button
             class="flex-1 btn btn-outline"
@@ -329,7 +353,9 @@ TODO: make text better vosible on light backgrounds
     </div>
 
     <div class="w-full card card-compact shadow-xl bg-base-200 mt-4">
-      <div class="collapse collapse-arrow border rounded-lg border border-neutral">
+      <div
+        class="collapse collapse-arrow border rounded-lg border border-neutral"
+      >
         <input type="checkbox" />
         <div class="collapse-title font-bold flex gap-3 flex items-center">
           <i class="flex w-6 h-6 fill-white scale-95">
@@ -339,7 +365,7 @@ TODO: make text better vosible on light backgrounds
         </div>
         <div class="collapse-content border-t border-neutral">
           <div class="pt-4">
-            <Chart options="{chartOptions}" />
+            <Chart options={chartOptions} />
           </div>
         </div>
       </div>
@@ -348,11 +374,13 @@ TODO: make text better vosible on light backgrounds
 </div>
 
 {#if card.auction?.[0]?.price}
-  <div class="h-full flex w-full max-w-[67.50rem] mx-auto justify-center mt-1 mb-5">
+  <div
+    class="h-full flex w-full max-w-[67.50rem] mx-auto justify-center mt-1 mb-5"
+  >
     <div class="w-full card card-compact shadow-xl bg-base-200">
-      <div class="collapse collapse-arrow border rounded-lg border border-neutral">
+      <div class="collapse collapse-arrow border rounded-lg border-neutral">
         <input type="checkbox" />
-        <div class="collapse-title font-bold flex gap-3 flex items-center">
+        <div class="collapse-title font-bold flex gap-3 items-center">
           <i class="flex w-6 h-6 fill-white scale-95">
             <MoreSquare />
           </i>
@@ -363,9 +391,9 @@ TODO: make text better vosible on light backgrounds
           {/if}
         </div>
         <div class="collapse-content border-t border-neutral">
-          <div class="pt-4">
+          <div class="pt-4 flex flex-wrap gap-2 justify-center">
             {#each suggestions as { card }}
-              <Card extraClasses="" {card} height={25} />
+              <Card extraClasses="" {card} height={20} />
             {/each}
           </div>
         </div>
@@ -409,7 +437,7 @@ TODO: make text better vosible on light backgrounds
 
 <style>
   .sell-price {
-    -moz-appearance:textfield;
+    -moz-appearance: textfield;
   }
   .sell-price:is(::-webkit-inner-spin-button, ::-webkit-outer-spin-button) {
     -webkit-appearance: none;
