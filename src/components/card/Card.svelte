@@ -80,7 +80,7 @@
 
     <div class="card-back rounded-lg overflow-hidden">
       <div
-        class="bg-neutral flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2"
+        class="bg-neutral text-neutral-content flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2"
       >
         <div>#{card.number}</div>
         <div>{card.meme.name}</div>
