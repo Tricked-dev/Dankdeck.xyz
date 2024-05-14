@@ -43,11 +43,12 @@ let suggestions:BinAuction[] = []
 try {
  suggestions = await client.query<BinAuction>(`
     ${q}
-    filter .card.meme.year = <int32>$year
+    filter .card.meme.year = <int32>$year and .card.id != <uuid>$id
     order by random()
     limit 5
 `, {
-  year: cardData.meme.year
+  year: cardData.meme.year,
+  id: cardData.id
 })
 }catch(e) {
   //
@@ -58,9 +59,12 @@ if(!suggestions.length) {
   randomSuggestions = true
   suggestions = await client.query<BinAuction>(`
     ${q}
+    filter .card.id != <uuid>$id
     order by random()
     limit 5
-  `)
+  `, {
+    id: cardData.id
+  })
 }
 
 

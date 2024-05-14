@@ -12,29 +12,53 @@ interface Search {
 
 let search: Search = {
   query: "Scumbag Steve",
-  year: 2021,
+  year: 2010,
   type: "Emoticon",
 };
 
-const res = e
-  .select(e.BinAuction, (bin) => ({
-    price: true,
-    card: {
-      number: true,
-      meme: {
-        name: true,
-        description: true,
-        nsfw: true,
-        tags: true,
-        year: true,
-        stars: true,
-        type: true,
+async function searchCard(query: Search) {
+  if (query.query) {
+    const searchExpr = e.for(e.fts.search(e.Meme, "search"), (search) =>
+      e.select({ object: search.object, score: search.score }),
+    );
+
+    const allQuery = e.select(searchExpr, ($) => ({
+      name: $.object.name,
+      score: $.score,
+    }));
+    const all = await allQuery.run(client);
+    console.log(all);
+    return;
+  }
+
+  return;
+
+  const res = e
+    .select(e.BinAuction, (bin) => ({
+      price: true,
+      card: {
+        number: true,
+        meme: {
+          name: true,
+          description: true,
+          nsfw: true,
+          tags: true,
+          year: true,
+          stars: true,
+          type: true,
+        },
       },
-    },
-    filter: opGenerator(search, bin as any),
-  }))
-  .run(client);
+      filter: opGenerator(search, bin as any),
+    }))
+    .run(client);
+}
+
+await searchCard({
+  query: "Scumbag Steve",
+});
+
 function opGenerator(search: Search, bin: typeof e.BinAuction) {
+  e.fts.search(bin.card.meme, "Testing!");
   const ops = [];
   if (search.nsfw) {
     ops.push(e.op(bin.card.meme.nsfw, "=", search.nsfw));
@@ -50,21 +74,11 @@ function opGenerator(search: Search, bin: typeof e.BinAuction) {
   }
 
   if (ops.length === 0) {
-    return e.op(true, "=", true);
+    return e.bool(true);
   } else if (ops.length === 1) {
     return ops[0];
-  } else {
-    const resultArray = [];
-    let index = 0;
-    for (const op of ops) {
-      if (index === 0) {
-        resultArray.push(op);
-      } else {
-        resultArray.push("and", op);
-      }
-      index++;
-    }
-    console.log(resultArray);
   }
+
+  return e.all(e.set(...ops));
 }
-console.log((await res).map((x) => x.card.meme));
+// console.log((await res).map((x) => x.card.meme));

@@ -79,7 +79,9 @@
     </div>
 
     <div class="card-back rounded-lg overflow-hidden">
-      <div class="bg-base-200 flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2">
+      <div
+        class="bg-neutral flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2"
+      >
         <div>#{card.number}</div>
         <div>{card.meme.name}</div>
       </div>
@@ -88,13 +90,12 @@
         class="bg-primary-content bg-cover bg-center absolute w-full h-full"
         style="background-image: {bg};"
       >
-
         {#if price != undefined}
           <div class="absolute top-0 left-0 text-xl font-bold p-1">
-          <span class="text-cyan-800 bg-slate-50/20 p-1 rounded-xl">
-            <Money />
-            {price}
-          </span>
+            <span class="text-cyan-800 bg-slate-50/20 p-1 rounded-xl">
+              <Money />
+              {price}
+            </span>
           </div>
         {/if}
         <!--      <div-->
@@ -109,7 +110,6 @@
         <!--        {card.meme.name}-->
         <!--      </div>-->
       </div>
-
     </div>
   </div>
 </a>

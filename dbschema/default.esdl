@@ -115,7 +115,7 @@ module default {
         property idx -> int32;
         constraint exclusive on (.slug);
 
-         index fts::index on ((
+        index fts::index on ((
             fts::with_options(
                 .name,
                 language := fts::Language.eng,
