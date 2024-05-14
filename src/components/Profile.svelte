@@ -5,6 +5,9 @@
   import themes from "themes";
   import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
+  import { signIn } from "auth-astro/client";
+  import Github from "./icons/Github.svelte";
+  import Discord from "./icons/Discord.svelte";
   interface Props {
     user: User;
   }
@@ -18,9 +21,18 @@
   $effect(() => {
     document.documentElement.setAttribute("data-theme", theme ?? "dark");
   });
+
+  let discordLinked = $derived(
+    !!user.accounts.find((x) => x.provider == "discord"),
+  );
+  let githubLinked = $derived(
+    !!user.accounts.find((x) => x.provider == "github"),
+  );
 </script>
 
-<div class="max-w-[70rem] mx-auto w-full text-3xl font-bold mt-8 mb-2">
+<div
+  class="max-w-[70rem] mx-auto w-full text-3xl font-bold mt-8 mb-2 p-2 md:p-0"
+>
   Profile
 </div>
 
@@ -106,8 +118,33 @@
     <span class="text-3xl font-semibold leading-5 mt-4">Account Linking</span>
     <span>Link other accounts</span>
     <div class="flex gap-2 flex-col md:flex-row w-full">
-      <button class="btn btn-primary">Discord</button>
-      <button class="btn btn-primary">Github</button>
+      <div
+        class="md:w-52 md:max-w-[40%] w-full {discordLinked
+          ? 'tooltip tooltip-bottom'
+          : ''}"
+        data-tip="Account already linked"
+      >
+        <button
+          class="btn btn-neutral md:w-52 w-full"
+          disabled={discordLinked}
+          onclick={() => signIn("discord")}><Discord />Discord</button
+        >
+      </div>
+      <div
+        class="md:w-52 md:max-w-[40%] w-full {githubLinked
+          ? 'tooltip tooltip-bottom'
+          : ''}"
+        data-tip="Account already linked"
+      >
+        <button
+          class="btn btn-neutral md:w-52 w-full"
+          disabled={githubLinked}
+          onclick={() => signIn("github")}
+        >
+          <Github />
+          Github
+        </button>
+      </div>
     </div>
   </div>
 </div>

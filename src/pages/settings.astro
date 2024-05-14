@@ -16,7 +16,11 @@ select User {
   email,
   nsfw,
   theme,
-  createdAt
+  createdAt,
+  accounts: {
+    provider,
+    id
+  }
 } filter .id = <uuid>$userId
 `, {
   userId: session.user?.id
