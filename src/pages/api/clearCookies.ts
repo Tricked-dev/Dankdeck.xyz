@@ -12,11 +12,12 @@ authjs.callback-url=;
 authjs.state=; 
 authjs.pkce.code_verifier=; 
 authjs.session-token=; 
-token=; 
+token=;
 authjs.callback-url=;
 authjs.csrf-token=;
 __Host-authjs.csrf-token=;
 __Secure-authjs.session-token=;
+__Secure-authjs.callback-url=;
 `
     .trim()
     .split("\n");
