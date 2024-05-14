@@ -141,164 +141,165 @@ TODO: make text better vosible on light backgrounds
 
 -->
 <div
-  class="h-full flex w-full p-4 gap-8 max-w-[80rem] mx-auto mt-2 justify-center"
+  class="h-full w-full p-4 gap-4 max-w-[80rem] mx-auto mt-2 flex-row"
 >
-  <div class="h-full">
-    <Card {card} height={30} />
+  <div class="flex gap-8 justify-center flex-col md:flex-row">
+    <div class="h-full">
+      <Card extraClasses="!w-full md:!w-[26.25rem]" {card} height={30} />
 
-    <div
-      class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem]"
-    >
-      {#if card?.meme.description}
+      <div
+        class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem] hidden md:block"
+      >
+        {#if card?.meme.description}
+          <div
+            class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+          >
+            <input type="checkbox" checked="checked" />
+            <div class="collapse-title font-bold flex gap-3">
+              <i class="flex w-7 h-7 stroke-white">
+                <TextLine />
+              </i>
+              Description
+            </div>
+            <div class="collapse-content border-t border-neutral">
+              <div class="pt-4">{card?.meme.description}</div>
+            </div>
+          </div>
+        {/if}
         <div
           class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
         >
-          <input type="checkbox" checked="checked" />
-          <div class="collapse-title font-bold flex gap-3">
-            <i class="flex w-7 h-7 stroke-white">
-              <TextLine />
+          <input type="checkbox" />
+          <div class="collapse-title font-bold flex gap-3 flex items-center">
+            <i class="flex w-6 h-6 fill-white scale-95">
+              <Details />
             </i>
-            Description
+            Details
           </div>
           <div class="collapse-content border-t border-neutral">
-            <div class="pt-4">{card?.meme.description}</div>
-          </div>
-        </div>
-      {/if}
-      <div
-        class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
-      >
-        <input type="checkbox" />
-        <div class="collapse-title font-bold flex gap-3 flex items-center">
-          <i class="flex w-6 h-6 fill-white scale-95">
-            <Details />
-          </i>
-          Details
-        </div>
-        <div class="collapse-content border-t border-neutral">
-          <div class="pt-4 grid grid-cols-[auto_1fr] items-center">
-            {#if card?.meme.year}
-              <div class="font-semibold">Year</div>
-              <div class="text-right text-sm">{card?.meme.year}</div>
-            {/if}
-            {#if card?.meme.origin}
-              <div class="font-semibold">Origin</div>
-              <div class="text-right text-sm">{card?.meme.origin}</div>
-            {/if}
-            {#if card?.meme.description}
-              <div class="font-semibold">Description</div>
-              <div class="text-right text-sm">{card?.meme.description}</div>
-            {/if}
-            {#if card?.meme.partOf}
-              <div class="font-semibold">Part of</div>
-              <div class="text-right text-sm">{card?.meme.partOf}</div>
-            {/if}
-            {#if card?.meme.type}
-              <div class="font-semibold">Type</div>
-              <div class="text-right text-sm">{card?.meme.type}</div>
-            {/if}
+            <div class="pt-4 grid grid-cols-[auto_1fr] items-center">
+              {#if card?.meme.year}
+                <div class="font-semibold">Year</div>
+                <div class="text-right text-sm">{card?.meme.year}</div>
+              {/if}
+              {#if card?.meme.origin}
+                <div class="font-semibold">Origin</div>
+                <div class="text-right text-sm">{card?.meme.origin}</div>
+              {/if}
+              {#if card?.meme.description}
+                <div class="font-semibold">Description</div>
+                <div class="text-right text-sm">{card?.meme.description}</div>
+              {/if}
+              {#if card?.meme.partOf}
+                <div class="font-semibold">Part of</div>
+                <div class="text-right text-sm">{card?.meme.partOf}</div>
+              {/if}
+              {#if card?.meme.type}
+                <div class="font-semibold">Type</div>
+                <div class="text-right text-sm">{card?.meme.type}</div>
+              {/if}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="h-full w-[50%] flex flex-col gap-2">
-    <div
-      class="font-bold text-sky-600 uppercase hover:text-sky-300 hover:underline transition-all"
-    >
-      {#if card.meme.year}
-        Part of the {card.meme.year} collection
-      {:else}
-        Part of an unknown collection
-      {/if}
-    </div>
-    <div class="text-3xl font-bold leading-7 mt-1">
-      {card.meme.name} #{card.number}
-    </div>
-    <div>
-      Owned by
-      <span
-        class="text-sky-400 hover:text-sky-300 hover:underline transition-all"
+    <div class="h-full w-full md:w-[50%] flex flex-col gap-2">
+      <div
+        class="font-bold text-sky-600 uppercase hover:text-sky-300 hover:underline transition-all"
       >
+        {#if card.meme.year}
+          Part of the {card.meme.year} collection
+        {:else}
+          Part of an unknown collection
+        {/if}
+      </div>
+      <div class="text-3xl font-bold leading-7 mt-1">
+        {card.meme.name} #{card.number}
+      </div>
+      <div>
+        Owned by
+        <span
+          class="text-sky-400 hover:text-sky-300 hover:underline transition-all"
+        >
         <UserLink id={card.userId} user={card.user} />
       </span>
-    </div>
-    <div class="my-4 flex gap-5">
-      <div class="flex items-center gap-2">
-        <i class="flex fill-white h-5 w-5">
-          <Eye />
-        </i>
-        2.2k views
       </div>
-      {#if card.auction?.[0]?.price}
+      <div class="my-4 flex gap-5">
         <div class="flex items-center gap-2">
           <i class="flex fill-white h-5 w-5">
-            <MoneyBill />
+            <Eye />
           </i>
-          Auction
+          2.2k views
         </div>
-        <div class="flex items-center gap-2">
-          <i class="flex fill-white h-5 w-5">
-            <Auction />
-          </i>
-          15 bids
-        </div>
-      {/if}
-    </div>
+        {#if card.auction?.[0]?.price}
+          <div class="flex items-center gap-2">
+            <i class="flex fill-white h-5 w-5">
+              <MoneyBill />
+            </i>
+            Auction
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="flex fill-white h-5 w-5">
+              <Auction />
+            </i>
+            15 bids
+          </div>
+        {/if}
+      </div>
 
-    <div
-      class="card card-compact shadow-xl bg-base-200 rounded-lg border border-neutral"
-    >
-      {#if card.auction?.[0]?.price}
-        <div
-          class="card-body border-b border-neutral flex flex-row items-center"
-        >
-          <i class="flex fill-white h-7 w-7">
-            <Clock />
-          </i>
-          <div class="text-base font-semibold">
-            Sale ends {dateFormatter.format(new Date())}
+      <div
+        class="card card-compact shadow-xl bg-base-200 rounded-lg border border-neutral"
+      >
+        {#if card.auction?.[0]?.price}
+          <div
+            class="card-body border-b border-neutral flex flex-row items-center"
+          >
+            <i class="flex fill-white h-7 w-7">
+              <Clock />
+            </i>
+            <div class="text-base font-semibold">
+              Sale ends {dateFormatter.format(new Date())}
+            </div>
           </div>
-        </div>
-      {/if}
-      <div class="card-body">
-        {#if session?.user?.id === card.userId && card.auction?.[0]?.price}
-          <div>Current price</div>
-          <div class="text-3xl flex gap-1 items-center font-bold">
-            <div class="text-2xl"><Money /></div>
-            <div>{card.auction?.[0]?.price}</div>
-          </div>
-        {:else}
-          <div>Sell price</div>
-          <div class="text-4xl">
-            <form onsubmit={sell}>
-              <label class="input input-bordered flex items-center gap-2">
-                <Money />
-                <input
-                  type="number"
-                  class="grow"
-                  min="3"
-                  max="9999999"
-                  bind:value={sellPrice}
-                />
-              </label>
-            </form>
-            <div class="label">
+        {/if}
+        <div class="card-body">
+          {#if card.auction?.[0]?.price}
+            <div>Current price</div>
+            <div class="text-3xl flex gap-1 items-center font-bold">
+              <div class="text-2xl"><Money /></div>
+              <div>{card.auction?.[0]?.price}</div>
+            </div>
+          {:else}
+            <div>Sell price</div>
+            <div class="text-4xl">
+              <form onsubmit={sell}>
+                <label class="input input-bordered flex items-center gap-2">
+                  <Money />
+                  <input
+                    type="number"
+                    class="grow"
+                    min="3"
+                    max="9999999"
+                    bind:value={sellPrice}
+                  />
+                </label>
+              </form>
+              <div class="label">
               <span class="label-text-alt">
                 It will cost you <Money iconClass="-mb-[3px]" />
                 {Math.ceil(sellPrice * 0.05)} to put this item up
               </span>
+              </div>
             </div>
-          </div>
-        {/if}
-        <div class="flex gap-3 my-2">
-          {#if session?.user?.id === card.userId}
-            {#if card.auction?.[0]?.price}
-              <button
-                class="flex-1 btn btn-active btn-error"
-                disabled={false}
-                onclick={async () => {
+          {/if}
+          <div class="flex gap-3 my-2">
+            {#if session?.user?.id === card.userId}
+              {#if card.auction?.[0]?.price}
+                <button
+                  class="flex-1 btn btn-active btn-error"
+                  disabled={false}
+                  onclick={async () => {
                   await tr(async () => {
                     await trpc.cancel.mutate({
                       cardId: card.id,
@@ -307,100 +308,162 @@ TODO: make text better vosible on light backgrounds
                     card.auction = [];
                   });
                 }}
-              >
-                Cancel auction
-              </button>
-            {:else}
-              <button
-                class="flex-1 btn btn-active btn-info"
-                onclick={sell}
-                disabled={false}
-              >
-                Sell
-              </button>
-            {/if}
-          {:else if !session?.user?.id}
-            <button class="flex-1 btn btn-active btn-primary"
+                >
+                  Cancel auction
+                </button>
+              {:else}
+                <button
+                  class="flex-1 btn btn-active btn-info"
+                  onclick={sell}
+                  disabled={false}
+                >
+                  Sell
+                </button>
+              {/if}
+            {:else if !session?.user?.id}
+              <button class="flex-1 btn btn-active btn-ghost cursor-not-allowed"
               >Not logged in</button
-            >
-          {:else if card.auction?.[0]?.price}
-            <button
-              class="flex-1 btn btn-active btn-primary"
-              onclick={() => {
+              >
+            {:else if card.auction?.[0]?.price}
+              <button
+                class="flex-1 btn btn-active btn-primary"
+                onclick={() => {
                 buyDialog?.showModal();
               }}
-              disabled={false}
-            >
-              Buy now
-            </button>
-          {:else}
-            <button class="flex-1 btn btn-active btn-primary"
-              >Card not for sale</button
-            >
-          {/if}
-          <button
-            class="flex-1 btn btn-outline"
-            onclick={() => {
+                disabled={false}
+              >
+                Buy now
+              </button>
+            {:else}
+              <button class="flex-1 btn btn-active btn-primary">
+                Card not for sale
+              </button>
+            {/if}
+            <button
+              class="flex-1 btn btn-outline {!session?.user?.id ? 'cursor-not-allowed btn-disabled' : ''}"
+              onclick={() => {
               window.open(
                 `/trade/${crypto?.randomUUID?.() ?? (Math.random() * 9999) | 0}`,
               );
             }}
-          >
-            Trade
-          </button>
+            >
+              Trade
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="w-full card card-compact shadow-xl bg-base-200 mt-4">
       <div
-        class="collapse collapse-arrow border rounded-lg border border-neutral"
+        class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-4 w-[26.25rem] block md:hidden"
       >
-        <input type="checkbox" />
-        <div class="collapse-title font-bold flex gap-3 flex items-center">
-          <i class="flex w-6 h-6 fill-white scale-95">
-            <ChartIcon />
-          </i>
-          Price history
+        {#if card?.meme.description}
+          <div
+            class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+          >
+            <input type="checkbox" checked="checked" />
+            <div class="collapse-title font-bold flex gap-3">
+              <i class="flex w-7 h-7 stroke-white">
+                <TextLine />
+              </i>
+              Description
+            </div>
+            <div class="collapse-content border-t border-neutral">
+              <div class="pt-4">{card?.meme.description}</div>
+            </div>
+          </div>
+        {/if}
+        <div
+          class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+        >
+          <input type="checkbox" />
+          <div class="collapse-title font-bold flex gap-3 flex items-center">
+            <i class="flex w-6 h-6 fill-white scale-95">
+              <Details />
+            </i>
+            Details
+          </div>
+          <div class="collapse-content border-t border-neutral">
+            <div class="pt-4 grid grid-cols-[auto_1fr] items-center">
+              {#if card?.meme.year}
+                <div class="font-semibold">Year</div>
+                <div class="text-right text-sm">{card?.meme.year}</div>
+              {/if}
+              {#if card?.meme.origin}
+                <div class="font-semibold">Origin</div>
+                <div class="text-right text-sm">{card?.meme.origin}</div>
+              {/if}
+              {#if card?.meme.description}
+                <div class="font-semibold">Description</div>
+                <div class="text-right text-sm">{card?.meme.description}</div>
+              {/if}
+              {#if card?.meme.partOf}
+                <div class="font-semibold">Part of</div>
+                <div class="text-right text-sm">{card?.meme.partOf}</div>
+              {/if}
+              {#if card?.meme.type}
+                <div class="font-semibold">Type</div>
+                <div class="text-right text-sm">{card?.meme.type}</div>
+              {/if}
+            </div>
+          </div>
         </div>
-        <div class="collapse-content border-t border-neutral">
-          <div class="pt-4">
-            <Chart options={chartOptions} />
+      </div>
+
+      <div class="w-full card card-compact shadow-xl bg-base-200 mt-4">
+        <div
+          class="collapse collapse-arrow border rounded-lg border border-neutral"
+        >
+          <input type="checkbox" />
+          <div class="collapse-title font-bold flex gap-3 flex items-center">
+            <i class="flex w-6 h-6 fill-white scale-95">
+              <ChartIcon />
+            </i>
+            Price history
+          </div>
+          <div class="collapse-content border-t border-neutral">
+            <div class="pt-4">
+              <Chart options={chartOptions} />
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
+  {#if card.auction?.[0]?.price}
+    <div
+      class="h-full flex mx-auto justify-center mt-6 mb-5 max-w-[80rem]"
+      style="max-width: calc(28.25rem + 50%)"
+    >
+      <div class="w-full card card-compact shadow-xl bg-base-200">
+        <div class="collapse collapse-arrow border rounded-lg border-neutral">
+          <input type="checkbox" />
+          <div class="collapse-title font-bold flex gap-3 items-center">
+            <i class="flex w-6 h-6 fill-white scale-95">
+              <MoreSquare />
+            </i>
+            {#if randomSuggestions}
+              More from multiple collections
+            {:else}
+              More from this collection
+            {/if}
+          </div>
+          <div class="collapse-content border-t border-neutral">
+            <div class="pt-4 flex flex-wrap gap-2 justify-center">
+              {#if suggestions.length === 0}
+                <div class="h-12">There are no cards in the Marketplace.</div>
+              {/if}
+              {#each suggestions as { card }}
+                <Card extraClasses="" {card} height={20} />
+              {/each}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {/if}
+
 </div>
 
-{#if card.auction?.[0]?.price}
-  <div
-    class="h-full flex w-full max-w-[67.50rem] mx-auto justify-center mt-1 mb-5"
-  >
-    <div class="w-full card card-compact shadow-xl bg-base-200">
-      <div class="collapse collapse-arrow border rounded-lg border-neutral">
-        <input type="checkbox" />
-        <div class="collapse-title font-bold flex gap-3 items-center">
-          <i class="flex w-6 h-6 fill-white scale-95">
-            <MoreSquare />
-          </i>
-          {#if randomSuggestions}
-            More from multiple collections
-          {:else}
-            More from this collection
-          {/if}
-        </div>
-        <div class="collapse-content border-t border-neutral">
-          <div class="pt-4 flex flex-wrap gap-2 justify-center">
-            {#each suggestions as { card }}
-              <Card extraClasses="" {card} height={20} />
-            {/each}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-{/if}
 
 <Modal title="Buy {card.meme.name}" bind:modal={buyDialog}>
   <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>
