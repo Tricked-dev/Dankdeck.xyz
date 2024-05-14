@@ -15,6 +15,8 @@ authjs.session-token=;
 token=; 
 authjs.callback-url=;
 authjs.csrf-token=;
+__Host-authjs.csrf-token=;
+__Secure-authjs.session-token=;
 `
     .trim()
     .split("\n");

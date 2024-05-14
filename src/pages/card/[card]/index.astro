@@ -38,7 +38,10 @@ let q = `
 
 let randomSuggestions = false;
 
-let suggestions = await client.query<BinAuction>(`
+let suggestions:BinAuction[] = []
+
+try {
+ suggestions = await client.query<BinAuction>(`
     ${q}
     filter .card.meme.year = <int32>$year
     order by random()
@@ -46,6 +49,10 @@ let suggestions = await client.query<BinAuction>(`
 `, {
   year: cardData.meme.year
 })
+}catch(e) {
+  //
+}
+
 
 if(!suggestions.length) {
   randomSuggestions = true
