@@ -114,6 +114,19 @@ module default {
         property type -> str;
         property idx -> int32;
         constraint exclusive on (.slug);
+
+         index fts::index on ((
+            fts::with_options(
+                .name,
+                language := fts::Language.eng,
+                weight_category := fts::Weight.A,
+            ),
+            fts::with_options(
+                .description,
+                language := fts::Language.eng,
+                weight_category := fts::Weight.B,
+            )
+        ));
     }
 
     type Card {

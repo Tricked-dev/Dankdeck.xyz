@@ -12,6 +12,8 @@
   import type { Card as CardType } from "@db/schema";
   import Avatar from "./Avatar.svelte";
   import { navigate } from "astro/virtual-modules/transitions-router.js";
+  import Card from "./card/Card.svelte";
+  import { fly } from "svelte/transition";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -122,6 +124,8 @@
     };
   });
   let dailyPopup: HTMLDialogElement | undefined = $state();
+
+  let newCard = $state<CardType | undefined>(undefined);
 </script>
 
 <svelte:document
@@ -151,14 +155,18 @@
         class="btn"
         bind:this={rollBtn}
         onclick={async () => {
-              doConfetti(rollBtn, [
+              doConfetti(undefined, [
                 { p: 150, s: 120, a: -130, v: 25 + Math.random() * 5 },
                 { p: 110, s: 100, a: -100, v: 40 + Math.random() * 10 },
                 { p: 150, s: 300, a: -140, v: 35 + Math.random() * 6 },
                 { p: 300, s: 50, a: -160, v: 30 + Math.random() * 20 },
               ]);
               await tr(async () => {
-                await trpc.roll.query();
+               const card= await trpc.roll.query();
+               newCard = card;
+               setTimeout(() => {
+                newCard = undefined;
+               },2500)
                 await updateUser();
                 let cards = await trpc.mycards.query() as unknown[] as CardType[];
                 setCards(cards);
@@ -280,6 +288,16 @@
   <div class="stripe-l h-full absolute w-full bg-sky-600"></div>
   <div class="stripe-f h-full absolute w-44 bg-cyan-700"></div>
 </div>
+
+{#if newCard}
+  <div
+    class="absolute right-0 md:right-28 top-16 z-50"
+    in:fly={{ y: -300, duration: 750 }}
+    out:fly={{ y: -300, duration: 750 }}
+  >
+    <Card card={newCard} height={15}></Card>
+  </div>
+{/if}
 
 <style>
   .stripe-l {

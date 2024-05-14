@@ -43,6 +43,7 @@ export async function rollOnce(userId: string | undefined) {
       slug,
       shortId
     },
+    id,
     number
   }
   `,

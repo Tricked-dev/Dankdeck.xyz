@@ -1,5 +1,7 @@
 import { mouse } from "./mouseTracker.svelte";
 
+let sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export async function doConfetti(
   element: HTMLElement | undefined,
   sprays: {
@@ -31,6 +33,7 @@ export async function doConfetti(
     : conf;
 
   for (const spray of sprays) {
+    await sleep(100);
     myConfetti({
       particleCount: spray.p,
       spread: spray.s,
