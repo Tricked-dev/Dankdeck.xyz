@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { User } from "@db/schema";
+  import type { User, Card as DbCard } from "@db/schema";
   import Avatar from "./Avatar.svelte";
   import DateView from "./DateView.svelte";
   import themes from "themes";
@@ -8,11 +8,14 @@
   import { signIn } from "auth-astro/client";
   import Github from "./icons/Github.svelte";
   import Discord from "./icons/Discord.svelte";
+  import Cards from "./card/Cards.svelte";
+  import Modal from "./Modal.svelte";
+  import Card from "./card/Card.svelte";
   interface Props {
     user: User;
   }
-  let { user }: Props = $props();
-
+  let { user: usr }: Props = $props();
+  let user = $state(usr);
   let nameInput: HTMLInputElement | undefined = $state();
   let theme: string | undefined = $state(user.theme);
 
@@ -28,6 +31,9 @@
   let githubLinked = $derived(
     !!user.accounts.find((x) => x.provider == "github"),
   );
+
+  let cards = $state<DbCard[]>([]);
+  let selectModal: HTMLDialogElement | undefined = $state();
 </script>
 
 <div
@@ -42,7 +48,19 @@
   <div class="flex flex-col justify-center">
     <span class="text-2xl font-semibold text-center">{user.name}</span>
     <span class="text-sm font-semibold text-center mb-2">Thats you</span>
-    <Avatar {user} size={15} class="mx-auto" />
+    <div class="flex mx-auto">
+      <button
+        onclick={() => {
+        tr(async () => {
+          cards = await trpc.mycards.query() as unknown as DbCard[];
+          selectModal?.showModal();
+        });
+      }}
+      >
+        <Avatar {user} size={15} class="mx-auto" />
+      </button>
+    </div>
+
     <span class="text-center mt-2">
       Joined at:
       <DateView date={user.createdAt}></DateView>
@@ -148,3 +166,29 @@
     </div>
   </div>
 </div>
+
+<Modal title="Select Picture" bind:modal={selectModal} boxClasses="w-[100vw]">
+  <Cards class="max-w-[70rem]">
+    {#each cards ?? [] as card}
+      <div
+        class=""
+        onclick={() =>
+          tr(async () => {
+            await trpc.picture.mutate({
+              memeId: card.meme.id,
+            });
+            selectModal?.close();
+            user.picture = `https://r2.dankdeck.xyz/${card.meme.shortId}.png`;
+            toast.success("Profile picture updated");
+          })}
+      >
+        <Card
+          href="javascript:void"
+          extraClasses="pointer-events-none"
+          {card}
+          height={25}
+        />
+      </div>
+    {/each}
+  </Cards>
+</Modal>
