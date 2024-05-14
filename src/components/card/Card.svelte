@@ -78,29 +78,38 @@
       <span> Open new card </span>
     </div>
 
-    <div
-      class="card-back bg-primary-content rounded-lg bg-cover bg-center"
-      style="background-image: {bg};"
-    >
-      {#if price != undefined}
-        <div class="absolute top-0 left-0 text-xl font-bold p-1">
+    <div class="card-back rounded-lg overflow-hidden">
+      <div class="bg-base-200 flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2">
+        <div>#{card.number}</div>
+        <div>{card.meme.name}</div>
+      </div>
+
+      <div
+        class="bg-primary-content bg-cover bg-center absolute w-full h-full"
+        style="background-image: {bg};"
+      >
+
+        {#if price != undefined}
+          <div class="absolute top-0 left-0 text-xl font-bold p-1">
           <span class="text-cyan-800 bg-slate-50/20 p-1 rounded-xl">
             <Money />
             {price}
           </span>
-        </div>
-      {/if}
-      <div
-        class="absolute top-0 right-0 text-4xl font-bold p-2 text-white"
-        style:text-shadow="1px 1px 4px rgba(0, 0, 0, 0.5)"
-      >
-        #{card.number}
+          </div>
+        {/if}
+        <!--      <div-->
+        <!--        class="absolute top-0 right-0 text-4xl font-bold p-2 text-white"-->
+        <!--        style:text-shadow="1px 1px 4px rgba(0, 0, 0, 0.5)"-->
+        <!--      >-->
+        <!--        #{card.number}-->
+        <!--      </div>-->
+        <!--      <div-->
+        <!--        class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white bg-slate-700 bg-opacity-45"-->
+        <!--      >-->
+        <!--        {card.meme.name}-->
+        <!--      </div>-->
       </div>
-      <div
-        class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white bg-slate-700 bg-opacity-45"
-      >
-        {card.meme.name}
-      </div>
+
     </div>
   </div>
 </a>

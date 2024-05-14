@@ -3,9 +3,10 @@
   interface Props {
     width?: string;
     height?: string;
+    iconClass?: string;
   }
 
-  let { width = "w-[1.5em]", height = "w-[1.5em]" }: Props = $props();
+  let { width = "w-[1.5em]", height = "w-[1.5em]", iconClass = '' }: Props = $props();
 </script>
 
 <svg
@@ -14,7 +15,7 @@
   viewBox="0 0 24 24"
   stroke-width="1.5"
   stroke="currentColor"
-  class="{width} {height} inline text-accent align-bottom"
+  class="{width} {height} inline text-accent align-bottom {iconClass}"
 >
   <path
     stroke-linecap="round"
