@@ -76,3 +76,15 @@ Go to `/login` to login with github and done!
 - Card view counter (maybe per logged in user once or something or another way to avoid spam!)
 - Fix X overallping in trade menu
 - Money up and down animation
+
+### UI (ordered by priority):
+- Remove body scroll bar
+- Fix details accordion taking too much space
+- Redesign the card (fix card roll, long card name, maybe do something about the height too)
+- Fix accordions being wobbly
+- Profile UI improvements
+- Probably a better login page
+- Add tooltips on hover for CardInfo
+- Responsive navbar
+- Improve the /cards UI
+- Maybe do something about y overflow on CardInfo (not 100% sure yet)
