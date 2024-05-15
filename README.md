@@ -75,3 +75,4 @@ Go to `/login` to login with github and done!
 - giving a thumbsup to people
 - Card view counter (maybe per logged in user once or something or another way to avoid spam!)
 - Fix X overallping in trade menu
+- Money up and down animation
