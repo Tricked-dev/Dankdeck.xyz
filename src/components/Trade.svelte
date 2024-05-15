@@ -4,11 +4,12 @@
   import type { Card as CardType, User as DbUser } from "@db/schema";
   import Card from "./card/Card.svelte";
   import type Pusher from "pusher-js";
-  import type { Channel } from "pusher-js";
+  import type { Channel, PresenceChannel } from "pusher-js";
   import Modal from "./Modal.svelte";
   import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
   import Cards from "./card/Cards.svelte";
+  import { navigate } from "astro:transitions/client";
   interface Props {
     room: string;
     session: { user: DbUser };
@@ -18,6 +19,7 @@
 
   let sock: Pusher;
   let channel: Channel;
+  let presenceChannel: PresenceChannel;
 
   interface UserInfo {
     id: string;
@@ -45,6 +47,7 @@
 
   let idx = $state(0);
   let selectModal = $state<HTMLDialogElement | undefined>(undefined);
+  let doubleConnectModal = $state<HTMLDialogElement | undefined>(undefined);
 
   let meAgreed = $state(false);
   let heAgreed = $state(false);
@@ -63,7 +66,15 @@
       cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER!,
     });
     channel = sock.subscribe(`private-${room}`);
-
+    // TODO: implement this stuff
+    // presenceChannel = sock.subscribe(`presence-${room}`) as PresenceChannel;
+    // presenceChannel.bind("pusher:member_added", (member) => {
+    //   console.log("PRESENCE---");
+    //   console.log(presenceChannel.members.count);
+    //   console.log(member);
+    //   console.log(presenceChannel);
+    //   console.log("PRESENCE---");
+    // });
     channel.trigger("client-join", me);
 
     setTimeout(() => {
@@ -90,6 +101,10 @@
       });
       if (data.id !== session!.user!.id) {
         other = data;
+      } else {
+        doubleConnectModal?.showModal();
+        other = undefined;
+        sock.disconnect();
       }
       if (myCardOffer.filter((x) => x).length != 0)
         channel.trigger("client-select", { cards: myCardOffer, me });
@@ -325,4 +340,13 @@
       </div>
     {/each}
   </Cards>
+</Modal>
+
+<Modal
+  title="You are already connected to this trade on another device"
+  bind:modal={doubleConnectModal}
+>
+  <div class="flex gap-3">
+    <button class="btn btn-primary" onclick={() => navigate("/")}>Ok</button>
+  </div>
 </Modal>
