@@ -72,3 +72,5 @@ Go to `/login` to login with github and done!
 - better filtering on the marketplace filter by tags origin time and stuff
 - Trading socket changes - detect multiple people or something - dont allow 3 people etc
 - A user rating / weight (total cards + average card level + money + cards sold maybe)
+- giving a thumbsup to people
+- Card view counter (maybe per logged in user once or something or another way to avoid spam!)
