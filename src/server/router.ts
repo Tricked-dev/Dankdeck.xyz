@@ -4,6 +4,7 @@ import { protectedProcedure, publicProcedure, router } from "./trpc";
 import { buy } from "./routes/buy";
 import { cancel } from "./routes/cancel";
 import { daily } from "./routes/daily";
+import { deleteAccount } from "./routes/deleteAccount";
 import { getCard } from "./routes/getCard";
 import { mycards } from "./routes/mycards";
 import { onBoard } from "./routes/onboard";
@@ -28,4 +29,5 @@ export const appRouter = router({
   onBoard: onBoard,
   picture: picture,
   profileUpdate: profileUpdate,
+  deleteAccount: deleteAccount,
 });

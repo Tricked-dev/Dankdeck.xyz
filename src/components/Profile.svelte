@@ -5,12 +5,14 @@
   import themes from "themes";
   import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
-  import { signIn } from "auth-astro/client";
+  import { signIn, signOut } from "auth-astro/client";
   import Github from "./icons/Github.svelte";
   import Discord from "./icons/Discord.svelte";
   import Cards from "./card/Cards.svelte";
   import Modal from "./Modal.svelte";
   import Card from "./card/Card.svelte";
+  import { onMount } from "svelte";
+  import { navigate } from "astro/virtual-modules/transitions-router.js";
   interface Props {
     user: User;
   }
@@ -34,6 +36,20 @@
 
   let cards = $state<DbCard[]>([]);
   let selectModal: HTMLDialogElement | undefined = $state();
+  let hoverTimeout = $state(1500);
+  // let hoverTimeout = $state(0);
+  let hovering = $state(false);
+
+  onMount(() => {
+    let timeout = setInterval(() => {
+      if (hovering && hoverTimeout > 0) {
+        hoverTimeout += -1;
+      } else {
+        // hoverTimeout = 0;
+      }
+    }, 10);
+    return () => clearTimeout(timeout);
+  });
 </script>
 
 <div
@@ -164,6 +180,38 @@
         </button>
       </div>
     </div>
+    <span class="text-3xl font-semibold leading-5 mt-4">Red Light District</span
+    >
+    <details class="collapse bg-base-200">
+      <summary class="collapse-title text-xl font-medium"
+        >You will regret this!!</summary
+      >
+      <div class="collapse-content">
+        <button
+          onmouseenter={() => (hovering = true)}
+          onmouseleave={() => (hovering = false)}
+          class="btn btn-error"
+          onclick={() =>
+            tr(async () => {
+              if (hoverTimeout != 0) {
+                return toast.error(
+                  "Please wait " +
+                    (hoverTimeout / 100).toFixed(2) +
+                    "s before deleting your account, we aren't quite sure if you want to do this yet",
+                );
+              }
+              toast.success("Goodbye comrade");
+              await trpc.deleteAccount.mutate();
+              await signOut();
+              navigate("/");
+            })}
+        >
+          Delete Account {#if hoverTimeout}{(hoverTimeout / 100).toFixed(
+              2,
+            )}s{/if}
+        </button>
+      </div>
+    </details>
   </div>
 </div>
 
