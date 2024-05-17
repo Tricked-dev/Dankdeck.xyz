@@ -4,7 +4,6 @@ import e from "./dbschema/edgeql-js";
 interface Search {
   query?: string;
   year?: number;
-  tags?: string[];
   nsfw?: boolean;
   type?: string;
   origin?: string;

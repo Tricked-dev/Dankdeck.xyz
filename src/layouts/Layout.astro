@@ -46,6 +46,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         content="trading cards, auctions, collectibles"
       />
     </slot>
+    <style is:global>
+      :root {
+        --btn-focus-scale: 0.9;
+      }
+
+      .btn {
+        animation: none;
+      }
+
+      .btn:active {
+        transition: transform 0.1s !important;
+      }
+
+    </style>
   </head>
   <body
     class="w-screen min-h-screen flex flex-col"
