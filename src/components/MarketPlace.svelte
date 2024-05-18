@@ -51,6 +51,7 @@
     };
     if (!rangeValue) return;
     const opts: Search = {
+      query: search.length > 0 ? search : undefined,
       origin: arrOrNull($selectedOrigins?.map((x) => x.value.name)),
       partOf: arrOrNull($selectedParts?.map((x) => x.value.name)),
       priceRange: {
@@ -72,34 +73,63 @@
 </script>
 
 <div class="w-full">
-  <ComboBox
-    labelContent=""
-    options={origins}
-    placeholder="Origin"
-    bind:selectedItems={selectedOrigins}
-  ></ComboBox>
-  <ComboBox
-    labelContent=""
-    options={parts}
-    placeholder="Part"
-    bind:selectedItems={selectedParts}
-  ></ComboBox>
-  {#if max}
-    <Range {max} bind:value={rangeValue}></Range>
-  {/if}
   <span class="text-7xl flex p-3 font-serif font-bold"
     ><span class="mx-auto">Marketplace</span></span
   >
-  <div class="flex flex-wrap w-full max-w-[70rem] gap-2 mx-auto p-2">
-    <input
-      class="input input-bordered"
-      placeholder="filter..."
-      bind:value={search}
-    />
+  <div class="flex flex-col md:flex-row">
+    <Cards class="max-w-[70rem] w-full ml-auto mr-0">
+      {#each auctions as auction}
+        <Card
+          card={auction.card}
+          price={auction.price}
+          hoverEffect
+          height={25}
+        />
+      {/each}
+      {#if !auctions.length}
+        <div
+          class="text-3xl rounded-lg p-8 bg-neutral text-neutral-content w-full text-center"
+        >
+          No Results found!
+        </div>
+      {/if}
+    </Cards>
+    <div class="mr-auto">
+      <div class="bg-base-300 rounded-xl mx-auto flex-col p-4 flex gap-8">
+        <div>
+          <span>Origin</span>
+          <ComboBox
+            labelContent=""
+            options={origins}
+            placeholder="Origin"
+            bind:selectedItems={selectedOrigins}
+          ></ComboBox>
+        </div>
+        <div>
+          <span>Part</span>
+          <ComboBox
+            labelContent=""
+            options={parts}
+            placeholder="Part"
+            bind:selectedItems={selectedParts}
+          ></ComboBox>
+        </div>
+
+        {#if max}
+          <div>
+            <span>Price {$rangeValue[0]} to {$rangeValue[1]}</span>
+            <Range {max} bind:value={rangeValue}></Range>
+          </div>
+        {/if}
+
+        <div class="flex flex-wrap w-full max-w-[70rem] gap-2 mx-auto p-2">
+          <input
+            class="input input-bordered"
+            placeholder="Search Name"
+            bind:value={search}
+          />
+        </div>
+      </div>
+    </div>
   </div>
-  <Cards class="max-w-[70rem]">
-    {#each auctions as auction}
-      <Card card={auction.card} price={auction.price} hoverEffect height={25} />
-    {/each}
-  </Cards>
 </div>
