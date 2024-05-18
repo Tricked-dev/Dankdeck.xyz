@@ -55,16 +55,19 @@
     hour12: true,
   });
 
+  const ensureDate = (date: Date | string | number | undefined) => {
+    if (typeof date == "string" || typeof date == "number") {
+      return new Date(date);
+    }
+    return date;
+  };
+
   const chartOptions = {
     series: [
       {
         name: "Price",
         data: [
-          [new Date("2022-01-01T00:00:00"), 20],
-          [new Date("2022-02-01T00:00:00"), 30],
-          [new Date("2022-03-01T00:00:00"), 40],
-          [new Date("2022-04-01T00:00:00"), 10],
-          [new Date("2022-05-01T00:00:00"), 30],
+          ...card?.auctionEntries.map((x) => [ensureDate(x.soldAt), x.price]),
         ],
       },
     ],
@@ -123,7 +126,7 @@ TODO: make text better vosible on light backgrounds
       <Card extraClasses="!w-full md:!w-[26.25rem]" {card} height={30} />
 
       <div
-        class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem] hidden md:block"
+        class="join join-vertical card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem] hidden md:block"
       >
         {#if card?.meme.description}
           <div
@@ -212,14 +215,14 @@ TODO: make text better vosible on light backgrounds
             <i class="flex fill-white h-5 w-5">
               <MoneyBill />
             </i>
-            Auction
+            Bin Auction
           </div>
-          <div class="flex items-center gap-2">
+          <!-- <div class="flex items-center gap-2">
             <i class="flex fill-white h-5 w-5">
               <Auction />
             </i>
             15 bids
-          </div>
+          </div> -->
         {/if}
       </div>
 
@@ -234,7 +237,9 @@ TODO: make text better vosible on light backgrounds
               <Clock />
             </i>
             <div class="text-base font-semibold">
-              Sale ends {dateFormatter.format(new Date())}
+              Sale started {dateFormatter.format(
+                ensureDate(card.auction?.[0]?.createdAt),
+              )}
             </div>
           </div>
         {/if}
@@ -310,7 +315,9 @@ TODO: make text better vosible on light backgrounds
                 Buy now
               </button>
             {:else}
-              <button class="flex-1 btn btn-active btn-primary">
+              <button
+                class="flex-1 btn btn-active btn-primary cursor-not-allowed"
+              >
                 Card not for sale
               </button>
             {/if}
@@ -330,7 +337,7 @@ TODO: make text better vosible on light backgrounds
         </div>
       </div>
       <div
-        class="join join-vertical w-full card card-compact shadow-xl bg-base-200 mt-4 w-[26.25rem] block md:hidden"
+        class="join join-vertical card card-compact shadow-xl bg-base-200 mt-4 w-[26.25rem] block md:hidden"
       >
         {#if card?.meme.description}
           <div
@@ -395,9 +402,15 @@ TODO: make text better vosible on light backgrounds
             Price history
           </div>
           <div class="collapse-content border-t border-neutral">
-            <div class="pt-4">
-              <Chart options={chartOptions} />
-            </div>
+            {#if card?.auctionEntries?.length}
+              <div class="pt-4">
+                <Chart options={chartOptions} />
+              </div>
+            {:else}
+              <div class="pt-4">
+                No price history <span class="italic">yet</span>
+              </div>
+            {/if}
           </div>
         </div>
       </div>

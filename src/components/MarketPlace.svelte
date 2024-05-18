@@ -72,11 +72,52 @@
   });
 </script>
 
+{#snippet filteroptions(clazz)}
+  <div class="mr-auto {clazz}">
+    <div class="bg-base-300 rounded-xl mx-auto flex-col p-4 flex gap-8">
+      <div>
+        <span>Origin</span>
+        <ComboBox
+          labelContent=""
+          options={origins}
+          placeholder="Origin"
+          bind:selectedItems={selectedOrigins}
+        ></ComboBox>
+      </div>
+      <div>
+        <span>Part</span>
+        <ComboBox
+          labelContent=""
+          options={parts}
+          placeholder="Part"
+          bind:selectedItems={selectedParts}
+        ></ComboBox>
+      </div>
+
+      {#if max}
+        <div>
+          <span>Price {$rangeValue[0]} to {$rangeValue[1]}</span>
+          <Range {max} bind:value={rangeValue}></Range>
+        </div>
+      {/if}
+
+      <div class="flex flex-wrap w-full max-w-[70rem] gap-2 mx-auto p-2">
+        <input
+          class="input input-bordered"
+          placeholder="Search Name"
+          bind:value={search}
+        />
+      </div>
+    </div>
+  </div>
+{/snippet}
+
 <div class="w-full">
   <span class="text-7xl flex p-3 font-serif font-bold"
     ><span class="mx-auto">Marketplace</span></span
   >
   <div class="flex flex-col md:flex-row">
+    {@render filteroptions("md:hidden p-2")}
     <Cards class="max-w-[70rem] w-full ml-auto mr-0">
       {#each auctions as auction}
         <Card
@@ -94,42 +135,6 @@
         </div>
       {/if}
     </Cards>
-    <div class="mr-auto">
-      <div class="bg-base-300 rounded-xl mx-auto flex-col p-4 flex gap-8">
-        <div>
-          <span>Origin</span>
-          <ComboBox
-            labelContent=""
-            options={origins}
-            placeholder="Origin"
-            bind:selectedItems={selectedOrigins}
-          ></ComboBox>
-        </div>
-        <div>
-          <span>Part</span>
-          <ComboBox
-            labelContent=""
-            options={parts}
-            placeholder="Part"
-            bind:selectedItems={selectedParts}
-          ></ComboBox>
-        </div>
-
-        {#if max}
-          <div>
-            <span>Price {$rangeValue[0]} to {$rangeValue[1]}</span>
-            <Range {max} bind:value={rangeValue}></Range>
-          </div>
-        {/if}
-
-        <div class="flex flex-wrap w-full max-w-[70rem] gap-2 mx-auto p-2">
-          <input
-            class="input input-bordered"
-            placeholder="Search Name"
-            bind:value={search}
-          />
-        </div>
-      </div>
-    </div>
+    {@render filteroptions("hidden md:block")}
   </div>
 </div>
