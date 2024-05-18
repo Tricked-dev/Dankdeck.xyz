@@ -19,8 +19,23 @@ select {
     ) {
       origin := .key.origin,
       num := count(.elements)
-    } order by .num desc limit 200) 
+    } order by .num desc limit 200)
       .origin
+  ),
+  top_types := (
+    select (select (
+      group Meme by .type
+    ) {
+      origin := .key.type,
+      num := count(.elements)
+    } order by .num desc limit 200)
+      .origin
+  ),
+  max_price := (
+    select max(BinAuction.price)
+  ),
+  min_price := (
+    select min(BinAuction.price)
   )
 }
     `);

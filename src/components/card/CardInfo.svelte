@@ -2,22 +2,14 @@
   import type { BinAuction, Card as CardType } from "@db/schema.ts";
   import type { getSession } from "auth-astro/server";
   import Card from "./Card.svelte";
-  import Money from "@/components/icons/Money.svelte";
   import Modal from "@/components/Modal.svelte";
   import toast from "svelte-french-toast";
   import { tr, trpc } from "@/lib/api";
   import { setUserInfo } from "@/lib/state.svelte";
   import UserLink from "../UserLink.svelte";
-  import DateView from "../DateView.svelte";
-  import Eye from "@/components/icons/Eye.svelte";
-  import Auction from "@/components/icons/Auction.svelte";
-  import MoneyBill from "@/components/icons/MoneyBill.svelte";
-  import Clock from "@/components/icons/Clock.svelte";
-  import TextLine from "@/components/icons/TextLine.svelte";
-  import Details from "@/components/icons/Details.svelte";
   import Chart from "@/components/Chart.svelte";
-  import ChartIcon from "@/components/icons/ChartIcon.svelte";
-  import MoreSquare from "@/components/icons/MoreSquare.svelte";
+  // prettier-ignore
+  import { Money, Eye, Auction, MoneyBill, Clock, TextLine, Details, ChartIcon, MoreSquare } from "@/components/icons";
 
   interface Props {
     card: CardType;
@@ -120,29 +112,12 @@
   };
 </script>
 
-<!--<div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">-->
-<!--  <span class="text-4xl font-bold">-->
-<!--    {card.meme.name}-->
-<!--    {#if session?.user?.id === card.userId}-->
-<!--      <button-->
-<!--        class="btn btn-outline btn-success btn-sm align-bottom"-->
-<!--        onclick={() =>-->
-<!--          tr(async () => {-->
-<!--            trpc.picture.mutate({-->
-<!--              memeId: card.meme.id,-->
-<!--            });-->
-<!--          })}>Set As Profile Picture</button-->
-<!--      >-->
-<!--    {/if}-->
-<!--  </span>-->
-<!--</div>-->
-<!--
+<!--<div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">-
+
 TODO: make text better vosible on light backgrounds
 
 -->
-<div
-  class="h-full w-full p-4 gap-4 max-w-[80rem] mx-auto mt-2 flex-row"
->
+<div class="h-full w-full p-4 gap-4 max-w-[80rem] mx-auto mt-2 flex-row">
   <div class="flex gap-8 justify-center flex-col md:flex-row">
     <div class="h-full">
       <Card extraClasses="!w-full md:!w-[26.25rem]" {card} height={30} />
@@ -152,9 +127,9 @@ TODO: make text better vosible on light backgrounds
       >
         {#if card?.meme.description}
           <div
-            class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+            class="collapse collapse-arrow join-item border rounded-lg border-neutral"
           >
-            <input type="checkbox" checked="checked" />
+            <input type="checkbox" checked />
             <div class="collapse-title font-bold flex gap-3">
               <i class="flex w-7 h-7 stroke-white">
                 <TextLine />
@@ -167,10 +142,10 @@ TODO: make text better vosible on light backgrounds
           </div>
         {/if}
         <div
-          class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+          class="collapse collapse-arrow join-item border rounded-lg border-neutral"
         >
           <input type="checkbox" />
-          <div class="collapse-title font-bold flex gap-3 flex items-center">
+          <div class="collapse-title font-bold flex gap-3 items-center">
             <i class="flex w-6 h-6 fill-white scale-95">
               <Details />
             </i>
@@ -222,8 +197,8 @@ TODO: make text better vosible on light backgrounds
         <span
           class="text-sky-400 hover:text-sky-300 hover:underline transition-all"
         >
-        <UserLink id={card.userId} user={card.user} />
-      </span>
+          <UserLink id={card.userId} user={card.user} />
+        </span>
       </div>
       <div class="my-4 flex gap-5">
         <div class="flex items-center gap-2">
@@ -286,10 +261,10 @@ TODO: make text better vosible on light backgrounds
                 </label>
               </form>
               <div class="label">
-              <span class="label-text-alt">
-                It will cost you <Money iconClass="-mb-[3px]" />
-                {Math.ceil(sellPrice * 0.05)} to put this item up
-              </span>
+                <span class="label-text-alt">
+                  It will cost you <Money iconClass="-mb-[3px]" />
+                  {Math.ceil(sellPrice * 0.05)} to put this item up
+                </span>
               </div>
             </div>
           {/if}
@@ -300,14 +275,14 @@ TODO: make text better vosible on light backgrounds
                   class="flex-1 btn btn-active btn-error"
                   disabled={false}
                   onclick={async () => {
-                  await tr(async () => {
-                    await trpc.cancel.mutate({
-                      cardId: card.id,
+                    await tr(async () => {
+                      await trpc.cancel.mutate({
+                        cardId: card.id,
+                      });
+                      toast.success("Successfully cancelled auction");
+                      card.auction = [];
                     });
-                    toast.success("Successfully cancelled auction");
-                    card.auction = [];
-                  });
-                }}
+                  }}
                 >
                   Cancel auction
                 </button>
@@ -322,14 +297,14 @@ TODO: make text better vosible on light backgrounds
               {/if}
             {:else if !session?.user?.id}
               <button class="flex-1 btn btn-active btn-ghost cursor-not-allowed"
-              >Not logged in</button
+                >Not logged in</button
               >
             {:else if card.auction?.[0]?.price}
               <button
                 class="flex-1 btn btn-active btn-primary"
                 onclick={() => {
-                buyDialog?.showModal();
-              }}
+                  buyDialog?.showModal();
+                }}
                 disabled={false}
               >
                 Buy now
@@ -340,12 +315,14 @@ TODO: make text better vosible on light backgrounds
               </button>
             {/if}
             <button
-              class="flex-1 btn btn-outline {!session?.user?.id ? 'cursor-not-allowed btn-disabled' : ''}"
+              class="flex-1 btn btn-outline {!session?.user?.id
+                ? 'cursor-not-allowed btn-disabled'
+                : ''}"
               onclick={() => {
-              window.open(
-                `/trade/${crypto?.randomUUID?.() ?? (Math.random() * 9999) | 0}`,
-              );
-            }}
+                window.open(
+                  `/trade/${crypto?.randomUUID?.() ?? (Math.random() * 9999) | 0}`,
+                );
+              }}
             >
               Trade
             </button>
@@ -357,9 +334,9 @@ TODO: make text better vosible on light backgrounds
       >
         {#if card?.meme.description}
           <div
-            class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+            class="collapse collapse-arrow join-item border rounded-lg border-neutral"
           >
-            <input type="checkbox" checked="checked" />
+            <input type="checkbox" checked />
             <div class="collapse-title font-bold flex gap-3">
               <i class="flex w-7 h-7 stroke-white">
                 <TextLine />
@@ -372,10 +349,10 @@ TODO: make text better vosible on light backgrounds
           </div>
         {/if}
         <div
-          class="collapse collapse-arrow join-item border rounded-lg border border-neutral"
+          class="collapse collapse-arrow join-item border rounded-lg border-neutral"
         >
           <input type="checkbox" />
-          <div class="collapse-title font-bold flex gap-3 flex items-center">
+          <div class="collapse-title font-bold flex gap-3 items-center">
             <i class="flex w-6 h-6 fill-white scale-95">
               <Details />
             </i>
@@ -409,11 +386,9 @@ TODO: make text better vosible on light backgrounds
       </div>
 
       <div class="w-full card card-compact shadow-xl bg-base-200 mt-4">
-        <div
-          class="collapse collapse-arrow border rounded-lg border border-neutral"
-        >
+        <div class="collapse collapse-arrow border rounded-lg border-neutral">
           <input type="checkbox" />
-          <div class="collapse-title font-bold flex gap-3 flex items-center">
+          <div class="collapse-title font-bold flex gap-3 items-center">
             <i class="flex w-6 h-6 fill-white scale-95">
               <ChartIcon />
             </i>
@@ -427,7 +402,6 @@ TODO: make text better vosible on light backgrounds
         </div>
       </div>
     </div>
-
   </div>
   {#if card.auction?.[0]?.price}
     <div
@@ -461,9 +435,7 @@ TODO: make text better vosible on light backgrounds
       </div>
     </div>
   {/if}
-
 </div>
-
 
 <Modal title="Buy {card.meme.name}" bind:modal={buyDialog}>
   <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>
@@ -497,13 +469,3 @@ TODO: make text better vosible on light backgrounds
     </button>
   </div>
 </Modal>
-
-<style>
-  .sell-price {
-    -moz-appearance: textfield;
-  }
-  .sell-price:is(::-webkit-inner-spin-button, ::-webkit-outer-spin-button) {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-</style>

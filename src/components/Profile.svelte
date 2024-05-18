@@ -6,8 +6,7 @@
   import { tr, trpc } from "@/lib/api";
   import toast from "svelte-french-toast";
   import { signIn, signOut } from "auth-astro/client";
-  import Github from "./icons/Github.svelte";
-  import Discord from "./icons/Discord.svelte";
+  import { Github, Discord } from "./icons/index";
   import Cards from "./card/Cards.svelte";
   import Modal from "./Modal.svelte";
   import Card from "./card/Card.svelte";

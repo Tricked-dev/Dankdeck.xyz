@@ -11,31 +11,22 @@ export const claimDelay = 1000 * 60 * 15;
 
 export const dailyMoney = 100;
 
-export const createAuction = z.object({
-  cardId: z.string().uuid("Invalid UUID"),
-  price: z
-    .number({ coerce: true })
-    .max(9999999, "Price too high")
-    .min(1, "Price too low"),
+export const search = z.object({
+  query: z.string().min(1).max(100).optional(),
+  year: z.number().min(0).max(6000).optional(),
+  nsfw: z.boolean().optional(),
+  type: z.array(z.string()).optional(),
+  origin: z.array(z.string()).optional(),
+  partOf: z.array(z.string()).optional(),
+  priceRange: z
+    .object({
+      min: z.number().min(0).max(1000000000),
+      max: z.number().min(0).max(1000000000),
+    })
+    .optional(),
 });
-// infer import doesnt work lol
-export type CreateAuction = inf<typeof createAuction>;
 
-export const buyAuction = z.object({
-  cardId: z.string().uuid("Invalid UUID"),
-  price: z
-    .number({ coerce: true })
-    .max(9999999, "Price too high")
-    .min(1, "Price too low"),
-});
-// infer import doesnt work lol
-export type BuyAuction = inf<typeof buyAuction>;
-
-export const cancelAuction = z.object({
-  cardId: z.string().uuid("Invalid UUID"),
-});
-// infer import doesnt work lol
-export type CancelAuction = inf<typeof cancelAuction>;
+export type Search = z.infer<typeof search>;
 
 export type ApiUser = User & {
   cardCount: number;

@@ -60,6 +60,12 @@ Go to `/login` to login with github and done!
 
 [Figma file](https://www.figma.com/file/Bt5NhBdOCrYtkybuHrXr32/Code-Review?type=design&mode=design&t=StK8x9t6zxXJdtnS-1)
 
+## Icons:
+
+<https://icon-sets.iconify.design/>
+
+All icons come from here copy the svelte svg and place it in the icons folder then add a export :)
+
 ## Todo:
 
 - Add account deletion process with memes being put on auction on delete
@@ -78,6 +84,7 @@ Go to `/login` to login with github and done!
 - Money up and down animation
 
 ### UI (ordered by priority):
+
 - Remove body scroll bar
 - Fix details accordion taking too much space
 - Redesign the card (fix card roll, long card name, maybe do something about the height too)
@@ -88,3 +95,4 @@ Go to `/login` to login with github and done!
 - Responsive navbar
 - Improve the /cards UI
 - Maybe do something about y overflow on CardInfo (not 100% sure yet)
+- Some icons in card ui dont work in lightmode

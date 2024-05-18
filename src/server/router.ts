@@ -1,6 +1,7 @@
 import { acceptOffer, createOffer, getOffer } from "./routes/offer";
 import { protectedProcedure, publicProcedure, router } from "./trpc";
 
+import { binSearch } from "./routes/binsearch";
 import { buy } from "./routes/buy";
 import { cancel } from "./routes/cancel";
 import { daily } from "./routes/daily";
@@ -30,4 +31,5 @@ export const appRouter = router({
   picture: picture,
   profileUpdate: profileUpdate,
   deleteAccount: deleteAccount,
+  binSearch: binSearch,
 });

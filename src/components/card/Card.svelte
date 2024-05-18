@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Card } from "@db/schema.ts";
   import Money from "@/components/icons/Money.svelte";
   import type { ApplicationCard } from "@/lib/interfaces";
   import { doConfetti } from "@/lib/utils";

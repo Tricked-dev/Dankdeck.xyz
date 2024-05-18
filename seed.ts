@@ -264,6 +264,7 @@ for (const smallerArray of splitArray(res, 500) as any[]) {
         views: parseInt(x.views.replaceAll(".", "")),
         origin: verySmartOriginSanitizer(x.origin) ?? null,
         part_of: x.part_of?.split(",")?.[0]?.split(" / ")?.[0] ?? null,
+        type: x.type?.split(",")?.[0] ?? null,
       }))
       .filter((x: any) => {
         if (foundSlugs.includes(x.slug)) {
