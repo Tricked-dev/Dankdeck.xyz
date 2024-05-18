@@ -14,6 +14,7 @@
   import { navigate } from "astro/virtual-modules/transitions-router.js";
   import Card from "./card/Card.svelte";
   import { fly } from "svelte/transition";
+  import { prefetch } from "astro:prefetch";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
@@ -181,7 +182,7 @@
 
 <div class="navbar bg-base-300 gap-4 md:gap-0">
   <div class="flex-1 flex gap-2">
-    <a href="/" class="btn btn-ghost text-xl">Dank Deck</a>
+    <a href="/" class="btn btn-ghost text-xl gap-0">Dank Deck</a>
     {#if session}
       <a href="/cards" class="btn btn-outline text-xl">My Cards</a>
     {/if}
@@ -198,6 +199,10 @@
           class="btn btn-ghost btn-circle avatar"
           ondblclick={() => {
             navigate("/user/" + session?.user?.id);
+          }}
+          onclick={() => {
+            prefetch("/settings");
+            prefetch("/user/" + session?.user?.id);
           }}
         >
           <div class="w-10 rounded-full">

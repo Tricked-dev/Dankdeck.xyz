@@ -18,5 +18,9 @@ export default defineConfig({
                 '@': fileURLToPath(new URL('./src', import.meta.url).toString()) // ts likes to cry without .toString() for some reason
             }
         }
+    },
+    prefetch: {
+        defaultStrategy: "hover",
+        prefetchAll: false
     }
 });
