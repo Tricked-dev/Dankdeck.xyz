@@ -89,14 +89,6 @@
         class="bg-primary-content bg-cover bg-center absolute w-full h-full"
         style="background-image: {bg};"
       >
-        {#if price != undefined}
-          <div class="absolute top-0 left-0 text-xl font-bold p-1">
-            <span class="text-cyan-800 bg-slate-50/20 p-1 rounded-xl">
-              <Money />
-              {price}
-            </span>
-          </div>
-        {/if}
         <!--      <div-->
         <!--        class="absolute top-0 right-0 text-4xl font-bold p-2 text-white"-->
         <!--        style:text-shadow="1px 1px 4px rgba(0, 0, 0, 0.5)"-->
@@ -109,6 +101,17 @@
         <!--        {card.meme.name}-->
         <!--      </div>-->
       </div>
+      {#if price != undefined}
+        <div class="absolute bottom-1 left-0 text-xl font-bold p-1">
+          <span
+            class="text-white bg-slate-50/20 p-1 rounded-xl"
+            style:text-shadow="1px 1px 4px rgba(0, 0, 0, 0.5)"
+          >
+            <Money />
+            {price}
+          </span>
+        </div>
+      {/if}
     </div>
   </div>
 </a>
