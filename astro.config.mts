@@ -1,5 +1,6 @@
+import { defineConfig, passthroughImageService } from 'astro/config';
+
 import auth from "auth-astro";
-import { defineConfig } from 'astro/config';
 import { fileURLToPath } from "url";
 import react from "@astrojs/react";
 import svelte from "@astrojs/svelte";
@@ -22,5 +23,8 @@ export default defineConfig({
     prefetch: {
         defaultStrategy: "hover",
         prefetchAll: false
-    }
+    },
+    image: {
+        service: passthroughImageService()
+    },
 });

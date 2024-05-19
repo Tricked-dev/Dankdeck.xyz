@@ -137,6 +137,9 @@ module default {
         };
         required property userId := .user.id;
         required property memeId := .meme.id;
+        required property views -> int64 {
+            default := 0;
+        };
 
         required link user -> User {
                 on target delete delete source;

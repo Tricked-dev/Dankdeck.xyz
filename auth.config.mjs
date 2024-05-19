@@ -201,6 +201,7 @@ export default defineConfig({
       }
     },
   },
+
   pages: {
     signIn: "/login",
     newUser: "/cards?onboard=1"
