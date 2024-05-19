@@ -31,6 +31,7 @@ export async function getCard(id: string) {
     id,
     number,
     createdAt,
+    views,
     meme: {
       id,
       shortId,

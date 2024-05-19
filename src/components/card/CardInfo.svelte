@@ -10,6 +10,7 @@
   import Chart from "@/components/Chart.svelte";
   // prettier-ignore
   import { Money, Eye, Auction, MoneyBill, Clock, TextLine, Details, ChartIcon, MoreSquare } from "@/components/icons";
+  import { onMount } from "svelte";
 
   interface Props {
     card: CardType;
@@ -113,6 +114,20 @@
       },
     },
   };
+
+  onMount(async () => {
+    const selfViewed = parseInt(localStorage.getItem(`v${card.id}`) ?? "0");
+    if (selfViewed > 15) return;
+
+    await tr(async () => {
+      await trpc.view.mutate({ cardId: card.id });
+      card = (await trpc.card.query({
+        cardId: card.id,
+      })) as unknown as CardType;
+
+      localStorage.setItem(`v${card.id}`, (selfViewed + 1).toString());
+    });
+  });
 </script>
 
 <!--<div class="flex w-full p-4 gap-8 max-w-[80rem] mx-auto">-
@@ -208,7 +223,7 @@ TODO: make text better vosible on light backgrounds
           <i class="flex fill-white h-5 w-5">
             <Eye />
           </i>
-          2.2k views
+          {card.views} views
         </div>
         {#if card.auction?.[0]?.price}
           <div class="flex items-center gap-2">
