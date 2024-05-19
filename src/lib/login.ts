@@ -10,4 +10,11 @@ sl<HTMLButtonElement>("#login-rs").addEventListener("submit", (e) => {
   });
 });
 
+const loginCount = parseInt(localStorage.getItem("loginCount") || 0);
+localStorage.setItem("loginCount", (loginCount + 1).toString());
+
+if (loginCount > 3) {
+  sl<HTMLDivElement>(`#trouble`).classList.remove("hidden");
+}
+
 export {};

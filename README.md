@@ -1,4 +1,16 @@
-# Astro Starter Kit: Minimal
+# DankDeck.xyz
+
+A card trading and collecting game that uses Edgedb and Astro.
+
+- Deployed on vercel
+- Login with Github, Discord or Email
+- Open Source
+- Svelte 5
+- TRPC
+
+## How we use edgedb
+
+We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relation and queries.
 
 ## Pre-requisites
 
@@ -96,3 +108,4 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 - Improve the /cards UI
 - Maybe do something about y overflow on CardInfo (not 100% sure yet)
 - Some icons in card ui dont work in lightmode
+- buy modal is wideeeee

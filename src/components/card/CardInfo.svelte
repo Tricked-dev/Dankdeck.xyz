@@ -11,6 +11,7 @@
   // prettier-ignore
   import { Money, Eye, Auction, MoneyBill, Clock, TextLine, Details, ChartIcon, MoreSquare } from "@/components/icons";
   import { onMount } from "svelte";
+  import Expandable from "../forms/Expandable.svelte";
 
   interface Props {
     card: CardType;
@@ -72,7 +73,11 @@
         ],
       },
     ],
+    theme: {
+      mode: "dark",
+    },
     chart: {
+      background: "transparent",
       type: "area",
       height: 250,
       zoom: {
@@ -135,6 +140,41 @@
 TODO: make text better vosible on light backgrounds
 
 -->
+
+{#snippet cardInfoContent()}
+  {#if card?.meme.description}
+    <Expandable
+      title="Description"
+      description={card?.meme.description}
+      icon={TextLine}
+    />
+  {/if}
+  <Expandable
+    title="Description"
+    icon={Details}
+    iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
+  >
+    <div class="pt-4 grid grid-cols-[auto_1fr] items-center">
+      {#if card?.meme.year}
+        <div class="font-semibold">Year</div>
+        <div class="text-right text-sm">{card?.meme.year}</div>
+      {/if}
+      {#if card?.meme.origin}
+        <div class="font-semibold">Origin</div>
+        <div class="text-right text-sm">{card?.meme.origin}</div>
+      {/if}
+      {#if card?.meme.partOf}
+        <div class="font-semibold">Part of</div>
+        <div class="text-right text-sm">{card?.meme.partOf}</div>
+      {/if}
+      {#if card?.meme.type}
+        <div class="font-semibold">Type</div>
+        <div class="text-right text-sm">{card?.meme.type}</div>
+      {/if}
+    </div>
+  </Expandable>
+{/snippet}
+
 <div class="h-full w-full p-4 gap-4 max-w-[80rem] mx-auto mt-2 flex-row">
   <div class="flex gap-8 justify-center flex-col md:flex-row">
     <div class="h-full">
@@ -143,57 +183,7 @@ TODO: make text better vosible on light backgrounds
       <div
         class="join join-vertical card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem] hidden md:block"
       >
-        {#if card?.meme.description}
-          <div
-            class="collapse collapse-arrow join-item border rounded-lg border-neutral"
-          >
-            <input type="checkbox" checked />
-            <div class="collapse-title font-bold flex gap-3">
-              <i class="flex w-7 h-7 stroke-white">
-                <TextLine />
-              </i>
-              Description
-            </div>
-            <div class="collapse-content border-t border-neutral">
-              <div class="pt-4">{card?.meme.description}</div>
-            </div>
-          </div>
-        {/if}
-        <div
-          class="collapse collapse-arrow join-item border rounded-lg border-neutral"
-        >
-          <input type="checkbox" />
-          <div class="collapse-title font-bold flex gap-3 items-center">
-            <i class="flex w-6 h-6 fill-white scale-95">
-              <Details />
-            </i>
-            Details
-          </div>
-          <div class="collapse-content border-t border-neutral">
-            <div class="pt-4 grid grid-cols-[auto_1fr] items-center">
-              {#if card?.meme.year}
-                <div class="font-semibold">Year</div>
-                <div class="text-right text-sm">{card?.meme.year}</div>
-              {/if}
-              {#if card?.meme.origin}
-                <div class="font-semibold">Origin</div>
-                <div class="text-right text-sm">{card?.meme.origin}</div>
-              {/if}
-              {#if card?.meme.description}
-                <div class="font-semibold">Description</div>
-                <div class="text-right text-sm">{card?.meme.description}</div>
-              {/if}
-              {#if card?.meme.partOf}
-                <div class="font-semibold">Part of</div>
-                <div class="text-right text-sm">{card?.meme.partOf}</div>
-              {/if}
-              {#if card?.meme.type}
-                <div class="font-semibold">Type</div>
-                <div class="text-right text-sm">{card?.meme.type}</div>
-              {/if}
-            </div>
-          </div>
-        </div>
+        {@render cardInfoContent()}
       </div>
     </div>
 
@@ -232,12 +222,6 @@ TODO: make text better vosible on light backgrounds
             </i>
             Bin Auction
           </div>
-          <!-- <div class="flex items-center gap-2">
-            <i class="flex fill-white h-5 w-5">
-              <Auction />
-            </i>
-            15 bids
-          </div> -->
         {/if}
       </div>
 
@@ -354,80 +338,25 @@ TODO: make text better vosible on light backgrounds
       <div
         class="join join-vertical card card-compact shadow-xl bg-base-200 mt-4 w-[26.25rem] block md:hidden"
       >
-        {#if card?.meme.description}
-          <div
-            class="collapse collapse-arrow join-item border rounded-lg border-neutral"
-          >
-            <input type="checkbox" checked />
-            <div class="collapse-title font-bold flex gap-3">
-              <i class="flex w-7 h-7 stroke-white">
-                <TextLine />
-              </i>
-              Description
-            </div>
-            <div class="collapse-content border-t border-neutral">
-              <div class="pt-4">{card?.meme.description}</div>
-            </div>
-          </div>
-        {/if}
-        <div
-          class="collapse collapse-arrow join-item border rounded-lg border-neutral"
-        >
-          <input type="checkbox" />
-          <div class="collapse-title font-bold flex gap-3 items-center">
-            <i class="flex w-6 h-6 fill-white scale-95">
-              <Details />
-            </i>
-            Details
-          </div>
-          <div class="collapse-content border-t border-neutral">
-            <div class="pt-4 grid grid-cols-[auto_1fr] items-center">
-              {#if card?.meme.year}
-                <div class="font-semibold">Year</div>
-                <div class="text-right text-sm">{card?.meme.year}</div>
-              {/if}
-              {#if card?.meme.origin}
-                <div class="font-semibold">Origin</div>
-                <div class="text-right text-sm">{card?.meme.origin}</div>
-              {/if}
-              {#if card?.meme.description}
-                <div class="font-semibold">Description</div>
-                <div class="text-right text-sm">{card?.meme.description}</div>
-              {/if}
-              {#if card?.meme.partOf}
-                <div class="font-semibold">Part of</div>
-                <div class="text-right text-sm">{card?.meme.partOf}</div>
-              {/if}
-              {#if card?.meme.type}
-                <div class="font-semibold">Type</div>
-                <div class="text-right text-sm">{card?.meme.type}</div>
-              {/if}
-            </div>
-          </div>
-        </div>
+        {@render cardInfoContent()}
       </div>
 
       <div class="w-full card card-compact shadow-xl bg-base-200 mt-4">
-        <div class="collapse collapse-arrow border rounded-lg border-neutral">
-          <input type="checkbox" />
-          <div class="collapse-title font-bold flex gap-3 items-center">
-            <i class="flex w-6 h-6 fill-white scale-95">
-              <ChartIcon />
-            </i>
-            Price history
-          </div>
-          <div class="collapse-content border-t border-neutral">
-            {#if card?.auctionEntries?.length}
-              <div class="pt-4">
-                <Chart options={chartOptions} />
-              </div>
-            {:else}
-              <div class="pt-4">
-                No price history <span class="italic">yet</span>
-              </div>
-            {/if}
-          </div>
-        </div>
+        <Expandable
+          icon={ChartIcon}
+          iconClass="ml-2 flex w-6 h-6 fill-white scale-95"
+          title="Price history"
+        >
+          {#if card?.auctionEntries?.length}
+            <div class="pt-4">
+              <Chart options={chartOptions} />
+            </div>
+          {:else}
+            <div class="pt-4">
+              No price history <span class="italic">yet</span>
+            </div>
+          {/if}
+        </Expandable>
       </div>
     </div>
   </div>
@@ -436,7 +365,23 @@ TODO: make text better vosible on light backgrounds
       class="h-full flex mx-auto justify-center mt-6 mb-5 max-w-[80rem]"
       style="max-width: calc(28.25rem + 50%)"
     >
-      <div class="w-full card card-compact shadow-xl bg-base-200">
+      <Expandable
+        title={randomSuggestions
+          ? "More from multiple collections"
+          : "More from this collection"}
+        iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
+        icon={MoreSquare}
+      >
+        <div class="pt-4 flex flex-wrap gap-2 justify-center">
+          {#if suggestions.length === 0}
+            <div class="h-12">There are no cards in the Marketplace.</div>
+          {/if}
+          {#each suggestions as { card }}
+            <Card extraClasses="" {card} height={20} />
+          {/each}
+        </div>
+      </Expandable>
+      <!-- <div class="w-full card card-compact shadow-xl bg-base-200">
         <div class="collapse collapse-arrow border rounded-lg border-neutral">
           <input type="checkbox" />
           <div class="collapse-title font-bold flex gap-3 items-center">
@@ -449,18 +394,9 @@ TODO: make text better vosible on light backgrounds
               More from this collection
             {/if}
           </div>
-          <div class="collapse-content border-t border-neutral">
-            <div class="pt-4 flex flex-wrap gap-2 justify-center">
-              {#if suggestions.length === 0}
-                <div class="h-12">There are no cards in the Marketplace.</div>
-              {/if}
-              {#each suggestions as { card }}
-                <Card extraClasses="" {card} height={20} />
-              {/each}
-            </div>
-          </div>
+          <div class="collapse-content border-t border-neutral"></div>
         </div>
-      </div>
+      </div> -->
     </div>
   {/if}
 </div>
