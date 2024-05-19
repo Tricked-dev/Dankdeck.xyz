@@ -17,11 +17,10 @@
   export let iconClass = "flex w-7 h-7 stroke-white ml-2";
 </script>
 
-<div class="mx-auto max-w-full rounded-xl shadow-lg w-full" {...$root}>
+<div class="mx-auto max-w-full w-full bg-base-200 first:rounded-t-lg last:rounded-b-lg border border-b-0 last:border-b border-neutral overflow-hidden" {...$root}>
   <div
     use:melt={$item(id)}
-    class="overflow-hidden transition-colors first:rounded-t-xl
-            last:rounded-b-xl"
+    class="overflow-hidden transition-colors"
   >
     <h2 class="flex">
       <button
@@ -31,7 +30,6 @@
           " px-2 py-5 text-base font-medium leading-none",
           "text-base-content transition-colors  focus:!ring-0",
           "focus-visible:text-white",
-          "border-b border-b-base-100",
         ].join(" ")}
       >
         <i class={iconClass}>
@@ -54,13 +52,14 @@
         class={[
           "content",
           "overflow-hidden text-sm bg-base-200 text-base-content",
+          "border-t border-neutral"
         ].join(" ")}
         use:melt={$content(id)}
         transition:slide={{
           duration: 150,
         }}
       >
-        <div class="px-2 py-4 text-base">
+        <div class="p-4 text-base">
           <slot>
             {description}
           </slot>
