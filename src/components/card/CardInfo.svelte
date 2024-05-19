@@ -142,39 +142,37 @@ TODO: make text better vosible on light backgrounds
 -->
 
 {#snippet cardInfoContent()}
-  <div>
-    {#if card?.meme.description}
-      <Expandable
-        title="Description"
-        description={card?.meme.description}
-        icon={TextLine}
-      />
-    {/if}
+  {#if card?.meme.description}
     <Expandable
       title="Description"
-      icon={Details}
-      iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
-    >
-      <div class="grid grid-cols-[auto_1fr] items-center">
-        {#if card?.meme.year}
-          <div class="font-semibold">Year</div>
-          <div class="text-right text-sm">{card?.meme.year}</div>
-        {/if}
-        {#if card?.meme.origin}
-          <div class="font-semibold">Origin</div>
-          <div class="text-right text-sm">{card?.meme.origin}</div>
-        {/if}
-        {#if card?.meme.partOf}
-          <div class="font-semibold">Part of</div>
-          <div class="text-right text-sm">{card?.meme.partOf}</div>
-        {/if}
-        {#if card?.meme.type}
-          <div class="font-semibold">Type</div>
-          <div class="text-right text-sm">{card?.meme.type}</div>
-        {/if}
-      </div>
-    </Expandable>
-  </div>
+      description={card?.meme.description}
+      icon={TextLine}
+    />
+  {/if}
+  <Expandable
+    title="Description"
+    icon={Details}
+    iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
+  >
+    <div class="grid grid-cols-[auto_1fr] items-center">
+      {#if card?.meme.year}
+        <div class="font-semibold">Year</div>
+        <div class="text-right text-sm">{card?.meme.year}</div>
+      {/if}
+      {#if card?.meme.origin}
+        <div class="font-semibold">Origin</div>
+        <div class="text-right text-sm">{card?.meme.origin}</div>
+      {/if}
+      {#if card?.meme.partOf}
+        <div class="font-semibold">Part of</div>
+        <div class="text-right text-sm">{card?.meme.partOf}</div>
+      {/if}
+      {#if card?.meme.type}
+        <div class="font-semibold">Type</div>
+        <div class="text-right text-sm">{card?.meme.type}</div>
+      {/if}
+    </div>
+  </Expandable>
 {/snippet}
 
 <div class="h-full w-full p-4 gap-4 max-w-[80rem] mx-auto mt-2 flex-row">
@@ -183,7 +181,7 @@ TODO: make text better vosible on light backgrounds
       <Card extraClasses="!w-full md:!w-[26.25rem]" {card} height={30} />
 
       <div
-        class="join join-vertical card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem] hidden md:block"
+        class="card card-compact shadow-xl bg-base-200 mt-5 w-[26.25rem] hidden md:block"
       >
         {@render cardInfoContent()}
       </div>
@@ -338,7 +336,7 @@ TODO: make text better vosible on light backgrounds
         </div>
       </div>
       <div
-        class="join join-vertical card card-compact shadow-xl bg-base-200 mt-4 w-[26.25rem] block md:hidden"
+        class="card card-compact shadow-xl bg-base-200 mt-4 w-full block md:hidden"
       >
         {@render cardInfoContent()}
       </div>
@@ -370,7 +368,7 @@ TODO: make text better vosible on light backgrounds
         iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
         icon={MoreSquare}
       >
-        <div class="pt-4 flex flex-wrap gap-2 justify-center">
+        <div class="flex flex-wrap gap-2 justify-center">
           {#if suggestions.length === 0}
             <div class="h-12">There are no cards in the Marketplace.</div>
           {/if}
