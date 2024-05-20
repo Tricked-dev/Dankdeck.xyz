@@ -16,7 +16,7 @@
   <div class="mr-auto my-auto flex flex-col gap-3">
     <span class="text-3xl font-bold my-auto">{user.name}</span>
     <span>Joined at: {user.createdAt?.toLocaleDateString("en-UK")}</span>
-    <div class="flex gap-3">
+    <div class="flex gap-3 flex-col md:flex-row">
       <div class="p-2 bg-base-200 rounded-2xl w-32">
         <Money />
         <span>
