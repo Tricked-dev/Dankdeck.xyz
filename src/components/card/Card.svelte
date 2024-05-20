@@ -12,6 +12,7 @@
     extraClasses?: string;
     unbox?: boolean;
     canvas?: HTMLCanvasElement;
+    hideTitle?: boolean
   }
   let {
     card,
@@ -23,6 +24,7 @@
     extraClasses,
     unbox,
     canvas,
+    hideTitle = false
   }: Props = $props();
 
   let ratio = 14 / 16;
@@ -78,12 +80,14 @@
     </div>
 
     <div class="card-back rounded-lg overflow-hidden">
-      <div
-        class="bg-neutral text-neutral-content flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2"
-      >
-        <div>#{card.number}</div>
-        <div>{card.meme.name}</div>
-      </div>
+      {#if !hideTitle}
+        <div
+          class="bg-neutral text-neutral-content flex justify-between gap-3 items-center text-lg px-4 font-semibold max-h-36 p-2"
+        >
+          <div>#{card.number}</div>
+          <div>{card.meme.name}</div>
+        </div>
+      {/if}
 
       <div
         class="bg-primary-content bg-cover bg-center absolute w-full h-full"

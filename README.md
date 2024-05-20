@@ -97,16 +97,11 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 
 ### UI (ordered by priority):
 
-- FIXED: Remove body scroll bar
-- FIXED: Fix details accordion taking too much space (fixed by tricked)
 - Redesign the card (fix card roll, long card name, maybe do something about the height too)
-- FIXED: Fix accordions being wobbly (fixed for now)
+- Fix border color in card info
 - Profile UI improvements
-- DONE: Probably a better login page
-- Add tooltips on hover for CardInfo
+- 1/2: Add tooltips on hover for CardInfo
 - Responsive navbar
 - Improve the /cards UI
 - Maybe do something about y overflow on CardInfo (not 100% sure yet)
-- Fixed: Some icons in card ui dont work in lightmode
-- buy modal is wideeeee
 - Add card view status (chill, hot, on fire)

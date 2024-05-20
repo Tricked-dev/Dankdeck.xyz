@@ -44,7 +44,8 @@ export async function getCard(id: string) {
     },
     userId,
     user: {
-      name
+      name,
+      image
     },
     auction: {
       id,

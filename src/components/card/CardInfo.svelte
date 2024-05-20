@@ -12,6 +12,8 @@
   import { Money, Eye, Auction, MoneyBill, Clock, TextLine, Details, ChartIcon, MoreSquare } from "@/components/icons";
   import { onMount } from "svelte";
   import Expandable from "../forms/Expandable.svelte";
+  import TextTooltip from "@/components/forms/TextTooltip.svelte";
+  import Avatar from "@/components/Avatar.svelte";
 
   interface Props {
     card: CardType;
@@ -188,9 +190,8 @@ TODO: make text better vosible on light backgrounds
     </div>
 
     <div class="h-full w-full md:w-[50%] flex flex-col gap-2">
-      <div
-        class="font-bold text-sky-600 uppercase hover:text-sky-300 hover:underline transition-all"
-      >
+
+      <div class="font-bold text-sky-600 uppercase hover:text-sky-300 hover:underline transition-all w-fit">
         {#if card.meme.year}
           Part of the {card.meme.year} collection
         {:else}
@@ -202,11 +203,55 @@ TODO: make text better vosible on light backgrounds
       </div>
       <div>
         Owned by
-        <span
-          class="text-sky-400 hover:text-sky-300 hover:underline transition-all"
-        >
-          <UserLink id={card.userId} user={card.user} />
-        </span>
+        <TextTooltip parentClass="text-sky-400 hover:text-sky-300 hover:underline transition-all inline">
+          <span slot="text">
+            <UserLink id={card.userId} user={card.user} />
+          </span>
+          <div class="card card-compact shadow-xl bg-base-200 p-5 gap-4" slot="tooltip">
+            <div class="flex">
+              <Avatar class="mr-4" user={card.user} size={3} />
+              <div>
+                <p class="font-bold">{card.user.name}</p>
+                <p class="opacity-75 font-semibold">(Average card number)</p>
+              </div>
+            </div>
+            <div class="flex gap-4 text-[15px]">
+              <div>
+                <div class="font-semibold">69420</div>
+                <div class="font-bold opacity-65">Balance</div>
+              </div>
+              <div>
+                <div class="font-semibold">100</div>
+                <div class="font-bold opacity-65">Collected</div>
+              </div>
+              <div>
+                <div class="font-semibold">5</div>
+                <div class="font-bold opacity-65">Sold</div>
+              </div>
+            </div>
+            <!--      This one is supposed to have cards, just images no text or anything      -->
+            <div class="flex flex-wrap gap-2">
+              <Card
+                class="w-12 h-12"
+                card={{ meme: { name: "Card 1" }, number: 1 }}
+                height={12}
+                hideTitle={true}
+              />
+              <Card
+                class="w-12 h-12"
+                card={{ meme: { name: "Card 2" }, number: 2 }}
+                height={12}
+                hideTitle={true}
+              />
+              <Card
+                class="w-12 h-12"
+                card={{ meme: { name: "Card 3" }, number: 3 }}
+                height={12}
+                hideTitle={true}
+              />
+            </div>
+          </div>
+        </TextTooltip>
       </div>
       <div class="my-4 flex gap-5">
         <div class="flex items-center gap-2">
@@ -397,8 +442,14 @@ TODO: make text better vosible on light backgrounds
   {/if}
 </div>
 
-<Modal title="Buy {card.meme.name}" bind:modal={buyDialog}>
-  <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>
+<Modal title="Buy {card.meme.name}" bind:modal={buyDialog} width="max-w-[40rem]">
+<!--  <span class="text-1xl">Buy price: <Money /> {card.auction?.[0]?.price}</span>-->
+<!-- tbh not the best i can think of but eh -->
+  <div class="flex flex-col items-center mt-4 gap-2">
+    <div class="text-lg">Are you sure you want to buy this card?</div>
+    <Card {card} height={20} noHref={true} />
+    <div class="text-lg font-bold">Buy price: <Money /> {card.auction?.[0]?.price}</div>
+  </div>
 
   <div class="mt-4 flex gap-4">
     <button
