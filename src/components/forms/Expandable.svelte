@@ -14,7 +14,7 @@
   export let icon: any;
   export let title: string;
   export let description = "Empty!";
-  export let iconClass = "flex w-7 h-7 stroke-white ml-2";
+  export let iconClass = "flex w-7 h-7 stroke-current ml-2";
 </script>
 
 <div class="mx-auto max-w-full w-full bg-base-200 first:rounded-t-lg last:rounded-b-lg border border-b-0 last:border-b border-neutral overflow-hidden" {...$root}>

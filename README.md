@@ -107,6 +107,6 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 - Responsive navbar
 - Improve the /cards UI
 - Maybe do something about y overflow on CardInfo (not 100% sure yet)
-- Some icons in card ui dont work in lightmode
+- Fixed: Some icons in card ui dont work in lightmode
 - buy modal is wideeeee
 - Add card view status (chill, hot, on fire)

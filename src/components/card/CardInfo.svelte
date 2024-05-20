@@ -152,7 +152,7 @@ TODO: make text better vosible on light backgrounds
   <Expandable
     title="Description"
     icon={Details}
-    iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
+    iconClass="flex w-6 h-6 fill-current scale-95 ml-2"
   >
     <div class="grid grid-cols-[auto_1fr] items-center">
       {#if card?.meme.year}
@@ -210,14 +210,14 @@ TODO: make text better vosible on light backgrounds
       </div>
       <div class="my-4 flex gap-5">
         <div class="flex items-center gap-2">
-          <i class="flex fill-white h-5 w-5">
+          <i class="flex fill-current h-5 w-5">
             <Eye />
           </i>
           {card.views} views
         </div>
         {#if card.auction?.[0]?.price}
           <div class="flex items-center gap-2">
-            <i class="flex fill-white h-5 w-5">
+            <i class="flex fill-current h-5 w-5">
               <MoneyBill />
             </i>
             Bin Auction
@@ -232,7 +232,7 @@ TODO: make text better vosible on light backgrounds
           <div
             class="card-body border-b border-neutral flex flex-row items-center"
           >
-            <i class="flex fill-white h-7 w-7">
+            <i class="flex fill-current h-7 w-7">
               <Clock />
             </i>
             <div class="text-base font-semibold">
@@ -344,7 +344,7 @@ TODO: make text better vosible on light backgrounds
       <div class="w-full card card-compact shadow-xl bg-base-200 mt-4">
         <Expandable
           icon={ChartIcon}
-          iconClass="ml-2 flex w-6 h-6 fill-white scale-95"
+          iconClass="ml-2 flex w-6 h-6 fill-current scale-95"
           title="Price history"
         >
           {#if card?.auctionEntries?.length}
@@ -365,7 +365,7 @@ TODO: make text better vosible on light backgrounds
         title={randomSuggestions
           ? "More from multiple collections"
           : "More from this collection"}
-        iconClass="flex w-6 h-6 fill-white scale-95 ml-2"
+        iconClass="flex w-6 h-6 fill-current scale-95 ml-2"
         icon={MoreSquare}
       >
         <div class="flex flex-wrap gap-2 justify-center">
