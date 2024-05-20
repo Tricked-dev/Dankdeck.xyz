@@ -27,6 +27,19 @@ async function searchCard(query: Search) {
   }
 
   function createQuery() {
+    if (query.cards) {
+      return `
+      select Card {
+        id,
+        number,
+        meme: {
+          shortId,
+          name,
+          description
+        }
+      } filter ${opGenerator(query, ids, "")}
+      `;
+    }
     return `
   select BinAuction {
     price,
@@ -85,34 +98,34 @@ async function searchCard(query: Search) {
   return await client.query(createQuery(), opts);
 }
 
-function opGenerator(search: Search, shortIds?: number[]) {
-  let p = `.card.meme.`;
+function opGenerator(search: Search, shortIds?: number[], p = ".card") {
+  let m = `${p}.meme.`;
   const ops = [];
   if (search.nsfw) {
-    ops.push(`${p}nsfw = ${search.nsfw}`);
+    ops.push(`${m}nsfw = ${search.nsfw}`);
   }
   if (search.origin) {
-    ops.push(`contains(<array<str>>$origin, ${p}origin)`);
+    ops.push(`contains(<array<str>>$origin, ${m}origin)`);
   }
   if (search.type) {
-    ops.push(`contains(<array<str>>$type, ${p}type)`);
+    ops.push(`contains(<array<str>>$type, ${m}type)`);
   }
   if (search.year) {
-    ops.push(`${p}year = ${search.year}`);
+    ops.push(`${m}year = ${search.year}`);
   }
   if (search.query) {
-    ops.push(`contains(<array<int64>>[${shortIds?.join(",")}], ${p}shortId)`);
+    ops.push(`contains(<array<int64>>[${shortIds?.join(",")}], ${m}shortId)`);
   }
   if (search.partOf) {
-    ops.push(`contains(<array<str>>$partOf, ${p}partOf)`);
+    ops.push(`contains(<array<str>>$partOf, ${m}partOf)`);
   }
-  if (search.priceRange) {
+  if (search.priceRange && !search.cards) {
     ops.push(
       `.price >= ${search.priceRange.min} AND .price <= ${search.priceRange.max}`,
     );
   }
   if (search.user) {
-    ops.push(`.card.userId = ${search.user}`);
+    ops.push(`${p}.userId = <uuid>"${search.user}"`);
   }
   if (!ops.length) return `true = true`;
 

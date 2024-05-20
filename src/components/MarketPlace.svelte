@@ -8,6 +8,7 @@
   import { tr, trpc } from "@/lib/api";
   import Range from "./forms/Range.svelte";
   import SearchIcon from "./icons/Search.svelte";
+  import Filter from "./Filter.svelte";
 
   interface Props {
     auctions: BinAuction[];
@@ -70,56 +71,13 @@
   });
 </script>
 
-{#snippet filteroptions(clazz)}
-  <div class="mr-auto {clazz}">
-    <div class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-8">
-      <div class="w-52 md:w-full">
-        <label class="input input-bordered flex items-center gap-2">
-          <input
-            type="text"
-            class="grow"
-            placeholder="Search Card"
-            bind:value={search}
-          />
-          <SearchIcon />
-        </label>
-      </div>
-      <div>
-        <span>Origin</span>
-        <ComboBox
-          labelContent=""
-          options={origins}
-          placeholder="Origin"
-          bind:selectedItems={selectedOrigins}
-        />
-      </div>
-      <div>
-        <span>Part</span>
-        <ComboBox
-          labelContent=""
-          options={parts}
-          placeholder="Part"
-          bind:selectedItems={selectedParts}
-        />
-      </div>
-
-      {#if max}
-        <div>
-          <span>Price {$rangeValue[0]} to {$rangeValue[1]}</span>
-          <Range {max} bind:value={rangeValue}></Range>
-        </div>
-      {/if}
-    </div>
-  </div>
-{/snippet}
-
 <div class="w-full">
   <span
     class="md:text-7xl text-2xl font-extrabold flex p-3 font-serif md:font-bold"
     ><span class="mx-auto text-wrap">Card Marketplace</span></span
   >
   <div class="flex flex-col md:flex-row">
-    {@render filteroptions("md:hidden p-2")}
+    <Filter bind:auctions class="md:hidden p-2" />
     <Cards class="max-w-[70rem] w-full ml-auto mr-0">
       {#each auctions as auction}
         <Card
@@ -137,6 +95,6 @@
         </div>
       {/if}
     </Cards>
-    {@render filteroptions("hidden md:block")}
+    <Filter bind:auctions class="hidden md:block" />
   </div>
 </div>

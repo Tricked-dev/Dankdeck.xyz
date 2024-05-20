@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Card as CardType } from "@db/schema.ts";
+  import type { Card as CardType, User } from "@db/schema.ts";
   import r, { setCards } from "@/lib/state.svelte";
   import Card from "@/components/card/Card.svelte";
   import { onMount } from "svelte";
@@ -7,10 +7,14 @@
   import { tr, trpc } from "@/lib/api";
   import Modal from "../Modal.svelte";
   import Cards from "./Cards.svelte";
+  import Filter from "../Filter.svelte";
   interface Props {
     cards: CardType[];
+    user: User;
   }
-  let { cards }: Props = $props();
+  let { cards: c, user }: Props = $props();
+  let cards: CardType[] = $state(c);
+  let searchedCards: CardType[] | undefined = $state();
   let mounted = $state(false);
 
   let onBoardDialog: HTMLDialogElement | undefined = $state();
@@ -46,19 +50,38 @@
       );
     }
   });
+  $inspect(searchedCards);
 </script>
 
-<Cards class="max-w-[80rem]">
-  {#if !mounted || !r.cards}
-    {#each cards as card}
-      <Card {card} height={25} />
-    {/each}
-  {:else}
-    {#each r.cards ?? [] as card}
-      <Card {card} height={25} />
-    {/each}
-  {/if}
-</Cards>
+<div class="flex flex-col md:flex-row max-w-[100rem]">
+  <Filter
+    bind:cards={searchedCards}
+    cardMode
+    user={user.id}
+    class="md:hidden p-2"
+  />
+  <Cards class=" ml-auto mr-0 flex-1">
+    {#if searchedCards}
+      {#each searchedCards as card}
+        <Card {card} height={25} />
+      {/each}
+    {:else if !mounted || !r.cards}
+      {#each cards as card}
+        <Card {card} height={25} />
+      {/each}
+    {:else}
+      {#each r.cards ?? [] as card}
+        <Card {card} height={25} />
+      {/each}
+    {/if}
+  </Cards>
+  <Filter
+    bind:cards={searchedCards}
+    cardMode
+    user={user.id}
+    class="hidden md:block p-2"
+  />
+</div>
 
 <Modal
   title="Hello claim your first 5 cards"

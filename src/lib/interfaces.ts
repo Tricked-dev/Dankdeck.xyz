@@ -25,6 +25,7 @@ export const search = z.object({
     })
     .optional(),
   user: z.string().uuid().optional(),
+  cards: z.boolean().default(false).optional(),
 });
 
 export type Search = z.infer<typeof search>;

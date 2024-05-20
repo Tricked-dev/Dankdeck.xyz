@@ -1,7 +1,7 @@
 ---
 import { getSession } from "auth-astro/server";
 import Layout from "@/layouts/Layout.astro";
-import Profile from "@/components/Profile.svelte";
+import Profile from "@/components/.svelte";
 import { client } from "client";
 const session = await getSession(Astro.request);
 if (!session) {

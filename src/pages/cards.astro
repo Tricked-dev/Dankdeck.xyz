@@ -14,5 +14,5 @@ const cards = await getCardsView(session.user.id);
 ---
 
 <Layout session={session} title="My Cards">
-  <MyCards cards={cards} client:load />
+  <MyCards cards={cards} user={session.user} client:load />
 </Layout>
