@@ -83,7 +83,7 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 - Add account deletion process with memes being put on auction on delete
 - a11y - would be cool if everyone could play this game
 - Card favoriting
-- Card showcase
+- showcase
 - click on like a meme name or something and see existing rolled cards to view them and stuff
 - a no nsfw option maybe? or something cause nsfw memes do exist and are marked
 - a better user info ui /user/id

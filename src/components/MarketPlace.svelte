@@ -114,8 +114,9 @@
 {/snippet}
 
 <div class="w-full">
-  <span class="text-7xl flex p-3 font-serif font-bold"
-    ><span class="mx-auto">Card Marketplace</span></span
+  <span
+    class="md:text-7xl text-2xl font-extrabold flex p-3 font-serif md:font-bold"
+    ><span class="mx-auto text-wrap">Card Marketplace</span></span
   >
   <div class="flex flex-col md:flex-row">
     {@render filteroptions("md:hidden p-2")}
