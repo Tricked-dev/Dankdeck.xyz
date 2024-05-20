@@ -239,8 +239,8 @@ TODO: make text better vosible on light backgrounds
             </div>
             <!--      This one is supposed to have cards, just images no text or anything      -->
             <div class="flex flex-wrap gap-2">
-              {#each card.user.cards as card}
-                <Card class="w-12 h-12" {card} height={12} hideTitle={true} />
+              {#each card.user.cards as c}
+                <Card class="w-12 h-12" card={c} height={12} hideTitle={true} />
               {/each}
             </div>
           </div>

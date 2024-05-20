@@ -13,7 +13,7 @@
   import Avatar from "./Avatar.svelte";
   import { navigate } from "astro/virtual-modules/transitions-router.js";
   import Card from "./card/Card.svelte";
-  import { fly } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
   import { prefetch } from "astro:prefetch";
   let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
@@ -143,7 +143,9 @@
 {#snippet gameInfo(clazz)}
   <div class="p-2 bg-base-200 rounded-2xl w-32 {clazz}">
     <span class="text-primary" bind:this={balanceElement}><Money /></span>
-    {r.user?.balance ?? balance}
+    {#key r.user?.balance ?? balance}
+      <span in:fade={{ duration: 250 }}>{r.user?.balance ?? balance}</span>
+    {/key}
   </div>
 
   <div class="form-control {clazz}">
