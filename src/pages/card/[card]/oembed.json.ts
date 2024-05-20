@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ params }) => {
     version: "1.0",
     title: `DankDeck | ${cardData.meme.name} #${cardData.number}`,
     author_name: cardData.user.name,
-    author_url: `https://dankdeck.xyz/user/${cardData.user.id}`,
+    author_url: `https://dankdeck.xyz/user/${cardData.userId}`,
     provider_name: "DankDeck",
     provider_url: "https://dankdeck.xyz",
     thumbnail_url: cardData.user.picture,
