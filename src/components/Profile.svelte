@@ -12,6 +12,8 @@
   import Card from "./card/Card.svelte";
   import { onMount } from "svelte";
   import { navigate } from "astro/virtual-modules/transitions-router.js";
+  import Expandable from "./forms/Expandable.svelte";
+  import Cross from "./icons/Cross.svelte";
   interface Props {
     user: User;
   }
@@ -183,11 +185,12 @@
     </div>
     <span class="text-3xl font-semibold leading-5 mt-4">Red Light District</span
     >
-    <details class="collapse bg-base-200">
-      <summary class="collapse-title text-xl font-medium"
-        >You will regret this!!</summary
+    <div class="py-2">
+      <Expandable
+        title="You will regret this!!"
+        icon={Cross}
+        iconClass="text-3xl leading-none"
       >
-      <div class="collapse-content">
         <button
           onmouseenter={() => (hovering = true)}
           onmouseleave={() => (hovering = false)}
@@ -211,8 +214,8 @@
               2,
             )}s{/if}
         </button>
-      </div>
-    </details>
+      </Expandable>
+    </div>
   </div>
 </div>
 

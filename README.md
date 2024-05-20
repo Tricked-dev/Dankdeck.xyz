@@ -7,10 +7,22 @@ A card trading and collecting game that uses Edgedb and Astro.
 - Open Source
 - Svelte 5
 - TRPC
+- Pusher for trading
+- R2 for image storage
 
 ## How we use edgedb
 
-We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relation and queries.
+We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relations and queries.
+
+## Things to try out when you use this site
+
+- Trade some cards with someone (you need a friend for this)
+- Buy and sell some cards maybe the same one to see the graph working
+- Try changing your theme and name in settings
+- Search for a card you put for sale
+- Linking other accounts in settings
+- Changing your profile picture to a dope meme you got
+- Posting a link of your card in Discord or another site with embeds
 
 ## Pre-requisites
 
