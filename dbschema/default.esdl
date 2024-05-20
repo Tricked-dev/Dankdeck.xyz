@@ -30,6 +30,8 @@ module default {
         multi link sessions         := .<user[is Session];
         multi link cards            := .<user[is Card];
         multi link cardsClaimed     := .<claimedBy[is Card];
+        multi link soldAuctions     := .<seller[is AuctionEntry];
+        multi link boughtAuctions   := .<buyer[is AuctionEntry];
 
         multi link tradeOffers      := .<offerer[is TradeOffer];
         multi link tradeRequests    := .<receiver[is TradeOffer];

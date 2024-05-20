@@ -45,6 +45,25 @@ export async function getCard(id: string) {
     userId,
     user: {
       name,
+      balance,
+      picture,
+      cardCount := count(.cards),
+      cardsClaimedCount := count(.cardsClaimed),
+      soldCount := count(.soldAuctions),
+      cardNumber := math::mean(.cards.number),
+      cards := (
+        select .cards {
+          id,
+          number,
+          meme: {
+            id,
+            shortId,
+            name,
+            description
+          }
+        }
+        limit 3
+      ),
       image
     },
     auction: {

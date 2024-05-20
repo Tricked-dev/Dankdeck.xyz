@@ -24,3 +24,9 @@
   content="{card.meme.name}, {card.meme
     .slug}, trading cards, auctions, collectibles"
 />
+<meta property="og:author" content={card.user.name} />
+<meta property="og:author:image" content={card.user.picture} />
+<meta
+  property="og:author:url"
+  content={`https://dankdeck.xyz/user/${card.userId}`}
+/>
