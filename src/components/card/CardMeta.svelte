@@ -33,6 +33,6 @@
 <link
   rel="alternate"
   type="application/json+oembed"
-  href="/card/{card.id}/oembed.json"
+  href="https://dankdeck.xyz/card/{card.id}/oembed.json"
   title="Bacon Lollys oEmbed Profile"
 />
