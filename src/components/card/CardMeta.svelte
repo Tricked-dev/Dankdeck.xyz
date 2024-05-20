@@ -30,3 +30,9 @@
   property="og:author:url"
   content={`https://dankdeck.xyz/user/${card.userId}`}
 />
+<link
+  rel="alternate"
+  type="application/json+oembed"
+  href="/card/{card.id}/oembed.json"
+  title="Bacon Lollys oEmbed Profile"
+/>
