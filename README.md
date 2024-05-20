@@ -97,7 +97,7 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 
 ### UI (ordered by priority):
 
-- Remove body scroll bar (got bamboozled)
+- FIXED: Remove body scroll bar
 - FIXED: Fix details accordion taking too much space (fixed by tricked)
 - Redesign the card (fix card roll, long card name, maybe do something about the height too)
 - FIXED: Fix accordions being wobbly (fixed for now)
