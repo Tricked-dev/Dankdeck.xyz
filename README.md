@@ -23,6 +23,8 @@ We use edgedb to save session user info and memes/cards, The memes are borrowed 
 - Linking other accounts in settings
 - Changing your profile picture to a dope meme you got
 - Posting a link of your card in Discord or another site with embeds
+- Bio
+- Show discord toggle
 
 ## Pre-requisites
 
