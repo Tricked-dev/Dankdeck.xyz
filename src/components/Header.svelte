@@ -103,7 +103,6 @@
     const showLoaderAfter = 500;
     let hasLoaded = false;
     let before = () => {
-      console.log("Before!");
       setTimeout(() => {
         if (hasLoaded) return;
         loader?.classList.remove("hidden");
@@ -133,6 +132,7 @@
   onvisibilitychangecapture={() => {
     if (document.visibilityState === "visible") {
       visible = true;
+      if (!session) return;
       updateUser();
     } else {
       visible = false;

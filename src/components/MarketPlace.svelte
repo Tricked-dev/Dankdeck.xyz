@@ -7,6 +7,7 @@
   import type { Search } from "@/lib/interfaces";
   import { tr, trpc } from "@/lib/api";
   import Range from "./forms/Range.svelte";
+  import SearchIcon from "./icons/Search.svelte";
 
   interface Props {
     auctions: BinAuction[];
@@ -30,8 +31,6 @@
       name: x,
       disabled: false,
     }));
-
-    console.log(max);
 
     max = data.max_price;
   });
@@ -64,7 +63,6 @@
       timeout = undefined;
       await tr(async () => {
         const res = await trpc.binSearch.query(opts);
-        console.log(res);
 
         auctions = res as BinAuction[];
       });
@@ -74,7 +72,18 @@
 
 {#snippet filteroptions(clazz)}
   <div class="mr-auto {clazz}">
-    <div class="bg-base-300 rounded-xl mx-auto flex-col p-4 flex gap-8">
+    <div class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-8">
+      <div class="w-52 md:w-full">
+        <label class="input input-bordered flex items-center gap-2">
+          <input
+            type="text"
+            class="grow"
+            placeholder="Search Card"
+            bind:value={search}
+          />
+          <SearchIcon />
+        </label>
+      </div>
       <div>
         <span>Origin</span>
         <ComboBox
@@ -82,7 +91,7 @@
           options={origins}
           placeholder="Origin"
           bind:selectedItems={selectedOrigins}
-        ></ComboBox>
+        />
       </div>
       <div>
         <span>Part</span>
@@ -91,7 +100,7 @@
           options={parts}
           placeholder="Part"
           bind:selectedItems={selectedParts}
-        ></ComboBox>
+        />
       </div>
 
       {#if max}
@@ -100,21 +109,13 @@
           <Range {max} bind:value={rangeValue}></Range>
         </div>
       {/if}
-
-      <div class="flex flex-wrap w-full max-w-[70rem] gap-2 mx-auto p-2">
-        <input
-          class="input input-bordered"
-          placeholder="Search Name"
-          bind:value={search}
-        />
-      </div>
     </div>
   </div>
 {/snippet}
 
 <div class="w-full">
   <span class="text-7xl flex p-3 font-serif font-bold"
-    ><span class="mx-auto">Marketplace</span></span
+    ><span class="mx-auto">Card Marketplace</span></span
   >
   <div class="flex flex-col md:flex-row">
     {@render filteroptions("md:hidden p-2")}

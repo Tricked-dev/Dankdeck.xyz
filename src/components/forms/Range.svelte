@@ -15,7 +15,7 @@
   export const value = v;
 </script>
 
-<span use:melt={$root} class="relative flex h-[20px] w-[200px] items-center">
+<span use:melt={$root} class="relative flex h-[20px] w-full items-center">
   <span class="h-[3px] w-full bg-neutral">
     <span use:melt={$range} class="h-[3px] bg-neutral-content" />
   </span>

@@ -58,10 +58,10 @@
     <input
       use:melt={$input}
       class="flex h-10 items-center justify-between rounded-lg bg-base-300
-          px-3 pr-12 text-base-content"
+          px-3 pr-12 text-base-content input input-bordered w-full max-w-full"
       {placeholder}
     />
-    <div class="absolute right-2 top-1/2 z-10 -translate-y-1/2 text-blue-900">
+    <div class="absolute right-6 top-1/2 z-10 -translate-y-1/2 text-blue-900">
       {#if $open}
         <ChevronUp class="size-4" />
       {:else}

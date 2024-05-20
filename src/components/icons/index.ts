@@ -15,4 +15,5 @@ export { default as Github } from "./Github.svelte";
 export { default as Money } from "./Money.svelte";
 export { default as MoneyBill } from "./MoneyBill.svelte";
 export { default as MoreSquare } from "./MoreSquare.svelte";
+export { default as Search } from "./Search.svelte";
 export { default as TextLine } from "./TextLine.svelte";
