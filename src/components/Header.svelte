@@ -248,15 +248,15 @@
     {:else}
       <button
         class="btn btn-outline btn-primary w-52 animate-pulse tooltip tooltip-bottom"
-        data-tip="Or create a account :)"
+        data-tip="Or create an account :)"
         onclick={async () => {
           await fetch("/api/clearCookies");
 
           window.location.href = "/login";
         }}
       >
-        Login into DankDeck</button
-      >
+        Login into DankDeck
+      </button>
     {/if}
   </div>
 </div>

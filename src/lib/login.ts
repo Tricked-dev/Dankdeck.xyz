@@ -5,6 +5,8 @@ sl<HTMLButtonElement>("#login-gh").onclick = () => signIn("github", {});
 sl<HTMLButtonElement>("#login-dc").onclick = () => signIn("discord", {});
 sl<HTMLButtonElement>("#login-rs").addEventListener("submit", (e) => {
   e.preventDefault();
+  sl<HTMLSpanElement>(".loading").classList.remove("hidden");
+  sl<HTMLButtonElement>("#login-rs > button").disabled = true;
   signIn("resend", {
     email: sl<HTMLButtonElement>("input[type=email]").value,
   });
