@@ -87,7 +87,6 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 - click on like a meme name or something and see existing rolled cards to view them and stuff
 - a no nsfw option maybe? or something cause nsfw memes do exist and are marked
 - a better user info ui /user/id
-- better filtering on the marketplace filter by tags origin time and stuff
 - Trading socket changes - detect multiple people or something - dont allow 3 people etc
 - A user rating / weight (total cards + average card level + money + cards sold maybe)
 - giving a thumbsup to people

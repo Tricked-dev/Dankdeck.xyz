@@ -49,6 +49,8 @@
     }, 10);
     return () => clearTimeout(timeout);
   });
+
+  let magicSelectClasses = `grow select select-primary select-ghost text-base-content outline-0 focus:outline-0 outline-offset-0 focus:outline-offset-0 border-0 focus:border-0`;
 </script>
 
 <div
@@ -117,7 +119,7 @@
         class="input input-bordered flex items-center gap-2 text-primary w-full"
       >
         Theme
-        <select class="grow select text-base-content" bind:value={theme}>
+        <select class={magicSelectClasses} bind:value={theme}>
           {#each themes as theme}
             <option value={theme}>{theme}</option>
           {/each}
@@ -127,7 +129,7 @@
         class="input input-bordered flex items-center gap-2 text-primary w-full"
       >
         NSFW Memes Enabled
-        <select class="grow select text-base-content" bind:value={nsfw}>
+        <select class={magicSelectClasses} bind:value={nsfw}>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
