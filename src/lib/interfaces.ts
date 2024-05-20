@@ -24,6 +24,7 @@ export const search = z.object({
       max: z.number().min(0).max(1000000000),
     })
     .optional(),
+  user: z.string().uuid().optional(),
 });
 
 export type Search = z.infer<typeof search>;

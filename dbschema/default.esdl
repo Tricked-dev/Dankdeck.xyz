@@ -1,3 +1,5 @@
+using extension pg_trgm;
+
 module default {
     type User {
         property name -> str;

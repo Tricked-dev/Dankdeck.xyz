@@ -4,7 +4,10 @@ import { publicProcedure } from "../trpc";
 import { client } from "client";
 
 async function searchCard(query: Search) {
-  const q = `
+  let ids: number[] = [];
+  if (query.query) {
+    try {
+      const q = `
   with
     query := <optional str>$query,
     res := (
@@ -13,15 +16,18 @@ async function searchCard(query: Search) {
   select res.object.shortId
   order by res.score desc;
   `;
-
-  const res = await client.query<number>(
-    `
+      ids = await client.query<number>(
+        `
   ${q}`,
-    {
-      query: query.query,
-    },
-  );
-  const bigQuery = `
+        {
+          query: query.query,
+        },
+      );
+    } catch (e) {}
+  }
+
+  function createQuery() {
+    return `
   select BinAuction {
     price,
     card: {
@@ -33,8 +39,10 @@ async function searchCard(query: Search) {
         description
       }
     }
-  } filter ${opGenerator(query, res)}
-  `;
+  } filter ${opGenerator(query, ids)}
+    `;
+  }
+
   let opts: Record<string, any> | undefined = undefined;
 
   if (query.origin) {
@@ -50,7 +58,31 @@ async function searchCard(query: Search) {
     opts.partOf = query.partOf;
   }
 
-  return await client.query(bigQuery, opts);
+  const results = await client.query(createQuery(), opts);
+  if (!results.length) {
+    try {
+      const q = `
+      with
+        query := <optional str>$query,
+        ids := (select Meme{shortId} filter ext::pg_trgm::word_similar(query ?? "", Meme.description)),
+        ids2 := (select Meme{shortId} filter ext::pg_trgm::word_similar(query ?? "", Meme.name)),
+        combo := (select {ids,ids2})
+      select distinct(combo.shortId);
+      `;
+
+      ids = await client.query<number>(
+        `
+  ${q}`,
+        {
+          query: query.query,
+        },
+      );
+    } catch (e) {}
+  } else {
+    return results;
+  }
+
+  return await client.query(createQuery(), opts);
 }
 
 function opGenerator(search: Search, shortIds?: number[]) {
@@ -78,6 +110,9 @@ function opGenerator(search: Search, shortIds?: number[]) {
     ops.push(
       `.price >= ${search.priceRange.min} AND .price <= ${search.priceRange.max}`,
     );
+  }
+  if (search.user) {
+    ops.push(`.card.userId = ${search.user}`);
   }
   if (!ops.length) return `true = true`;
 
