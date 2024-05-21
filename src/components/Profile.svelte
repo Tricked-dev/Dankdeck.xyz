@@ -23,6 +23,12 @@
   let theme: string | undefined = $state(user.theme);
 
   let nsfw: string | undefined = $state(user.nsfw ? "yes" : "no");
+  let showDiscord: string | undefined = $state(
+    user.displayDiscordName ? "yes" : "no",
+  );
+  let showGithub: string | undefined = $state(
+    user.displayGithubName ? "yes" : "no",
+  );
 
   $effect(() => {
     document.documentElement.setAttribute("data-theme", theme ?? "dark");
@@ -114,6 +120,38 @@
         />
       </label>
     </div>
+    <div class="flex gap-2 flex-col md:flex-row w-full">
+      <label
+        class="input input-bordered flex items-center gap-2 text-primary w-full {discordLinked
+          ? ''
+          : 'input-disabled'}"
+      >
+        Show Discord Name
+        <select
+          class={magicSelectClasses}
+          bind:value={showDiscord}
+          disabled={!discordLinked}
+        >
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+      <label
+        class="input input-bordered flex items-center gap-2 text-primary w-full {githubLinked
+          ? ''
+          : 'input-disabled'}"
+      >
+        Show Github Name
+        <select
+          class={magicSelectClasses}
+          bind:value={showGithub}
+          disabled={!githubLinked}
+        >
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+    </div>
     <span class="text-xl font-semibold leading-5 mt-4">PERSONALIZATION</span>
     <span>Change your preferences</span>
     <div class="flex gap-2 flex-col md:flex-row w-full">
@@ -146,6 +184,8 @@
             name: nameInput!.value,
             theme: theme as typeof themes[number],
             nsfw: nsfw === "yes",
+            showDiscord: showDiscord === "yes",
+            showGithub: showGithub === "yes",
           });
           toast.success("Information successfully updated!");
         })}

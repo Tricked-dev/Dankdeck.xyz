@@ -3,6 +3,8 @@
   import Card from "./card/Card.svelte";
   import Money from "./icons/Money.svelte";
   import Avatar from "./Avatar.svelte";
+  import Discord from "./icons/Discord.svelte";
+  import Github from "./icons/Github.svelte";
   interface Props {
     user: User & { cardNumber: number };
   }
@@ -29,6 +31,22 @@
       >
         #{user.cardNumber.toFixed(1)}
       </span>
+      {#if user.discordName}
+        <div class="p-2 bg-base-200 rounded-2xl flex flex-1">
+          <Discord />
+          <span>
+            {user.discordName}
+          </span>
+        </div>
+      {/if}
+      {#if user.githubName}
+        <div class="p-2 bg-base-200 rounded-2xl flex flex-1">
+          <Github />
+          <a href="https://github.com/{user.githubName}">
+            {user.githubName}
+          </a>
+        </div>
+      {/if}
     </div>
   </div>
 </div>

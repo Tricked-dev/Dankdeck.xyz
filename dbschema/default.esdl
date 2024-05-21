@@ -17,6 +17,18 @@ module default {
         required property theme -> str {
             default := 'dark';
         }
+        property bio -> str {
+            constraint max_len_value(150);
+        }
+
+        property githubName -> str;
+        property discordName -> str;
+        property displayGithubName -> bool {
+            default := false;
+        }
+        property displayDiscordName -> bool {
+            default := false;
+        }
 
         link memePicture -> Meme {
             on target delete delete source;

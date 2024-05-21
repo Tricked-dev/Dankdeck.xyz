@@ -16,6 +16,8 @@ const user = await client.querySingle<DBUser>(
         balance,
         createdAt,
         picture,
+        discordName := .discordName if .displayDiscordName else {},
+        githubName := .githubName if .displayGithubName else {},
         cards: {
             id,
             number,

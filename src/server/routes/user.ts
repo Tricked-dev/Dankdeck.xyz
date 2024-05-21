@@ -17,6 +17,10 @@ export const user = protectedProcedure.query(async ({ ctx }) => {
         cardsClaimedCount := count(.cardsClaimed),
         nsfw,
         theme,
+        discordName,
+        displayDiscordName,
+        githubName,
+        displayGithubName,
         createdAt
     }
     filter User.id = <uuid>$user

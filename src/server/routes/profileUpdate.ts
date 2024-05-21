@@ -13,6 +13,8 @@ export const profileUpdate = protectedProcedure
       name: z.string().min(3, "Name too short").max(50, "Name too long"),
       theme: z.enum(themes),
       nsfw: z.boolean(),
+      showGithub: z.boolean(),
+      showDiscord: z.boolean(),
     }),
   )
   .mutation(async ({ ctx, input: data }) => {
@@ -26,12 +28,16 @@ export const profileUpdate = protectedProcedure
             set {
                 name := <str>$name,
                 theme := <str>$theme,
-                nsfw := <bool>$nsfw
+                nsfw := <bool>$nsfw,
+                displayGithubName := <bool>$showGithub,
+                displayDiscordName := <bool>$showDiscord
             }) {
             name,
             theme,
             nsfw,
             email,
+            displayGithubName,
+            displayDiscordName,
             id
         }`,
       {
@@ -39,8 +45,11 @@ export const profileUpdate = protectedProcedure
         name: data.name,
         theme: data.theme,
         nsfw: data.nsfw,
+        showGithub: data.showGithub,
+        showDiscord: data.showDiscord,
       },
     );
+    console.log(user);
     if (!user) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",

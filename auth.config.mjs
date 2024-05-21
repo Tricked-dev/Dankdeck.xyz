@@ -12,6 +12,7 @@ if (import.meta.env.AUTH_DISCORD_ID) {
   extraProviders.push(Discord({
     clientId: import.meta.env.AUTH_DISCORD_ID,
     clientSecret: import.meta.env.AUTH_DISCORD_SECRET,
+
   }))
 }
 if (import.meta.env.AUTH_RESEND_KEY) {
@@ -21,6 +22,20 @@ if (import.meta.env.AUTH_RESEND_KEY) {
     sendVerificationRequest: sendVerificationRequest
   }))
 }
+
+const userProps = `
+          id,
+          email,
+          emailVerified,
+          name,
+          picture,
+          theme,
+          nsfw,
+          bio,
+          githubName,
+          discordName,
+          image
+`
 
 export default defineConfig({
   baseUrl: import.meta.env.AUTH_URL,
@@ -34,7 +49,7 @@ export default defineConfig({
   ],
   adapter: {
     ...EdgeDBAdapter(client),
-    async createUser({ email, emailVerified, name, image }) {
+    async createUser({ email, emailVerified, name, image, ...rest }) {
       return await client.queryRequiredSingle(
         `
         with
@@ -50,14 +65,34 @@ export default defineConfig({
             image:= image,
           }
         ) {
-            id,
-            email,
-            emailVerified,
-            name,
-            picture,
-            theme,
-            nsfw,
-            image
+            ${userProps}
+          }
+        `,
+        {
+          email,
+          emailVerified: emailVerified && new Date(emailVerified).toISOString(),
+          name,
+          image,
+        }
+      )
+    },
+    async createUser({ email, emailVerified, name, image, ...props }) {
+      return await client.queryRequiredSingle(
+        `
+        with
+          image := <optional str>$image,
+          name := <optional str>$name,
+          emailVerified := <optional str>$emailVerified
+
+        select (
+          insert User {
+            email:= <str>$email,
+            emailVerified:= <datetime>emailVerified,
+            name:= name,
+            image:= image,
+          }
+        ) {
+            ${userProps}
           }
         `,
         {
@@ -72,14 +107,7 @@ export default defineConfig({
       return await client.querySingle(
         `
         select User {
-          id,
-          email,
-          emailVerified,
-          name,
-          picture,
-          theme,
-          nsfw,
-          image
+            ${userProps}
         } filter .id = <uuid>$id;
         `,
         { id }
@@ -89,20 +117,13 @@ export default defineConfig({
       return await client.querySingle(
         `
         select User {
-          id,
-          email,
-          emailVerified,
-          name,
-          picture,
-          theme,
-          nsfw,
-          image
+            ${userProps}
         } filter .email = <str>$email;
         `,
         { email }
       )
     },
-    async getUserByAccount({ providerAccountId, provider }) {
+    async getUserByAccount({ providerAccountId, provider, ...props }) {
       return await client.querySingle(
         `
         with account := (
@@ -111,20 +132,13 @@ export default defineConfig({
              and .provider = <str>$provider
         )
         select account.user {
-          id,
-          email,
-          image,
-          name,
-          theme,
-          nsfw,
-          picture,
-          emailVerified
+            ${userProps}
         }
         `,
         { providerAccountId, provider }
       )
     },
-    async updateUser({ email, emailVerified, id, image, name }) {
+    async updateUser({ email, emailVerified, id, image, name, ...props }) {
       return await client.queryRequiredSingle(
         `
         with
@@ -143,14 +157,7 @@ export default defineConfig({
             name := name ?? .name,
           }
         ) {
-          id,
-          email,
-          emailVerified,
-          image,
-          picture,
-          theme,
-          nsfw,
-          name
+            ${userProps}
         }
         `,
         {
@@ -171,14 +178,7 @@ export default defineConfig({
           expires,
           sessionToken,
           user: {
-            id,
-            email,
-            emailVerified,
-            picture,
-            image,
-            theme,
-            nsfw,
-            name
+            ${userProps}
           }
         } filter .sessionToken = <str>$sessionToken;
       `,
@@ -207,10 +207,48 @@ export default defineConfig({
     newUser: "/cards?onboard=1"
   },
   callbacks: {
-    session: async ({ session, user }) => {
+    session: async ({ session, user, ...props }) => {
       session.user.id = user.id;
       session.user.picture = user.picture
       return session;
+    },
+    signIn: async ({ user, account, profile, ...props }) => {
+      // little trick :)
+      setTimeout(async () => {
+        try {
+          if (account.provider == "github" && user.githubName != profile.login) {
+            await client.querySingle(`
+          update User
+          filter
+            .id = <uuid>$userId
+          set {
+            githubName := <str>$login
+          }
+          `, {
+              userId: user.id,
+              login: profile.login
+            })
+          }
+          else if (account.provider == "discord" && user.discordName != profile.username) {
+            await client.querySingle(`
+          update User
+          filter
+            .id = <uuid>$userId
+          set {
+            discordName := <str>$login
+          }
+          `, {
+              userId: user.id,
+              login: profile.username
+            })
+          }
+        } catch (e) {
+          // non essential no need to handle errors lol
+          console.log(e)
+        }
+      }, 0)
+
+      return true
     },
     redirect: async ({ url, baseUrl }) => {
       if (url.startsWith("/")) return `${baseUrl}${url}`
