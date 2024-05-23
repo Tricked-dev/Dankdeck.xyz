@@ -117,4 +117,4 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 - Responsive navbar
 - Improve the /cards UI
 - Maybe do something about y overflow on CardInfo (not 100% sure yet)
-- Add card view status (chill, hot, on fire)
+- Add card view status (chill, hot, on fire) (APi done just ui now)

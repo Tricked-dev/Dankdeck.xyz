@@ -124,7 +124,7 @@
       />
     </div>
 
-    {#if max}
+    {#if max && !cardMode}
       <div>
         <span>Price {$rangeValue[0]} to {$rangeValue[1]}</span>
         <Range {max} bind:value={rangeValue}></Range>

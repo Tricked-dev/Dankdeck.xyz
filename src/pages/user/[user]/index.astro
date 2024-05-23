@@ -31,7 +31,14 @@ const user = await client.querySingle<DBUser>(
                 price
             }
         },
-        cardNumber := math::mean(.cards.number)
+        totalEarnedFromSelling := sum(.soldAuctions.price),
+        totalSpentOnCards := sum(.boughtAuctions.price),
+        totalCardsSold := count(.soldAuctions),
+        totalCardsBought := count(.boughtAuctions),
+        totalCardsClaimed := count(.cardsClaimed),
+        cardsBoughtFromDifferentUsers := distinct(.boughtAuctions.seller),
+        cardsSoldToDifferentUsers := distinct(.soldAuctions.buyer),
+        cardNumber := math::mean(.cards.number),
     }
     filter .id = <uuid>$id
     limit 1
@@ -40,6 +47,8 @@ const user = await client.querySingle<DBUser>(
     id: Astro.params.user,
   }
 );
+
+console.log(user)
 ---
 
 <Layout session={session} title={`Profile: ${user?.name}`}>
