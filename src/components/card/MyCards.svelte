@@ -50,7 +50,10 @@
       );
     }
   });
-  $inspect(searchedCards);
+
+  $effect(() => {
+    if (searchedCards) setCards(searchedCards);
+  });
 </script>
 
 <div class="flex flex-col md:flex-row max-w-[100rem]">
@@ -61,11 +64,7 @@
     class="md:hidden p-2"
   />
   <Cards class=" ml-auto mr-0 flex-1">
-    {#if searchedCards}
-      {#each searchedCards as card}
-        <Card {card} height={25} />
-      {/each}
-    {:else if !mounted || !r.cards}
+    {#if !mounted || !r.cards}
       {#each cards as card}
         <Card {card} height={25} />
       {/each}

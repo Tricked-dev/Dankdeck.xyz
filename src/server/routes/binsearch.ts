@@ -27,6 +27,31 @@ async function searchCard(query: Search) {
   }
 
   function createQuery() {
+    let order: string = ".number";
+
+    if (query.sort == "date") {
+      order = ".createdAt";
+    } else if (query.sort == "number") {
+      order = ".number";
+    } else if (query.sort == "name") {
+      order = ".meme.name";
+    }
+
+    if (query.cards) {
+    } else if (!query.cards) {
+      order = `.card${order}`;
+
+      if (query.sort == "price") {
+        order = ".price";
+      }
+    }
+
+    if (query.sort == "random") {
+      order = "random()";
+    }
+
+    let sorting = query.order == "desc" ? "desc" : "asc";
+
     if (query.cards) {
       return `
       select Card {
@@ -37,7 +62,7 @@ async function searchCard(query: Search) {
           name,
           description
         }
-      } filter ${opGenerator(query, ids, "")}
+      } filter ${opGenerator(query, ids, "")} order by ${order} ${sorting}
       `;
     }
     return `
@@ -52,7 +77,7 @@ async function searchCard(query: Search) {
         description
       }
     }
-  } filter ${opGenerator(query, ids)}
+  } filter ${opGenerator(query, ids)} order by ${order} ${sorting}
     `;
   }
 

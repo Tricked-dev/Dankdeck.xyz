@@ -18,6 +18,8 @@ export const search = z.object({
   type: z.array(z.string()).optional(),
   origin: z.array(z.string()).optional(),
   partOf: z.array(z.string()).optional(),
+  sort: z.enum(["price", "number", "date", "random", "name"]).optional(),
+  order: z.enum(["asc", "desc"]).default("asc").optional(),
   priceRange: z
     .object({
       min: z.number().min(0).max(1000000000),

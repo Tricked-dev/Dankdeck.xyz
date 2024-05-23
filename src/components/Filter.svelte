@@ -45,6 +45,8 @@
   let selectedParts = $state() as Writable<Value[]>;
   let rangeValue = $state() as Writable<[number, number]>;
   let search = $state("");
+  let sort = $state("number");
+  let order = $state("asc");
 
   let timeout: Timer | number | undefined = undefined;
 
@@ -68,18 +70,21 @@
     let arrOrNull = <T,>(arr: T[]): T[] | undefined => {
       if (arr?.length) return arr;
     };
-    if (!rangeValue) return;
+    if (!rangeValue && !cardMode) return;
     const opts: Search = {
       query: search.length > 0 ? search : undefined,
       origin: arrOrNull($selectedOrigins?.map((x) => x.value.name)),
       partOf: arrOrNull($selectedParts?.map((x) => x.value.name)),
       priceRange: {
-        min: $rangeValue[0],
-        max: $rangeValue[1],
+        min: cardMode ? 0 : $rangeValue[0],
+        max: cardMode ? 0 : $rangeValue[1],
       },
       user,
+      sort,
+      order,
       cards: cardMode,
     };
+
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
       timeout = undefined;
@@ -122,6 +127,22 @@
         placeholder="Part"
         bind:selectedItems={selectedParts}
       />
+    </div>
+
+    <div>
+      <span>Sort By</span>
+      <select class="select select-bordered mx-2" bind:value={sort}>
+        {#each ["price", "number", "date", "random", "name"] as n}
+          {#if !(cardMode && n === "price")}
+            <option value={n}>{n}</option>
+          {/if}
+        {/each}
+      </select>
+      <select class="select select-bordered" bind:value={order}>
+        {#each ["asc", "desc"] as n}
+          <option value={n}>{n}</option>
+        {/each}
+      </select>
     </div>
 
     {#if max && !cardMode}
