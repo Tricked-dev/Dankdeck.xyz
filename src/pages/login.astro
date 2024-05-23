@@ -4,8 +4,9 @@ import Layout from "@/layouts/Layout.astro";
 import { Discord, Github } from "@/components/icons";
 
 const session = await getSession(Astro.request);
+const r = Astro.url.searchParams.get("r") || "/";
 if (session) {
-  return Astro.redirect("/");
+  return Astro.redirect(r);
 }
 ---
 

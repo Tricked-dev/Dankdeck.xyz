@@ -7,7 +7,7 @@ const session = await getSession(Astro.request);
 const room = Astro.params.tradeId;
 
 if (!session?.user?.id) {
-  return Astro.redirect("/");
+  return Astro.redirect("/login?r=" + Astro.url.pathname);
 }
 ---
 

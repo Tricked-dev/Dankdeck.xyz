@@ -254,7 +254,7 @@
         onclick={async () => {
           await fetch("/api/clearCookies");
 
-          window.location.href = "/login";
+          window.location.href = `/login?r=${window.location.pathname}`;
         }}
       >
         Login into DankDeck

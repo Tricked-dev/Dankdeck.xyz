@@ -306,7 +306,8 @@
       <button
         class="btn-xs btn-primary btn"
         onclick={() => {
-          navigator.clipboard.writeText(window.location.href);
+          const path = window.location.pathname;
+          navigator.clipboard.writeText(`${window.origin}/login?r=${path}`);
         }}>Copy Link</button
       >
     {/if}
