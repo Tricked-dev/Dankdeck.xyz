@@ -20,6 +20,7 @@ export const search = z.object({
   partOf: z.array(z.string()).optional(),
   sort: z.enum(["price", "number", "date", "random", "name"]).optional(),
   order: z.enum(["asc", "desc"]).default("asc").optional(),
+  sellingOnly: z.boolean().default(false),
   priceRange: z
     .object({
       min: z.number().min(0).max(1000000000),

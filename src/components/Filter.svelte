@@ -47,6 +47,7 @@
   let search = $state("");
   let sort = $state("number");
   let order = $state("asc");
+  let toggled = $state(false);
 
   let timeout: Timer | number | undefined = undefined;
 
@@ -79,12 +80,12 @@
         min: cardMode ? 0 : $rangeValue[0],
         max: cardMode ? 0 : $rangeValue[1],
       },
+      sellingOnly: toggled,
       user,
       sort,
       order,
       cards: cardMode,
     };
-
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
       timeout = undefined;
@@ -149,6 +150,12 @@
       <div>
         <span>Price {$rangeValue[0]} to {$rangeValue[1]}</span>
         <Range {max} bind:value={rangeValue}></Range>
+      </div>
+    {/if}
+    {#if cardMode}
+      <div>
+        <span>Selling only</span>
+        <input type="checkbox" class="toggle" bind:checked={toggled} />
       </div>
     {/if}
   </div>

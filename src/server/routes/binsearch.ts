@@ -149,6 +149,12 @@ function opGenerator(search: Search, shortIds?: number[], p = ".card") {
       `.price >= ${search.priceRange.min} AND .price <= ${search.priceRange.max}`,
     );
   }
+
+  if (search.sellingOnly && search.cards) {
+    ops.push(`count(.auction) != 0`);
+    console.log(ops);
+  }
+
   if (search.user) {
     ops.push(`${p}.userId = <uuid>"${search.user}"`);
   }
@@ -161,5 +167,6 @@ export const binSearch = publicProcedure
   .input(search)
   .query(async ({ input: data }) => {
     const res = await searchCard(data);
+
     return res;
   });
