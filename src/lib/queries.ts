@@ -83,7 +83,10 @@ export async function getCard(id: string) {
       createdAt,
       soldAt,
       price
-    }
+    },
+    recentViews := count(
+      (select View filter .cardId = <uuid>$cardId and .createdAt > (datetime_current() - <duration>'24 hours'))
+    )
   }
   filter .id = <uuid>$cardId
   limit 1

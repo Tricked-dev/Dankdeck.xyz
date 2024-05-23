@@ -2,7 +2,8 @@ import type { Theme } from "@auth/core/types";
 
 export async function sendVerificationRequest(params: any) {
   const { identifier: to, provider, url, theme } = params;
-  const { host } = new URL(url);
+  // const { host } = new URL(url);
+  const host = `DankDeck.xyz`;
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {

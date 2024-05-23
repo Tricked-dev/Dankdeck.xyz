@@ -253,6 +253,12 @@ TODO: make text better vosible on light backgrounds
           </i>
           {card.views} views
         </div>
+        <div class="flex items-center gap-2">
+          <i class="flex fill-current h-5 w-5">
+            <Eye />
+          </i>
+          {card.recentViews} Recent Views
+        </div>
         {#if card.auction?.[0]?.price}
           <div class="flex items-center gap-2">
             <i class="flex fill-current h-5 w-5">

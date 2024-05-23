@@ -62,7 +62,16 @@ module default {
             default := datetime_current();
         };
 
+    }
 
+    type View {
+        required link card -> Card {
+            on target delete delete source;
+        }
+        required property createdAt -> datetime {
+            default := datetime_current();
+        }
+        required property cardId := .card.id;
     }
 
     type Account {

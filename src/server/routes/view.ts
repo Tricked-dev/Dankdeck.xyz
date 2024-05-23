@@ -17,5 +17,18 @@ export const view = publicProcedure
         id: data.cardId,
       },
     );
+
+    await client.query(
+      `
+    insert View {
+      card := (select Card
+      filter .id = <uuid>$id
+      limit 1)
+    }
+    `,
+      {
+        id: data.cardId,
+      },
+    );
     return {};
   });
