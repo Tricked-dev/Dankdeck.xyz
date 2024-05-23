@@ -36,8 +36,8 @@ const user = await client.querySingle<DBUser>(
         totalCardsSold := count(.soldAuctions),
         totalCardsBought := count(.boughtAuctions),
         totalCardsClaimed := count(.cardsClaimed),
-        cardsBoughtFromDifferentUsers := distinct(.boughtAuctions.seller),
-        cardsSoldToDifferentUsers := distinct(.soldAuctions.buyer),
+        cardsBoughtFromDifferentUsers := count(distinct(.boughtAuctions.seller)),
+        cardsSoldToDifferentUsers := count(distinct(.soldAuctions.buyer)),
         cardNumber := math::mean(.cards.number),
     }
     filter .id = <uuid>$id

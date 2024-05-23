@@ -1,3 +1,4 @@
+import { DAY } from "@/lib/interfaces";
 import Discord from "@auth/core/providers/discord";
 import { EdgeDBAdapter } from "@auth/edgedb-adapter"
 import GitHub from "@auth/core/providers/github";
@@ -47,6 +48,11 @@ export default defineConfig({
     }),
     ...extraProviders
   ],
+  session: {
+    maxAge: DAY * 90,
+    strategy: "database",
+    updateAge: DAY * 14,
+  },
   adapter: {
     ...EdgeDBAdapter(client),
     async createUser({ email, emailVerified, name, image, ...rest }) {
