@@ -27,6 +27,7 @@ export const search = z.object({
       max: z.number().min(0).max(1000000000),
     })
     .optional(),
+  userName: z.string().min(1).max(100).optional(),
   user: z.string().uuid().optional(),
   cards: z.boolean().default(false).optional(),
 });

@@ -96,6 +96,11 @@ async function searchCard(query: Search) {
     opts.partOf = query.partOf;
   }
 
+  if (query.userName) {
+    if (!opts) opts = {};
+    opts.userName = `%${query.userName}%`;
+  }
+
   const results = await client.query(createQuery(), opts);
   if (!results.length) {
     try {
@@ -148,6 +153,9 @@ function opGenerator(search: Search, shortIds?: number[], p = ".card") {
     ops.push(
       `.price >= ${search.priceRange.min} AND .price <= ${search.priceRange.max}`,
     );
+  }
+  if (search.userName) {
+    ops.push(`${p}.user.name ilike <str>$userName`);
   }
 
   if (search.sellingOnly && search.cards) {
