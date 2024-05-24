@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import MyCards from "@/components/card/MyCards.svelte";
 import { client } from "../../client";
 import { getCardsView } from "@/lib/queries";
-const session = await getSession(Astro.request);
+const session = await getSession(Astro);
 
 if (!session || !session.user) {
   return Astro.redirect("/");

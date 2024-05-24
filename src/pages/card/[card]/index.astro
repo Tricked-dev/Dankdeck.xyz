@@ -6,7 +6,7 @@ import { client } from "../../../../client";
 import CardMeta from "@/components/card/CardMeta.svelte";
 import { getCard } from "@/lib/queries";
 import {type BinAuction, type Card } from "@db/schema";
-const session = await getSession(Astro.request);
+const session = await getSession(Astro);
 
 const cardId = Astro.params.card;
 let cardData: Card;

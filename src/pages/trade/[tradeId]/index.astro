@@ -3,7 +3,7 @@ import { getSession } from "auth-astro/server";
 import Layout from "@/layouts/Layout.astro";
 import CardMeta from "@/components/card/CardMeta.svelte";
 import Trade from "@/components/Trade.svelte";
-const session = await getSession(Astro.request);
+const session = await getSession(Astro);
 const room = Astro.params.tradeId;
 
 if (!session?.user?.id) {

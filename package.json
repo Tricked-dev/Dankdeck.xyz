@@ -27,7 +27,7 @@
     "@vercel/og": "^0.6.2",
     "apexcharts": "^3.49.1",
     "astro": "^4.8.2",
-    "auth-astro": "git+https://github.com/Tricked-dev/auth-astro.git",
+    "auth-astro": "git+https://github.com/Tricked-dev/auth-astro.git#97a802c",
     "canvas-confetti": "^1.9.3",
     "daisyui": "^4.11.1",
     "edgedb": "^1.5.5",
