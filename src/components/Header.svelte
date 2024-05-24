@@ -15,7 +15,7 @@
   import Card from "./card/Card.svelte";
   import { fade, fly } from "svelte/transition";
   import { prefetch } from "astro:prefetch";
-  let { session }: { session: Awaited<ReturnType<typeof getSession>> } =
+  let { session, title }: { session: Awaited<ReturnType<typeof getSession>> } =
     $props();
 
   let balance = $state(0);
@@ -182,7 +182,7 @@
   </div>
 {/snippet}
 
-<div class="navbar bg-base-300 gap-4 md:gap-0">
+<div class="navbar bg-base-300 gap-4 md:gap-0 relative">
   <div class="flex-1 flex gap-2">
     <a href="/" class="btn btn-ghost text-xl gap-0">Dank Deck</a>
     {#if session}
@@ -261,6 +261,15 @@
       </button>
     {/if}
   </div>
+  <span
+    class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-3xl hidden md:block"
+    >{title}</span
+  >
+</div>
+<div class="w-full text-2xl md:hidden bg-base-300 text-center">
+  <span class="w-full">
+    {title}
+  </span>
 </div>
 
 <Toaster />

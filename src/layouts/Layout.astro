@@ -69,7 +69,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     transition:animate={fade({ duration: "0.1s" })}
   >
     <div class="min-h-screen flex flex-col">
-      <Header client:idle session={session} />
+      <Header client:idle session={session} {title} />
       <slot />
     </div>
     {footer &&
