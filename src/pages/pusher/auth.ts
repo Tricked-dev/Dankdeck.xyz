@@ -3,7 +3,10 @@ import { getSession } from "auth-astro/server";
 
 export const POST: APIRoute = async ({ request }) => {
   const { default: Pusher } = await import("pusher");
-  const session = await getSession(request);
+  const session = await getSession({
+    request,
+    response: { headers: { set() {} } },
+  });
 
   if (!session || !session.user) {
     return new Response(null, { status: 401 });
