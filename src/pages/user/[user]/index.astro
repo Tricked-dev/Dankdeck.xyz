@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import MyCards from "@/components/card/MyCards.svelte";
 import { client } from "../../../../client";
 import User from "@/components/User.svelte";
-import type{ User as DBUser } from "@db/schema";
+import type { User as DBUser } from "@db/schema";
 const session = await getSession(Astro);
 
 const user = await client.querySingle<DBUser>(
@@ -39,6 +39,7 @@ const user = await client.querySingle<DBUser>(
         cardsBoughtFromDifferentUsers := count(distinct(.boughtAuctions.seller)),
         cardsSoldToDifferentUsers := count(distinct(.soldAuctions.buyer)),
         cardNumber := math::mean(.cards.number),
+        mostViewedCardNumber := max(.cards.views)
     }
     filter .id = <uuid>$id
     limit 1
@@ -48,7 +49,9 @@ const user = await client.querySingle<DBUser>(
   }
 );
 
-console.log(user)
+console.log(user);
+
+console.log(user);
 ---
 
 <Layout session={session} title={`Profile: ${user?.name}`}>
