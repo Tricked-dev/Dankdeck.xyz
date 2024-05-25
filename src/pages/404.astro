@@ -8,6 +8,14 @@ const session = await getSession(Astro);
 
 let id = 463224;
 
+if (Astro.url.pathname == "/privacy") {
+  id = 461757;
+} else if (Astro.url.pathname == "/terms") {
+  id = 380060;
+} else if (Astro.url.pathname == "/cookies") {
+  id = 964795;
+}
+
 if (((Math.random() * 20) | 0) == 2) {
   const [meme] = (await client.query(`
     select Meme {
