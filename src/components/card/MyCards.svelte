@@ -56,31 +56,53 @@
   });
 </script>
 
-<div class="flex flex-col md:flex-row max-w-[100rem]">
+<!--this was a speed run, its not even close to be done, tho idk what to throw here
+me from the future this will take more time i expected, imma dip-->
+<div class="flex flex-col md:flex-row mx-4 lg:mx-12 justify-center">
   <Filter
     bind:cards={searchedCards}
     cardMode
     user={user.id}
-    class="md:hidden p-2"
-  />
-  <Cards class=" ml-auto mr-0 flex-1">
-    {#if !mounted || !r.cards}
-      {#each cards as card}
-        <Card {card} height={25} />
-      {/each}
-    {:else}
-      {#each r.cards ?? [] as card}
-        <Card {card} height={25} />
-      {/each}
-    {/if}
-  </Cards>
-  <Filter
-    bind:cards={searchedCards}
-    cardMode
-    user={user.id}
-    class="hidden md:block p-2"
-  />
+  >
+    <Cards class=" ml-auto mr-0 flex-1">
+      {#if !mounted || !r.cards}
+        {#each cards as card}
+          <Card {card} height={25} />
+        {/each}
+      {:else}
+        {#each r.cards ?? [] as card}
+          <Card {card} height={25} />
+        {/each}
+      {/if}
+    </Cards>
+  </Filter>
 </div>
+
+<!--<div class="flex flex-col md:flex-row max-w-[100rem]">-->
+<!--  <Filter-->
+<!--    bind:cards={searchedCards}-->
+<!--    cardMode-->
+<!--    user={user.id}-->
+<!--    class="md:hidden p-2"-->
+<!--  />-->
+<!--  <Cards class=" ml-auto mr-0 flex-1">-->
+<!--    {#if !mounted || !r.cards}-->
+<!--      {#each cards as card}-->
+<!--        <Card {card} height={25} />-->
+<!--      {/each}-->
+<!--    {:else}-->
+<!--      {#each r.cards ?? [] as card}-->
+<!--        <Card {card} height={25} />-->
+<!--      {/each}-->
+<!--    {/if}-->
+<!--  </Cards>-->
+<!--  <Filter-->
+<!--    bind:cards={searchedCards}-->
+<!--    cardMode-->
+<!--    user={user.id}-->
+<!--    class="hidden md:block p-2"-->
+<!--  />-->
+<!--</div>-->
 
 <Modal
   title="Hello claim your first 5 cards"
