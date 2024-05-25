@@ -44,9 +44,9 @@
   });
 
   let showAdvancedFilters = $state(true);
-  let selectedOrigins = $state() as Writable<Value[]>;
-  let selectedParts = $state() as Writable<Value[]>;
-  let rangeValue = $state() as Writable<[number, number]>;
+  let selectedOrigins = $state() as Readable<Value[]>;
+  let selectedParts = $state() as Readable<Value[]>;
+  let rangeValue = $state() as Readable<[number, number]>;
   let search = $state("");
   let year = $state();
   let sort: Readable<string> | undefined = $state();
@@ -103,6 +103,10 @@
   });
 
   const numberFormatter = Intl.NumberFormat(undefined);
+
+  function resetFilters() {
+    window.location.reload();
+  }
 </script>
 
 <div class="flex flex-col gap-4">
@@ -153,7 +157,10 @@
           }}
         />
       </div>
-      <button class="hidden lg:block btn btn-outline btn-primary min-w-fit">
+      <button
+        class="hidden lg:block btn btn-outline btn-primary min-w-fit"
+        onclick={resetFilters}
+      >
         Reset filters
       </button>
     </div>
@@ -190,6 +197,7 @@
       </div>
       <button
         class="hidden sm:block btn btn-outline btn-primary min-w-fit grow max-w-72"
+        onclick={resetFilters}
       >
         Reset filters
       </button>
@@ -204,6 +212,7 @@
       </div>
       <button
         class="btn btn-outline btn-primary min-w-fit grow max-w-72 ml-auto"
+        onclick={resetFilters}
       >
         Reset filters
       </button>
