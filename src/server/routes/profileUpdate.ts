@@ -49,7 +49,6 @@ export const profileUpdate = protectedProcedure
         showDiscord: data.showDiscord,
       },
     );
-    console.log(user);
     if (!user) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",

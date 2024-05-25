@@ -135,8 +135,6 @@
       class="btn btn-primary btn-outline mt-2"
       onclick={() =>
       tr(async () => {
-        console.log($showDiscord)
-        console.log($showGithub)
         await trpc.profileUpdate.mutate({
           name: nameInput!.value,
           theme: user.theme ?? themes[0],

@@ -48,10 +48,6 @@ const user = await client.querySingle<DBUser>(
     id: Astro.params.user,
   }
 );
-
-console.log(user);
-
-console.log(user);
 ---
 
 <Layout session={session} title={`Profile: ${user?.name}`}>

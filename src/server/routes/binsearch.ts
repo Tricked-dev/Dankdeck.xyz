@@ -4,7 +4,6 @@ import { publicProcedure } from "../trpc";
 import { client } from "client";
 
 export async function searchCard(query: Search) {
-  console.log(query);
   let ids: number[] = [];
   if (query.query) {
     try {
@@ -162,7 +161,6 @@ function opGenerator(search: Search, shortIds?: number[], p = ".card") {
 
   if (search.sellingOnly && search.cards) {
     ops.push(`count(.auction) != 0`);
-    console.log(ops);
   }
 
   if (search.user) {
