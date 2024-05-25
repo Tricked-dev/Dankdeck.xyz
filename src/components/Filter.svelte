@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import type { BinAuction, Card } from "@db/schema";
   import type { Search } from "@/lib/interfaces";
-  import type { Writable } from "svelte/store";
+  import type { Readable, Writable } from "svelte/store";
   import SearchIcon from "./icons/Search.svelte";
   import Range from "./forms/Range.svelte";
   import ComboBox from "./forms/ComboBox.svelte";
@@ -20,6 +20,7 @@
   let parts: any[] = $state([]);
 
   let max: number | undefined = $state();
+
   onMount(async () => {
     const data = (await fetch("/api/marketPlaceData.json").then((r) =>
       r.json(),
@@ -47,9 +48,9 @@
   let selectedParts = $state() as Writable<Value[]>;
   let rangeValue = $state() as Writable<[number, number]>;
   let search = $state("");
-  let year = $state()
-  let sort = $state("number");
-  let order = $state("asc");
+  let year = $state();
+  let sort: Readable<string> | undefined = $state();
+  let order: Readable<string> | undefined = $state();
   let toggled = $state(false);
 
   let timeout: Timer | number | undefined = undefined;
@@ -76,7 +77,7 @@
     };
     if (!rangeValue && !cardMode) return;
     const opts: Search = {
-      year: parseInt(year ?? 0) ,
+      year: parseInt(year ?? 0),
       query: search.length > 0 ? search : undefined,
       origin: arrOrNull($selectedOrigins?.map((x) => x.value.name)),
       partOf: arrOrNull($selectedParts?.map((x) => x.value.name)),
@@ -86,8 +87,8 @@
       },
       sellingOnly: toggled,
       user,
-      sort,
-      order,
+      sort: $sort,
+      order: $order,
       cards: cardMode,
     };
     if (timeout) clearTimeout(timeout);
@@ -101,16 +102,23 @@
     }, 500);
   });
 
-  const numberFormatter = Intl.NumberFormat(undefined)
+  const numberFormatter = Intl.NumberFormat(undefined);
 </script>
 
 <div class="flex flex-col gap-4">
-  <div class="card card-compact bg-base-300 ">
+  <div class="card card-compact bg-base-300">
     <div class="card-body flex flex-row items-center gap-4 !text-base">
-      <button class="btn btn-square bg-base-100" on:click={() => showAdvancedFilters = !showAdvancedFilters}>
+      <button
+        class="btn btn-square bg-base-100"
+        onclick={() => (showAdvancedFilters = !showAdvancedFilters)}
+      >
         <BurgerSearch filled={!showAdvancedFilters} size="1.3rem" />
       </button>
-      <span class="hidden lg:block">{numberFormatter.format(auctions.length)} result{auctions.length > 1 ? 's' : ''}</span>
+      <span class="hidden lg:block"
+        >{numberFormatter.format(auctions?.length)} result{auctions?.length > 1
+          ? "s"
+          : ""}</span
+      >
       <label class="input input-bordered flex items-center gap-2 grow">
         <input
           type="text"
@@ -120,16 +128,17 @@
         />
         <SearchIcon />
       </label>
-      <div class="flex items-center hidden lg:flex">
+      <div class="items-center hidden lg:flex">
         <Select
           clazz="flex items-center gap-2"
           selectClass="min-w-[120px]"
           roundedClass="rounded-l-lg"
           label="Sort by"
           options={["price", "number", "date", "random", "name"]}
+          bind:selected={sort}
           defaultSelected={{
-            label: 'number',
-            value: 'number'
+            label: "number",
+            value: "number",
           }}
         />
 
@@ -137,9 +146,10 @@
           selectClass="min-w-[80px]"
           roundedClass="rounded-r-lg"
           options={["asc", "desc"]}
+          bind:selected={order}
           defaultSelected={{
-            label: 'asc',
-            value: 'asc'
+            label: "asc",
+            value: "asc",
           }}
         />
       </div>
@@ -147,8 +157,14 @@
         Reset filters
       </button>
     </div>
-    <div class="card-body flex flex-row items-center gap-2 !text-base lg:hidden !pt-0">
-      <div class="hidden sm:block">{numberFormatter.format(auctions.length)} result{auctions.length > 1 ? 's' : ''}</div>
+    <div
+      class="card-body flex flex-row items-center gap-2 !text-base lg:hidden !pt-0"
+    >
+      <div class="hidden sm:block">
+        {numberFormatter.format(auctions?.length)} result{auctions?.length > 1
+          ? "s"
+          : ""}
+      </div>
       <div class="flex items-center grow justify-center">
         <Select
           clazz="flex items-center gap-2"
@@ -157,8 +173,8 @@
           label="Sort by"
           options={["price", "number", "date", "random", "name"]}
           selected={{
-            label: 'number',
-            value: 'number'
+            label: "number",
+            value: "number",
           }}
         />
 
@@ -167,18 +183,28 @@
           roundedClass="rounded-r-lg"
           options={["asc", "desc"]}
           selected={{
-            label: 'asc',
-            value: 'asc'
+            label: "asc",
+            value: "asc",
           }}
         />
       </div>
-      <button class="hidden sm:block btn btn-outline btn-primary min-w-fit grow max-w-72">
+      <button
+        class="hidden sm:block btn btn-outline btn-primary min-w-fit grow max-w-72"
+      >
         Reset filters
       </button>
     </div>
-    <div class="card-body flex flex-row items-center gap-2 !text-base !pt-0 block sm:hidden">
-      <div class="n">{numberFormatter.format(auctions.length)} result{auctions.length > 1 ? 's' : ''}</div>
-      <button class="btn btn-outline btn-primary min-w-fit grow max-w-72 ml-auto">
+    <div
+      class="card-body flex-row items-center gap-2 !text-base !pt-0 block sm:hidden"
+    >
+      <div class="n">
+        {numberFormatter.format(auctions?.length)} result{auctions?.length > 1
+          ? "s"
+          : ""}
+      </div>
+      <button
+        class="btn btn-outline btn-primary min-w-fit grow max-w-72 ml-auto"
+      >
         Reset filters
       </button>
     </div>
@@ -187,7 +213,9 @@
     {#if showAdvancedFilters}
       <div class="hidden lg:block">
         <div class="mr-auto {clazz}">
-          <div class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-4 w-72">
+          <div
+            class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-4 w-72"
+          >
             <div class="flex flex-col gap-2">
               <div class="font-bold">Filter by username</div>
               <label class="input input-bordered flex items-center gap-2">
@@ -247,15 +275,13 @@
           </div>
         </div>
       </div>
-<!--      add drawer here -->
+      <!--      add drawer here -->
     {/if}
     <div>
       <slot></slot>
     </div>
   </div>
 </div>
-
-
 
 <!--&lt;!&ndash;    <div>&ndash;&gt;-->
 <!--&lt;!&ndash;      <span>Sort By</span>&ndash;&gt;-->

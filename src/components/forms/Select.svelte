@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Check, ChevronDown } from "@/components/icons";
   import { createSelect, melt, type SelectOption } from "@melt-ui/svelte";
-  import { fade } from 'svelte/transition';
+  import { fade } from "svelte/transition";
   import { isObject } from "@trpc/server/unstable-core-do-not-import";
 
   // const options = {
@@ -10,39 +10,48 @@
   // };
 
   export let defaultSelected: SelectOption | undefined;
-  export let disabled: boolean = false
+  export let disabled: boolean = false;
 
   const {
-    elements: { trigger, menu, option, group, groupLabel: _groupLabel, label: _label },
+    elements: {
+      trigger,
+      menu,
+      option,
+      group,
+      groupLabel: _groupLabel,
+      label: _label,
+    },
     states: { selectedLabel, open },
     helpers: { isSelected },
   } = createSelect({
     forceVisible: true,
     positioning: {
-      placement: 'bottom',
+      placement: "bottom",
       fitViewport: true,
       sameWidth: true,
     },
     defaultSelected,
-    disabled
+    disabled,
   });
 
-  export let options: Record<string, string[]> | [];
+  export let options: Record<string, string[]> | string[] | [];
 
-  $: computedOptions = isObject(options) ? options : {
-    options
-  };
+  $: computedOptions = isObject(options)
+    ? options
+    : {
+        options,
+      };
   export const selected = selectedLabel;
-  export let groupLabel = isObject(options)
-  export let placeholder = 'Select an option'
-  export let clazz = 'flex flex-col gap-1';
-  export let selectClass = 'min-w-[120px]'
-  export let roundedClass = 'rounded-lg'
-  export let label: string | null  = null;
-  export let labelClass = '';
+  export let groupLabel = isObject(options);
+  export let placeholder = "Select an option";
+  export let clazz = "flex flex-col gap-1";
+  export let selectClass = "min-w-[120px]";
+  export let roundedClass = "rounded-lg";
+  export let label: string | null = null;
+  export let labelClass = "";
 </script>
 
-<div class="{clazz}">
+<div class={clazz}>
   <!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
   {#if label}
     <label class="block {labelClass}" use:melt={$_label}>{label}</label>
@@ -91,8 +100,8 @@
 </div>
 
 <style lang="postcss">
-    .check {
-        @apply absolute left-2 top-1/2 text-base-content;
-        translate: 0 calc(-50% + 1px);
-    }
+  .check {
+    @apply absolute left-2 top-1/2 text-base-content;
+    translate: 0 calc(-50% + 1px);
+  }
 </style>
