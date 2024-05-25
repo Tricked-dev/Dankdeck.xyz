@@ -21,8 +21,8 @@
   const triggers = [
     { id: 'tab-1', title: 'General', icon: ProfileIcon },
     { id: 'tab-2', title: 'Personalization', icon: Personalize },
-    { id: 'tab-3', title: 'LinkChain', item: LinkChain },
-    { id: 'tab-4', title: 'Red light district', item: Skull },
+    { id: 'tab-3', title: 'LinkChain', icon: LinkChain },
+    { id: 'tab-4', title: 'Red light district', icon: Skull },
   ];
 </script>
 
@@ -30,7 +30,7 @@
   use:melt={$root}
   class="flex gap-7 grow"
 >
-  <div class="flex flex-col gap-2 max-w-80 grow">
+  <div class="flex flex-col gap-5 max-w-80 grow">
     <div class="flex items-center gap-3">
       <Avatar class="" {user} size={4}/>
 
