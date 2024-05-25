@@ -1,5 +1,5 @@
 let speed = 20;
-let scale = 1; // Image scale (I work on 1080p monitor)
+let scale = 1;
 let canvas = document.getElementById("tv-screen") as HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let logoColor;
@@ -16,20 +16,15 @@ let dvd = {
   img: document.querySelector("#dvd") as HTMLImageElement,
 };
 
-console.log("Main");
 canvas = document.getElementById("tv-screen")! as HTMLCanvasElement;
 ctx = canvas.getContext("2d")!;
-//   dvd.img.src = "";
 
-//Draw the "tv screen"
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-console.log(window.innerWidth);
-
 const shiny = ((Math.random() * 10) | 0) == 2;
 
-setInterval(() => {
+function update() {
   if (!shiny) ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(
     dvd.img,
@@ -42,7 +37,9 @@ setInterval(() => {
   dvd.y += dvd.yspeed;
 
   checkHitBox();
-}, speed);
+}
+
+setInterval(update, speed);
 
 //Check for border collision
 function checkHitBox() {
