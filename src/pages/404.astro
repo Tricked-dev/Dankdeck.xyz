@@ -1,0 +1,44 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import type { Meme } from "@db/schema";
+import { getSession } from "auth-astro/server";
+import { client } from "client";
+
+const session = await getSession(Astro);
+
+let id = 463224;
+
+if (((Math.random() * 20) | 0) == 2) {
+  const [meme] = (await client.query(`
+    select Meme {
+        shortId
+    }
+    order by random()
+    limit 1
+`)) as Meme[];
+  if (meme.shortId) id = meme.shortId;
+}
+---
+
+<Layout session={session} title="Page Not Found">
+  <div class="relative flex flex-1">
+    <div class="mx-auto my-auto flex p-4 flex-col md:flex-row">
+      <div class="p-4 flex flex-col my-auto mr-16">
+        <span class="text-error text-7xl font-semibold">404</span>
+        <span class="text-3xl">404 not found :(</span>
+        <a href="/" class="link link-hover link-primary text-primary/40"
+          >Go home</a
+        >
+      </div>
+      <img
+        id="dvd"
+        src={`https://r2.dankdeck.xyz/${id}.png`}
+        class="w-96 max-w-full"
+      />
+
+      <script src="@/lib/404.ts"></script>
+    </div>
+    <canvas id="tv-screen" class="w-full h-full absolute pointer-events-none"
+    ></canvas>
+  </div>
+</Layout>
