@@ -38,6 +38,7 @@
     "signal-exit": "^4.1.0",
     "svelte": "next",
     "svelte-french-toast": "^1.2.0",
+    "svelte-range-slider-pips": "^2.3.1",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
     "zod": "^3.23.8"

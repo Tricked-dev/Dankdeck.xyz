@@ -10,7 +10,7 @@
   type Option = {
     name: string;
     // title: string;
-    disabled: boolean;
+    disabled?: boolean;
     [key: string]: unknown;
   };
 
@@ -19,7 +19,7 @@
   const toOption = (option: Option): ComboboxOptionProps<Option> => ({
     value: option,
     label: option.name,
-    disabled: option.disabled,
+    disabled: option.disabled ?? false,
   });
 
   const {
@@ -42,13 +42,14 @@
       })
     : options;
 
+  export const clazz = ''
   export const selectedItems = selected;
 
   export let labelContent: string;
   export let placeholder: string;
 </script>
 
-<div class="flex flex-col gap-1">
+<div class="flex flex-col gap-1 {clazz}">
   <!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
   <label use:melt={$label}>
     <span class="text-sm font-medium bg-base">{labelContent}</span>
@@ -57,7 +58,7 @@
   <div class="relative">
     <input
       use:melt={$input}
-      class="flex h-10 items-center justify-between rounded-lg bg-base-300
+      class="flex h-10 items-center justify-between rounded-lg bg-base-100
           px-3 pr-12 text-base-content input input-bordered w-full max-w-full"
       {placeholder}
     />
