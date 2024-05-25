@@ -3,7 +3,8 @@ import { publicProcedure } from "../trpc";
 
 import { client } from "client";
 
-async function searchCard(query: Search) {
+export async function searchCard(query: Search) {
+  console.log(query);
   let ids: number[] = [];
   if (query.query) {
     try {

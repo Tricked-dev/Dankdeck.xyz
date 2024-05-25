@@ -48,7 +48,7 @@
   let selectedParts = $state() as Readable<Value[]>;
   let rangeValue = $state() as Readable<[number, number]>;
   let search = $state("");
-  let year = $state();
+  let year: string | undefined = $state();
   let sort: Readable<string> | undefined = $state();
   let order: Readable<string> | undefined = $state();
   let toggled = $state(false);
@@ -79,7 +79,7 @@
     };
     if (!rangeValue && !cardMode) return;
     const opts: Search = {
-      year: parseInt(year ?? 0),
+      year: parseInt(year ?? "0"),
       query: search.length > 0 ? search : undefined,
       origin: arrOrNull($selectedOrigins?.map((x) => x.value.name)),
       partOf: arrOrNull($selectedParts?.map((x) => x.value.name)),
