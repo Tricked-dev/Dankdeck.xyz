@@ -72,14 +72,9 @@
 </script>
 
 <div class="w-full">
-  <span
-    class="md:text-7xl text-2xl font-extrabold flex p-3 font-serif md:font-bold"
-  >
-    <span class="mx-auto text-wrap">Card Marketplace</span>
-  </span>
   <div class="flex flex-col md:flex-row mx-4 lg:mx-12 justify-center">
     <Filter bind:auctions>
-      <Cards class="max-w-[70rem] w-full ml-auto mr-0">
+      <Cards class="w-full ml-auto mr-0">
         {#each auctions as auction}
           <Card
             card={auction.card}

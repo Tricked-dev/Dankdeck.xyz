@@ -48,6 +48,7 @@
   let selectedParts = $state() as Readable<Value[]>;
   let rangeValue = $state() as Readable<[number, number]>;
   let search = $state("");
+  let username: string | undefined = $state();
   let year: string | undefined = $state();
   let sort: Readable<string> | undefined = $state();
   let order: Readable<string> | undefined = $state();
@@ -91,6 +92,7 @@
       user,
       sort: $sort,
       order: $order,
+      userName: (username?.length || 0) > 2 ? username : undefined,
       cards: cardMode,
     };
     if (timeout) clearTimeout(timeout);
@@ -115,7 +117,7 @@
   );
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 flex-1">
   <div class="card card-compact bg-base-300">
     <div class="card-body flex flex-row items-center gap-4 !text-base">
       <button
@@ -237,7 +239,7 @@
             type="text"
             class="grow"
             placeholder="Type a username"
-            bind:value={search}
+            bind:value={username}
           />
         </label>
       </div>
