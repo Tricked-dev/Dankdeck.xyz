@@ -80,6 +80,8 @@
       if (arr?.length) return arr;
     };
     if (!rangeValue && !cardMode) return;
+    let mmax: number | undefined = cardMode ? 0 : $rangeValue[1];
+    if (mmax == max) mmax = undefined;
     const opts: Search = {
       year: parseInt(year ?? "0"),
       query: search.length > 0 ? search : undefined,
@@ -87,7 +89,7 @@
       partOf: arrOrNull($selectedParts?.map((x) => x.value.name)),
       priceRange: {
         min: cardMode ? 0 : $rangeValue[0],
-        max: cardMode ? 0 : $rangeValue[1],
+        max: mmax,
       },
       sellingOnly: toggled,
       user,

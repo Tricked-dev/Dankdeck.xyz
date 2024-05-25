@@ -39,7 +39,12 @@ select {
   )
 }
     `);
+
   if (!data) return new Response(null, { status: 404 });
+
+  if (data.max_price > 5000) {
+    data.max_price = 5000;
+  }
   return new Response(JSON.stringify(data), {
     headers: {
       "Content-Type": "application/json",

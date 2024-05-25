@@ -151,9 +151,10 @@ function opGenerator(search: Search, shortIds?: number[], p = ".card") {
     ops.push(`contains(<array<str>>$partOf, ${m}partOf)`);
   }
   if (search.priceRange && !search.cards) {
-    ops.push(
-      `.price >= ${search.priceRange.min} AND .price <= ${search.priceRange.max}`,
-    );
+    ops.push(`.price >= ${search.priceRange.min}`);
+    if (search.priceRange.max) {
+      ops.push(` .price <= ${search.priceRange.max}`);
+    }
   }
   if (search.userName) {
     ops.push(`${p}.user.name ilike <str>$userName`);

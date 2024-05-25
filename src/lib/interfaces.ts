@@ -24,7 +24,7 @@ export const search = z.object({
   priceRange: z
     .object({
       min: z.number().min(0).max(1000000000),
-      max: z.number().min(0).max(1000000000),
+      max: z.number().min(0).max(1000000000).optional(),
     })
     .optional(),
   userName: z.string().min(1).max(100).optional(),
