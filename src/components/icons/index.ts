@@ -8,6 +8,7 @@ export { default as Check } from "./Check.svelte";
 export { default as ChevronDown } from "./ChevronDown.svelte";
 export { default as ChevronUp } from "./ChevronUp.svelte";
 export { default as Clock } from "./Clock.svelte";
+export { default as Cross } from "./Cross.svelte";
 export { default as Details } from "./Details.svelte";
 export { default as Discord } from "./Discord.svelte";
 export { default as Eye } from "./Eye.svelte";

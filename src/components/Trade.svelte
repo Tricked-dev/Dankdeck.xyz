@@ -10,6 +10,7 @@
   import toast from "svelte-french-toast";
   import Cards from "./card/Cards.svelte";
   import { navigate } from "astro:transitions/client";
+  import Cross from "./icons/Cross.svelte";
   interface Props {
     room: string;
     session: { user: DbUser };
@@ -66,15 +67,7 @@
       cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER!,
     });
     channel = sock.subscribe(`private-${room}`);
-    // TODO: implement this stuff
-    // presenceChannel = sock.subscribe(`presence-${room}`) as PresenceChannel;
-    // presenceChannel.bind("pusher:member_added", (member) => {
-    //   console.log("PRESENCE---");
-    //   console.log(presenceChannel.members.count);
-    //   console.log(member);
-    //   console.log(presenceChannel);
-    //   console.log("PRESENCE---");
-    // });
+
     channel.trigger("client-join", me);
 
     setTimeout(() => {
@@ -217,17 +210,11 @@
       agreed,
     });
   }
-
-  // $effect(() => {
-  //   if(heAgreed && meAgreed) {
-  //     await trpc.
-  //   }
-  // })
 </script>
 
 {#snippet CardView(card, click, click2)}
   <div
-    class="h-[20rem] w-[17.5rem] bg-slate-800 rounded-xl relative"
+    class="h-[20rem] w-[17.5rem] bg-slate-800 rounded-xl relative mb-5"
     onclick={click}
   >
     {#if card}
@@ -236,9 +223,13 @@
       </div>
       {#if click2}
         <button
-          class="absolute top-0 left-0 text-4xl font-bold p-2 text-white"
-          onclick={click2}>X</button
+          class="absolute bottom-[-25px] w-full text-[20px] font-bold p-2 text-white bg-error text-center rounded-b-xl flex justify-center"
+          onclick={click2}
         >
+          <span class="mx-auto">
+            <Cross />
+          </span>
+        </button>
       {/if}
     {:else}
       <span
