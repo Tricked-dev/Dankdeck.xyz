@@ -138,7 +138,13 @@
           selectClass="min-w-[120px]"
           roundedClass="rounded-l-lg"
           label="Sort by"
-          options={["price", "number", "date", "random", "name"]}
+          options={[
+            ...(cardMode ? [] : ["price"]),
+            "number",
+            "date",
+            "random",
+            "name",
+          ]}
           bind:selected={sort}
           defaultSelected={{
             label: "number",
@@ -178,7 +184,13 @@
           selectClass="min-w-[120px]"
           roundedClass="rounded-l-lg"
           label="Sort by"
-          options={["price", "number", "date", "random", "name"]}
+          options={[
+            ...(cardMode ? [] : ["price"]),
+            "number",
+            "date",
+            "random",
+            "name",
+          ]}
           selected={{
             label: "number",
             value: "number",

@@ -27,8 +27,8 @@
       <span class="text-lg font-semibold">Discord</span>
       <div
         class="ml-auto md:w-52 md:max-w-[40%] w-full {discordLinked
-        ? 'tooltip tooltip-bottom'
-        : ''}"
+          ? 'tooltip tooltip-bottom'
+          : ''}"
         data-tip="Account already linked"
       >
         <button
@@ -36,7 +36,7 @@
           disabled={discordLinked}
           onclick={() => signIn("discord")}
         >
-          Connect
+          {discordLinked ? "Already Connected" : "Connect"}
         </button>
       </div>
     </div>
@@ -45,8 +45,8 @@
       <span class="text-lg font-semibold">Github</span>
       <div
         class="ml-auto md:w-52 md:max-w-[40%] w-full {githubLinked
-        ? 'tooltip tooltip-bottom'
-        : ''}"
+          ? 'tooltip tooltip-bottom'
+          : ''}"
         data-tip="Account already linked"
       >
         <button
@@ -54,7 +54,7 @@
           disabled={githubLinked}
           onclick={() => signIn("github")}
         >
-          Connect
+          {githubLinked ? "Already Connected" : "Connect"}
         </button>
       </div>
     </div>

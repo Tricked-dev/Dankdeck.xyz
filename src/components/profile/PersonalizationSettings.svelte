@@ -64,8 +64,8 @@
           name: user.name,
           theme: $theme as typeof themes[number],
           nsfw: $nsfw === "yes",
-          showDiscord: user.displayDiscordName,
-          showGithub: user.displayGithubName
+          showDiscord: user.displayDiscordName!,
+          showGithub: user.displayGithubName!
         });
         toast.success("Personalization settings successfully updated!");
         user.theme = $theme;
