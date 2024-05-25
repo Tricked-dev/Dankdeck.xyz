@@ -9,6 +9,7 @@
   import ComboBox from "./forms/ComboBox.svelte";
   import { BurgerSearch } from "@/components/icons";
   import Select from "@/components/forms/Select.svelte";
+  import { fly } from "svelte/transition";
 
   interface Value {
     value: {
@@ -50,8 +51,8 @@
   let search = $state("");
   let username: string | undefined = $state();
   let year: string | undefined = $state();
-  let sort: Readable<string> | undefined = $state();
-  let order: Readable<string> | undefined = $state();
+  let sort: string | undefined = $state();
+  let order: string | undefined = $state();
   let toggled = $state(false);
 
   let timeout: Timer | number | undefined = undefined;
@@ -90,11 +91,12 @@
       },
       sellingOnly: toggled,
       user,
-      sort: $sort,
-      order: $order,
+      sort: sort || "number",
+      order: order || "asc",
       userName: (username?.length || 0) > 2 ? username : undefined,
       cards: cardMode,
     };
+
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
       timeout = undefined;
@@ -187,9 +189,12 @@
       </button>
     </div>
   </div>
-  <div class="flex">
+  <div class="flex flex-col md:flex-row">
     {#if showAdvancedFilters}
-      <div class="hidden lg:block">
+      <div
+        in:fly={{ x: -200, duration: 200 }}
+        out:fly={{ x: -200, duration: 200 }}
+      >
         {@render filter()}
       </div>
     {/if}
@@ -212,26 +217,24 @@
       "random",
       "name",
     ]}
-    selected={{
-      label: "number",
-      value: "number",
-    }}
+    placeholder="number"
+    onChange={(v) => (sort = v)}
   />
 
   <Select
     selectClass="min-w-[80px]"
     roundedClass="rounded-r-lg"
     options={["asc", "desc"]}
-    selected={{
-      label: "asc",
-      value: "asc",
-    }}
+    placeholder="asc"
+    onChange={(v) => (order = v)}
   />
 {/snippet}
 
 {#snippet filter()}
-  <div class="mr-auto {clazz}">
-    <div class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-4 w-72">
+  <div class="mr-auto {clazz} w-full">
+    <div
+      class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-4 w-full md:w-72"
+    >
       <div class="flex flex-col gap-2">
         <div class="font-bold">Filter by username</div>
         <label class="input input-bordered flex items-center gap-2">

@@ -49,6 +49,9 @@
   export let roundedClass = "rounded-lg";
   export let label: string | null = null;
   export let labelClass = "";
+  export let onChange: (value: string) => void = () => {};
+
+  $: onChange($selectedLabel);
 </script>
 
 <div class={clazz}>
