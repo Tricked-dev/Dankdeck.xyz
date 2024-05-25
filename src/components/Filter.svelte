@@ -61,6 +61,7 @@
     cards?: Card[];
     cardMode?: boolean;
     user?: string;
+    children?: any;
   }
 
   let {
@@ -68,6 +69,7 @@
     cards = $bindable(),
     class: clazz,
     cardMode,
+    children,
     user,
   }: Props = $props();
 
@@ -133,35 +135,7 @@
         <SearchIcon />
       </label>
       <div class="items-center hidden lg:flex">
-        <Select
-          clazz="flex items-center gap-2"
-          selectClass="min-w-[120px]"
-          roundedClass="rounded-l-lg"
-          label="Sort by"
-          options={[
-            ...(cardMode ? [] : ["price"]),
-            "number",
-            "date",
-            "random",
-            "name",
-          ]}
-          bind:selected={sort}
-          defaultSelected={{
-            label: "number",
-            value: "number",
-          }}
-        />
-
-        <Select
-          selectClass="min-w-[80px]"
-          roundedClass="rounded-r-lg"
-          options={["asc", "desc"]}
-          bind:selected={order}
-          defaultSelected={{
-            label: "asc",
-            value: "asc",
-          }}
-        />
+        {@render orderS()}
       </div>
       <button
         class="hidden lg:block btn btn-outline btn-primary min-w-fit"
@@ -179,33 +153,7 @@
           : ""}
       </div>
       <div class="flex items-center grow justify-center">
-        <Select
-          clazz="flex items-center gap-2"
-          selectClass="min-w-[120px]"
-          roundedClass="rounded-l-lg"
-          label="Sort by"
-          options={[
-            ...(cardMode ? [] : ["price"]),
-            "number",
-            "date",
-            "random",
-            "name",
-          ]}
-          selected={{
-            label: "number",
-            value: "number",
-          }}
-        />
-
-        <Select
-          selectClass="min-w-[80px]"
-          roundedClass="rounded-r-lg"
-          options={["asc", "desc"]}
-          selected={{
-            label: "asc",
-            value: "asc",
-          }}
-        />
+        {@render orderS()}
       </div>
       <button
         class="hidden sm:block btn btn-outline btn-primary min-w-fit grow max-w-72"
@@ -233,76 +181,107 @@
   <div class="flex">
     {#if showAdvancedFilters}
       <div class="hidden lg:block">
-        <div class="mr-auto {clazz}">
-          <div
-            class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-4 w-72"
-          >
-            <div class="flex flex-col gap-2">
-              <div class="font-bold">Filter by username</div>
-              <label class="input input-bordered flex items-center gap-2">
-                <input
-                  type="text"
-                  class="grow"
-                  placeholder="Type a username"
-                  bind:value={search}
-                />
-              </label>
-            </div>
-            <div class="flex flex-col gap-2">
-              <div class="font-bold">Filter by year collection</div>
-              <label class="input input-bordered flex items-center gap-2">
-                <input
-                  type="number"
-                  min="0"
-                  class="grow"
-                  placeholder="Type a year"
-                  bind:value={year}
-                />
-              </label>
-            </div>
-            <div class="flex flex-col gap-2">
-              <div class="font-bold">Filter by origin</div>
-              <ComboBox
-                labelContent=""
-                options={origins}
-                placeholder="Type an origin: Youtube ..."
-                bind:selectedItems={selectedOrigins}
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <div class="font-bold">Filter by part</div>
-              <ComboBox
-                labelContent=""
-                options={parts}
-                placeholder="Part"
-                bind:selectedItems={selectedParts}
-              />
-            </div>
-            {#if max && !cardMode}
-              <div class="flex flex-col gap-2">
-                <div class="font-bold">Price range</div>
-                <div>
-                  <span>From {$rangeValue[0]} to {$rangeValue[1]}</span>
-                  <Range {max} bind:value={rangeValue}></Range>
-                </div>
-              </div>
-            {/if}
-            {#if cardMode}
-              <div class="flex flex-col gap-2">
-                <div class="font-bold">Selling only</div>
-                <input type="checkbox" class="toggle" bind:checked={toggled} />
-              </div>
-            {/if}
-          </div>
-        </div>
+        {@render filter()}
       </div>
-      <!--      add drawer here -->
     {/if}
     <div>
-      <slot></slot>
+      {@render children()}
     </div>
   </div>
 </div>
+
+{#snippet orderS()}
+  <Select
+    clazz="flex items-center gap-2"
+    selectClass="min-w-[120px]"
+    roundedClass="rounded-l-lg"
+    label="Sort by"
+    options={[
+      ...(cardMode ? [] : ["price"]),
+      "number",
+      "date",
+      "random",
+      "name",
+    ]}
+    selected={{
+      label: "number",
+      value: "number",
+    }}
+  />
+
+  <Select
+    selectClass="min-w-[80px]"
+    roundedClass="rounded-r-lg"
+    options={["asc", "desc"]}
+    selected={{
+      label: "asc",
+      value: "asc",
+    }}
+  />
+{/snippet}
+
+{#snippet filter()}
+  <div class="mr-auto {clazz}">
+    <div class="bg-base-300 rounded-xl mx-auto flex-col p-6 flex gap-4 w-72">
+      <div class="flex flex-col gap-2">
+        <div class="font-bold">Filter by username</div>
+        <label class="input input-bordered flex items-center gap-2">
+          <input
+            type="text"
+            class="grow"
+            placeholder="Type a username"
+            bind:value={search}
+          />
+        </label>
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="font-bold">Filter by year collection</div>
+        <label class="input input-bordered flex items-center gap-2">
+          <input
+            type="number"
+            min="0"
+            class="grow"
+            placeholder="Type a year"
+            bind:value={year}
+          />
+        </label>
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="font-bold">Filter by origin</div>
+        <ComboBox
+          labelContent=""
+          options={origins}
+          placeholder="Type an origin: Youtube ..."
+          bind:selectedItems={selectedOrigins}
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="font-bold">Filter by part</div>
+        <ComboBox
+          labelContent=""
+          options={parts}
+          placeholder="Part"
+          bind:selectedItems={selectedParts}
+        />
+      </div>
+      {#if max && !cardMode}
+        <div class="flex flex-col gap-2">
+          <div class="font-bold">Price range</div>
+          <div>
+            <span>From {$rangeValue[0]} to {$rangeValue[1]}</span>
+            <Range {max} bind:value={rangeValue}></Range>
+          </div>
+        </div>
+      {/if}
+      {#if cardMode}
+        <div class="flex flex-col gap-2">
+          <div class="font-bold">Selling only</div>
+          <input type="checkbox" class="toggle" bind:checked={toggled} />
+        </div>
+      {/if}
+    </div>
+  </div>
+{/snippet}
 
 <!--&lt;!&ndash;    <div>&ndash;&gt;-->
 <!--&lt;!&ndash;      <span>Sort By</span>&ndash;&gt;-->
