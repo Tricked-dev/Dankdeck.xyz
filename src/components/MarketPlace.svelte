@@ -71,7 +71,7 @@
   });
 </script>
 
-<div class="w-full">
+<div class="w-full mt-10">
   <div class="flex flex-col md:flex-row mx-4 lg:mx-12 justify-center">
     <Filter bind:auctions>
       <Cards class="w-full ml-auto mr-0">

@@ -58,7 +58,7 @@
 
 <!--this was a speed run, its not even close to be done, tho idk what to throw here
 me from the future this will take more time i expected, imma dip-->
-<div class="flex flex-col md:flex-row mx-4 lg:mx-12 justify-center">
+<div class="flex flex-col md:flex-row mx-4 lg:mx-12 justify-center mt-10">
   <Filter bind:cards={searchedCards} cardMode user={user.id}>
     <Cards class=" ml-auto mr-0 flex-1">
       {#if !mounted || !r.cards}
