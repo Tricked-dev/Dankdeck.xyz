@@ -109,6 +109,10 @@
   function resetFilters() {
     window.location.reload();
   }
+
+  let cardsOrAuctionsLength = $derived(
+    (cardMode ? cards : auctions)?.length || 0,
+  );
 </script>
 
 <div class="flex flex-col gap-4">
@@ -121,7 +125,8 @@
         <BurgerSearch filled={!showAdvancedFilters} size="1.3rem" />
       </button>
       <span class="hidden lg:block"
-        >{numberFormatter.format(auctions?.length)} result{auctions?.length > 1
+        >{numberFormatter.format(cardsOrAuctionsLength)} result{cardsOrAuctionsLength >
+        1
           ? "s"
           : ""}</span
       >
@@ -148,7 +153,8 @@
       class="card-body flex flex-row items-center gap-2 !text-base lg:hidden !pt-0"
     >
       <div class="hidden sm:block">
-        {numberFormatter.format(auctions?.length)} result{auctions?.length > 1
+        {numberFormatter.format(cardsOrAuctionsLength)} result{cardsOrAuctionsLength >
+        1
           ? "s"
           : ""}
       </div>
@@ -166,7 +172,8 @@
       class="card-body flex-row items-center gap-2 !text-base !pt-0 block sm:hidden"
     >
       <div class="n">
-        {numberFormatter.format(auctions?.length)} result{auctions?.length > 1
+        {numberFormatter.format(cardsOrAuctionsLength)} result{cardsOrAuctionsLength >
+        1
           ? "s"
           : ""}
       </div>
