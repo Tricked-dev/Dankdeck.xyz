@@ -4,7 +4,7 @@ import App from "../components/MarketPlace.svelte";
 import Header from "@/components/Header.svelte";
 import { ViewTransitions, fade } from "astro:transitions";
 const { host } = new URL(Astro.request.url);
-const { session, title, footer = true } = Astro.props;
+const { session, title, footer = true, hideTitle = false } = Astro.props;
 
 const desc =
   "A card collecting game, with memes as cards collectables we have over 6k memes to play with";
@@ -60,7 +60,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body class="" transition:animate={fade({ duration: "0.1s" })}>
     <div class="min-h-screen flex flex-col">
-      <Header client:idle session={session} {title} />
+      <Header client:idle session={session} {title} {hideTitle} />
       <slot />
     </div>
     {

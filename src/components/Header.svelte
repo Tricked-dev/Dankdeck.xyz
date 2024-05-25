@@ -15,8 +15,15 @@
   import Card from "./card/Card.svelte";
   import { fade, fly } from "svelte/transition";
   import { prefetch } from "astro:prefetch";
-  let { session, title }: { session: Awaited<ReturnType<typeof getSession>> } =
-    $props();
+  let {
+    session,
+    title,
+    hideTitle,
+  }: {
+    session: Awaited<ReturnType<typeof getSession>>;
+    title: string;
+    hideTitle: boolean;
+  } = $props();
 
   let balance = $state(0);
   let balanceElement = $state<HTMLElement | undefined>(undefined);
@@ -261,16 +268,20 @@
       </button>
     {/if}
   </div>
-  <span
-    class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-3xl hidden md:block"
-    >{title}</span
-  >
+  {#if !hideTitle}
+    <span
+      class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-3xl hidden md:block"
+      >{title}</span
+    >
+  {/if}
 </div>
-<div class="w-full text-2xl md:hidden bg-base-300 text-center">
-  <span class="w-full">
-    {title}
-  </span>
-</div>
+{#if !hideTitle}
+  <div class="w-full text-2xl md:hidden bg-base-300 text-center">
+    <span class="w-full">
+      {title}
+    </span>
+  </div>
+{/if}
 
 <Toaster />
 
