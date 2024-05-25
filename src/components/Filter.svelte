@@ -9,7 +9,7 @@
   import ComboBox from "./forms/ComboBox.svelte";
   import { BurgerSearch } from "@/components/icons";
   import Select from "@/components/forms/Select.svelte";
-  import { fly } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
 
   interface Value {
     value: {
@@ -42,12 +42,14 @@
     }));
 
     max = data.max_price;
+
+    rangeValue[1] = max;
   });
 
   let showAdvancedFilters = $state(true);
   let selectedOrigins = $state() as Readable<Value[]>;
   let selectedParts = $state() as Readable<Value[]>;
-  let rangeValue = $state() as Readable<[number, number]>;
+  let rangeValue = $state([0, 0]) as number[];
   let search = $state("");
   let username: string | undefined = $state();
   let year: string | undefined = $state();
@@ -80,7 +82,7 @@
       if (arr?.length) return arr;
     };
     if (!rangeValue && !cardMode) return;
-    let mmax: number | undefined = cardMode ? 0 : $rangeValue[1];
+    let mmax: number | undefined = cardMode ? 0 : rangeValue[1];
     if (mmax == max) mmax = undefined;
     const opts: Search = {
       year: parseInt(year ?? "0"),
@@ -88,7 +90,7 @@
       origin: arrOrNull($selectedOrigins?.map((x) => x.value.name)),
       partOf: arrOrNull($selectedParts?.map((x) => x.value.name)),
       priceRange: {
-        min: cardMode ? 0 : $rangeValue[0],
+        min: cardMode ? 0 : rangeValue[0],
         max: mmax,
       },
       sellingOnly: toggled,
@@ -279,16 +281,16 @@
         />
       </div>
       {#if max && !cardMode}
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2" in:fade>
           <div class="font-bold">Price range</div>
           <div>
-            <span>From {$rangeValue[0]} to {$rangeValue[1]}</span>
+            <span>From {rangeValue[0]} to {rangeValue[1]}</span>
             <Range {max} bind:value={rangeValue}></Range>
           </div>
         </div>
       {/if}
       {#if cardMode}
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2" in:fade>
           <div class="font-bold">Selling only</div>
           <input type="checkbox" class="toggle" bind:checked={toggled} />
         </div>
