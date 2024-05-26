@@ -9,11 +9,12 @@
     positioning: {
       placement: 'top',
     },
-    openDelay: 10,
+    openDelay: 350,
     closeDelay: 0,
     closeOnPointerDown: false,
     forceVisible: true,
   });
+
 </script>
 
 <button type="button" class="trigger bg-base-100" use:melt={$trigger} aria-label="Add">
@@ -27,16 +28,16 @@
     class="z-10 rounded-lg bg-neutral shadow"
   >
     <div use:melt={$arrow} />
-    <div use:melt={$arrow} />
-    <slot name="tooltip" />
+    <slot name="tooltip">
+      NONE
+    </slot>
   </div>
 {/if}
 
 <style lang="postcss">
     .trigger {
         @apply inline-flex h-12 w-12 items-center justify-center rounded-full;
-        /*@apply text-magnum-900 transition-colors hover:bg-white/90;*/
-        @apply focus-visible:ring /*focus-visible:ring-magnum-400*/ focus-visible:ring-offset-2;
-        @apply p-0 text-sm font-medium;
+        @apply focus-visible:ring focus-visible:ring-offset-2;
+        @apply p-0 text-sm font-medium overflow-hidden;
     }
 </style>

@@ -3,7 +3,7 @@
 A card trading and collecting game that uses Edgedb and Astro.
 
 - Deployed on vercel
-- Login with Github, Discord or Email
+- Login with GitHub, Discord or Email
 - Open Source
 - Svelte 5
 - TRPC
@@ -12,12 +12,12 @@ A card trading and collecting game that uses Edgedb and Astro.
 
 ## How we use edgedb
 
-We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relations and queries.
+We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme, and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relations and queries.
 
 ## Things to try out when you use this site
 
 - Trade some cards with someone (you need a friend for this)
-- Buy and sell some cards maybe the same one to see the graph working
+- Buy and sell some cards, maybe the same one to see the graph working
 - Try changing your theme and name in settings
 - Search for a card you put for sale
 - Linking other accounts in settings
@@ -28,7 +28,7 @@ We use edgedb to save session user info and memes/cards, The memes are borrowed 
 
 ## Pre-requisites
 
-Create a quick github application:
+Create a quick GitHub application:
 
 <https://github.com/settings/developers>
 
@@ -57,7 +57,7 @@ PUSHER_APP_ID=
 PUSHER_APP_SECRET=
 ```
 
-if you are not on localhostlike github codespaces you will need to add this option:
+if you are not on localhost like GitHub codespaces you will need to add this option:
 
 ```ini
 AUTH_URL=https://SOME_GIBBERISH-4321.app.github.dev/ # Leading slash is important
@@ -80,7 +80,7 @@ edgedb instance start -I codereview # or your instance name / only once per sess
 bun run --bun dev
 ```
 
-Go to `/login` to login with github and done!
+Go to `/login` to log in with GitHub and done!
 
 ## Design file:
 
