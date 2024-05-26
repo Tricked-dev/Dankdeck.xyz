@@ -54,7 +54,7 @@
   class="card bg-center rounded-lg relative block {shouldOpen
     ? 'flipped'
     : 'cursor-pointer'} {classes} {extraClasses}"
-  style="height: {height}rem; width: {width}rem;"
+  style="height: {height}rem; width: {width}rem;min-height: {height}rem; min-width: {width}rem;"
   onclick={(e) => {
     if (unbox && !open) {
       e.preventDefault();
