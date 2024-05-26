@@ -12,7 +12,11 @@ A card trading and collecting game that uses Edgedb and Astro.
 
 ## How we use edgedb
 
-We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme, and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relations and queries.
+- sessions
+- cards
+- basically everything except images
+
+We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relations and queries.
 
 ## Things to try out when you use this site
 
@@ -112,9 +116,7 @@ All icons come from here copy the svelte svg and place it in the icons folder th
 
 - Redesign the card (fix card roll, long card name, maybe do something about the height too)
 - Fix border color in card info
-- Profile UI improvements
 - 1/2: Add tooltips on hover for CardInfo
 - Responsive navbar
-- Improve the /cards UI
 - Maybe do something about y overflow on CardInfo (not 100% sure yet)
 - Add card view status (chill, hot, on fire) (APi done just ui now)
