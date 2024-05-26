@@ -52,14 +52,9 @@
             {user.balance}
           </span>
           </div>
-          {#if user.discordName}
-            <div class="p-2 bg-base-200 rounded-2xl flex flex-1">
-              <Discord />
-              <span>
-            {user.discordName}
-          </span>
-            </div>
-          {/if}
+          <!--{#if user.discordName}-->
+
+          <!--{/if}-->
           {#if user.githubName}
             <div class="p-2 bg-base-200 rounded-2xl flex flex-1">
               <Github />
@@ -68,6 +63,14 @@
               </a>
             </div>
           {/if}
+        </div>
+        <div class="flex gap-3 flex-col md:flex-row">
+<!--          <div class="p-2 bg-base-200 rounded-2xl flex flex-1">-->
+<!--            <Discord />-->
+<!--            <span>-->
+<!--                {user.discordName}-->
+<!--              </span>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -118,25 +121,25 @@
       {Object.keys(groups).length} group{Object.keys(groups).length ? "s" : ''}
       with {user.cards.length} card{user.cards.length > 1 ? 's' : ''} collected
     </div>
-  {/if}
-  {#each Object.entries(groups).sort((a, b) => b[1].length - a[1].length) as [year, cards]}
-    <div>
-      <Expandable
-        title="{year === 'null' ? 'Unknown' : year} Collection ({cards.length} card{cards.length > 1 ? 's' : ''})"
-        iconClass="flex w-6 h-6 fill-current scale-95 ml-2"
-        icon={MoreSquare}
-      >
-        <div class="overflow-x-scroll overflow-y-hidden">
-          <div class="flex p-3 gap-3">
-            {#each cards as card}
-              <Card {card} height={25} price={card.auction?.[0]?.price} hoverEffect />
-            {/each}
+    {#each Object.entries(groups).sort((a, b) => b[1].length - a[1].length) as [year, cards]}
+      <div>
+        <Expandable
+          title="{year === 'null' ? 'Unknown' : year} Collection ({cards.length} card{cards.length > 1 ? 's' : ''})"
+          iconClass="flex w-6 h-6 fill-current scale-95 ml-2"
+          icon={MoreSquare}
+        >
+          <div class="overflow-x-scroll overflow-y-hidden">
+            <div class="flex p-3 gap-3">
+              {#each cards as card}
+                <Card {card} height={25} price={card.auction?.[0]?.price} hoverEffect />
+              {/each}
+            </div>
+            <div class="h-4"></div>
           </div>
-          <div class="h-4"></div>
-        </div>
-      </Expandable>
-    </div>
-  {/each}
+        </Expandable>
+      </div>
+    {/each}
+  {/if}
 </div>
 
 <!--<div class="flex flex-wrap justify-center w-full max-w-[70rem] gap-2 mx-auto">-->
