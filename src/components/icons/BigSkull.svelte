@@ -52,14 +52,6 @@
     box-sizing: content-box;
     border-radius: 50%;
     transition: 15s ease-in-out;
-    background: rgb(255, 0, 0);
-    background: radial-gradient(
-      circle,
-      rgba(255, 0, 0, 1) 0%,
-      rgba(255, 0, 0, 0.20910370984331228) 80%,
-      rgba(255, 0, 0, 0) 84%
-    );
-    /*box-shadow: 0px 0px 30px 0px hsl(0, 100%, 50%);*/
     opacity: 0;
     filter: blur(10px);
     left: -133px;

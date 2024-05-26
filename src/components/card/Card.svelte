@@ -93,17 +93,6 @@
         class="bg-primary-content bg-cover bg-center absolute w-full h-full"
         style="background-image: {bg};"
       >
-        <!--      <div-->
-        <!--        class="absolute top-0 right-0 text-4xl font-bold p-2 text-white"-->
-        <!--        style:text-shadow="1px 1px 4px rgba(0, 0, 0, 0.5)"-->
-        <!--      >-->
-        <!--        #{card.number}-->
-        <!--      </div>-->
-        <!--      <div-->
-        <!--        class="absolute bottom-0 left-0 text-2xl font-bold p-2 text-white bg-slate-700 bg-opacity-45"-->
-        <!--      >-->
-        <!--        {card.meme.name}-->
-        <!--      </div>-->
       </div>
       {#if price != undefined}
         <div class="absolute bottom-1 left-0 text-xl font-bold p-1">
