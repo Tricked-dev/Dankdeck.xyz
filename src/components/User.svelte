@@ -32,7 +32,12 @@
   }
   let { user }: Props = $props();
 
-  let groups = $derived(Object.groupBy(user.cards, (card: CardType) => card.meme.year))
+  let groups = $derived(user.cards.reduce((acc, card) => {
+    const year = card.meme.year || "null";
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(card);
+    return acc;
+  }, {}));
 
 </script>
 
