@@ -12,6 +12,10 @@ A card trading and collecting game that uses Edgedb and Astro.
 
 ## How we use edgedb
 
+- sessions
+- cards
+- basically everything except images
+
 We use edgedb to save session user info and memes/cards, The memes are borrowed from know your meme and we saved them in a sqlite database we then run `seed.ts` with bun to upload the memes to edgedb to use for relations and queries.
 
 ## Things to try out when you use this site
@@ -23,7 +27,6 @@ We use edgedb to save session user info and memes/cards, The memes are borrowed 
 - Linking other accounts in settings
 - Changing your profile picture to a dope meme you got
 - Posting a link of your card in Discord or another site with embeds
-- Bio
 - Show discord toggle
 
 ## Pre-requisites
