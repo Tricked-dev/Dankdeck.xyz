@@ -291,7 +291,7 @@
       {/if}
       {#if cardMode}
         <div class="flex flex-col gap-2" in:fade>
-          <div class="font-bold">Selling only</div>
+          <div class="font-bold">Only on sale cards</div>
           <input type="checkbox" class="toggle" bind:checked={toggled} />
         </div>
       {/if}

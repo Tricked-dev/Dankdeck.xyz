@@ -161,30 +161,32 @@
         Roll new card {Math.ceil(timeLeft / 1000)}s left
       </button>
     {:else}
-      <button
-        class="btn"
-        bind:this={rollBtn}
-        onclick={async () => {
-              doConfetti(undefined, [
-                { p: 150, s: 120, a: -130, v: 25 + Math.random() * 5 },
-                { p: 110, s: 100, a: -100, v: 40 + Math.random() * 10 },
-                { p: 150, s: 300, a: -140, v: 35 + Math.random() * 6 },
-                { p: 300, s: 50, a: -160, v: 30 + Math.random() * 20 },
-              ]);
-              await tr(async () => {
-               const card= await trpc.roll.query();
-               newCard = card;
-               setTimeout(() => {
-                newCard = undefined;
-               },2500)
-                await updateUser();
-                let cards = await trpc.mycards.query() as unknown[] as CardType[];
-                setCards(cards);
-              });
-            }}
-      >
-        Roll new card
-      </button>
+      <li class="list-none">
+        <button
+          class="btn"
+          bind:this={rollBtn}
+          onclick={async () => {
+                doConfetti(undefined, [
+                  { p: 150, s: 120, a: -130, v: 25 + Math.random() * 5 },
+                  { p: 110, s: 100, a: -100, v: 40 + Math.random() * 10 },
+                  { p: 150, s: 300, a: -140, v: 35 + Math.random() * 6 },
+                  { p: 300, s: 50, a: -160, v: 30 + Math.random() * 20 },
+                ]);
+                await tr(async () => {
+                 const card= await trpc.roll.query();
+                 newCard = card;
+                 setTimeout(() => {
+                  newCard = undefined;
+                 },2500)
+                  await updateUser();
+                  let cards = await trpc.mycards.query() as unknown[] as CardType[];
+                  setCards(cards);
+                });
+              }}
+        >
+          Roll new card
+        </button>
+      </li>
     {/if}
   </div>
 {/snippet}
@@ -226,7 +228,6 @@
           <li>
             <a class="justify-between" href="/user/{session?.user?.id}">
               Profile
-              <span class="badge">New</span>
             </a>
           </li>
           <li><a href="/settings">Settings</a></li>
