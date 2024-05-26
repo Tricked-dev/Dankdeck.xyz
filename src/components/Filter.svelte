@@ -158,15 +158,15 @@
       </button>
     </div>
     <div
-      class="card-body flex flex-row items-center gap-2 !text-base lg:hidden !pt-0"
+      class="card-body flex flex-row items-center justify-between gap-2 !text-base lg:hidden !pt-0"
     >
-      <div class="hidden sm:block">
+      <div>
         {numberFormatter.format(cardsOrAuctionsLength)} result{cardsOrAuctionsLength >
         1
           ? "s"
           : ""}
       </div>
-      <div class="flex items-center grow justify-center">
+      <div class="flex items-center sm:justify-center">
         {@render orderS()}
       </div>
       <button
@@ -177,23 +177,17 @@
       </button>
     </div>
     <div
-      class="card-body flex-row items-center gap-2 !text-base !pt-0 block sm:hidden"
+      class="card-body flex flex-row items-center gap-2 !text-base !pt-0 sm:hidden"
     >
-      <div class="n">
-        {numberFormatter.format(cardsOrAuctionsLength)} result{cardsOrAuctionsLength >
-        1
-          ? "s"
-          : ""}
-      </div>
       <button
-        class="btn btn-outline btn-primary min-w-fit grow max-w-72 ml-auto"
+        class="btn btn-outline btn-primary min-w-fit grow ml-auto"
         onclick={resetFilters}
       >
         Reset filters
       </button>
     </div>
   </div>
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-col md:flex-row gap-4">
     {#if showAdvancedFilters}
       <div
         in:fly={{ x: -200, duration: 200 }}
