@@ -21,7 +21,7 @@
   const triggers = [
     { id: 'tab-1', title: 'General', icon: ProfileIcon },
     { id: 'tab-2', title: 'Personalization', icon: Personalize },
-    { id: 'tab-3', title: 'Link chain', icon: LinkChain },
+    { id: 'tab-3', title: 'Link socials', icon: LinkChain },
     { id: 'tab-4', title: 'Red light district', icon: Skull },
   ];
 </script>
