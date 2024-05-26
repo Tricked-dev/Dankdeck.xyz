@@ -12,17 +12,20 @@
   });
 </script>
 
-<div class="icon-wrapper absolute z-10">
-  <i class="maki--danger"></i>
-</div>
-<div class="absolute">
-  <div class="boxie flex w-fit"></div>
+<div class="relative">
+  <div class="icon-wrapper absolute z-10">
+    <i class="maki--danger"></i>
+  </div>
+  <div class="absolute">
+    <div class="boxie flex w-fit"></div>
+  </div>
 </div>
 
 <style>
   .maki--danger {
-    margin: 50px;
-    margin-top: 30px;
+    stroke: red;
+    transform: translate(-56%, 0);
+    margin: 30px 50px 50px;
     display: inline-block;
     width: 240px;
     height: 240px;
@@ -34,6 +37,13 @@
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
+    stroke-dasharray: 10;
+    stroke-dashoffset: 10;
+    transition: stroke-dashoffset 15s linear;
+  }
+
+  .maki--danger:hover {
+      stroke-dashoffset: 0;
   }
 
   .boxie {
@@ -52,10 +62,7 @@
     /*box-shadow: 0px 0px 30px 0px hsl(0, 100%, 50%);*/
     opacity: 0;
     filter: blur(10px);
-  }
-
-  .boxie svg {
-    position: absolute;
+    left: -133px;
   }
 
   .icon-wrapper:hover ~ div > .boxie {

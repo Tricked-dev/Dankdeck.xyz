@@ -46,7 +46,25 @@
 >
   <div class="flex gap-4 flex-col md:flex-row">
     <div class="flex gap-4 mx-auto md:ml-0">
-      <Avatar class="my-auto" {user} size={9} />
+      <div class="flex flex-col items-center justify-center gap-3">
+        <Avatar {user} size={9} />
+        <div class="flex items-center gap-3 flex-col md:flex-row">
+          {#if user.discordName}
+            <div class="max-h-fit p-2 h-10 bg-base-200 rounded-2xl flex items-center justify-center gap-2">
+              <Discord />
+              <span>{user.discordName}</span>
+            </div>
+          {/if}
+          {#if user.githubName}
+            <div class="max-h-fit p-2 h-10 bg-base-200 rounded-2xl flex items-center justify-center gap-2">
+              <Github width="1.29em" height="1.29em" />
+              <a href="https://github.com/{user.githubName}">
+                {user.githubName}
+              </a>
+            </div>
+          {/if}
+        </div>
+      </div>
       <div class="my-auto flex flex-col gap-1">
         <div class="text-2xl font-bold my-auto">{user.name}</div>
         <div class="mb-2 text-sm">Joined at: {user.createdAt?.toLocaleDateString("en-UK")}</div>
@@ -57,25 +75,6 @@
             {user.balance}
           </span>
           </div>
-          <!--{#if user.discordName}-->
-
-          <!--{/if}-->
-          {#if user.githubName}
-            <div class="p-2 bg-base-200 rounded-2xl flex flex-1">
-              <Github />
-              <a href="https://github.com/{user.githubName}">
-                {user.githubName}
-              </a>
-            </div>
-          {/if}
-        </div>
-        <div class="flex gap-3 flex-col md:flex-row">
-<!--          <div class="p-2 bg-base-200 rounded-2xl flex flex-1">-->
-<!--            <Discord />-->
-<!--            <span>-->
-<!--                {user.discordName}-->
-<!--              </span>-->
-<!--          </div>-->
         </div>
       </div>
     </div>

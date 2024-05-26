@@ -34,7 +34,7 @@
     <div class="text-sm">No one should be in this place ☠️.</div>
   </div>
   <div
-    class="flex flex-row flex-1 gap-3 text-center justify-center"
+    class="flex flex-row flex-1 gap-3 text-center justify-center cursor-pointer"
     onmouseenter={() => (hovering = true)}
     onmouseleave={() => (hovering = false)}
     onclick={() =>
