@@ -277,7 +277,7 @@
   {/if}
 </div>
 {#if !hideTitle}
-  <div class="w-full text-2xl md:hidden bg-base-300 text-center">
+  <div class="w-full text-2xl md:hidden bg-base-300 text-center p-4">
     <span class="w-full">
       {title}
     </span>
