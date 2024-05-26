@@ -131,6 +131,7 @@
           title="{year === 'null' ? 'Unknown' : year} Collection ({cards.length} card{cards.length > 1 ? 's' : ''})"
           iconClass="flex w-6 h-6 fill-current scale-95 ml-2"
           icon={MoreSquare}
+          opened={Object.entries(groups).length < 6}
         >
           <div class="overflow-x-scroll overflow-y-hidden">
             <div class="flex p-3 gap-3">
